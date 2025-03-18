@@ -1,0 +1,211 @@
+import controlP5.*;
+import processing.serial.*;
+
+//this is for connection and text area
+Serial serial;
+ControlP5 p5;
+Button cntbutton;
+ScrollableList portlist;
+ScrollableList baudlist;
+Println arduinoConsole;
+Textarea receivedArea;
+boolean btnStatus = false;
+String selectedport;
+int selectedbaudrate;
+Slider slider1, slider2;
+
+//this is for slider
+float slider1Value = 50;
+float lastSent1Value = -1;
+
+float slider2Value = 50;
+float lastSent2Value = -1;
+
+float slider3Value = 50;
+float lastSent3Value = -1;
+
+float slider4Value = 50;
+float lastSent4Value = -1;
+
+float slider5Value = 50;
+float lastSent5Value = -1;
+
+float slider6Value = 50;
+float lastSent6Value = -1;
+
+  
+void setup(){
+  size(400,600);
+  p5 = new ControlP5(this);
+  
+  slider1 = p5.addSlider("slider1Value")
+     .setPosition(20, 400)
+     .setSize(300, 20)
+     .setRange(100, 625)  
+     .setValue(100)
+     .setLabel("Motor1: 100")
+     .setFont(createFont("Arial", 15))
+     .setColorValue(color(255, 255, 255, 255));
+     
+  slider2 = p5.addSlider("slider2Value")
+     .setPosition(20, 430)
+     .setSize(300, 20)
+     .setRange(100, 625)  
+     .setValue(625)
+     .setLabel("Motor2: 625")
+     .setFont(createFont("Arial", 15))
+     .setColorValue(color(255, 255, 255, 255));
+     
+   p5.addSlider("slider3Value")
+     .setPosition(20, 460)
+     .setSize(300, 20)
+     .setRange(125, 625)  
+     .setValue(50)
+     .setLabel("Motor3")
+     .setFont(createFont("Arial", 15))
+     .setColorValue(color(255, 255, 255, 255));
+     
+    p5.addSlider("slider4Value")
+     .setPosition(20, 490)
+     .setSize(300, 20)
+     .setRange(125, 625)  
+     .setValue(50)
+     .setLabel("Motor4")
+     .setFont(createFont("Arial", 15))
+     .setColorValue(color(255, 255, 255, 255));
+     
+    p5.addSlider("slider5Value")
+     .setPosition(20, 520)
+     .setSize(300, 20)
+     .setRange(125, 625)  
+     .setValue(50)
+     .setLabel("Motor5")
+     .setFont(createFont("Arial", 15))
+     .setColorValue(color(255, 255, 255, 255));
+     
+    p5.addSlider("slider6Value")
+     .setPosition(20, 550)
+     .setSize(300, 20)
+     .setRange(125, 625)  
+     .setValue(50)
+     .setLabel("Motor6")
+     .setFont(createFont("Arial", 15))
+     .setColorValue(color(255, 255, 255, 255));
+     
+    
+  cntbutton = p5.addButton("button")
+  .setLabel("Connect")
+  .setSize(70,30)
+  .setPosition(20,30);
+  
+  portlist = p5.addScrollableList("comportlist")
+  .setLabel("select port")
+  .setBarHeight(30)
+  .setPosition(120,30)
+  .setItemHeight(25);
+  
+  String[] availableports = Serial.list();
+  for(int i=0; i<availableports.length; i++){
+    portlist.addItem(availableports[i],availableports[i]);
+  }
+  
+  baudlist = p5.addScrollableList("baudratelist")
+  .setLabel("select baudrate")
+  .setBarHeight(30)
+  .setPosition(240,30)
+  .setItemHeight(24);
+  
+  baudlist.addItem("9600",9600);
+  baudlist.addItem("19200",19200);
+  baudlist.addItem("38400",38400);
+  baudlist.addItem("57600",57600);
+  
+  receivedArea = p5.addTextarea("receivedData")
+  .setSize(360,140)
+  .setPosition(20,240)
+  .setColorBackground(80);
+
+  arduinoConsole = p5.addConsole(receivedArea);
+
+}
+void baudratelist(int index){
+  String baudstring;
+  baudstring = baudlist.getItem(index).get("name").toString();
+  selectedbaudrate = Integer.parseInt(baudstring);
+  println("Selected", selectedbaudrate);
+
+}
+void comportlist(int index){
+  selectedport = portlist.getItem(index).get("name").toString();
+  println("Selected", selectedport);
+
+}
+void button(){
+  if(!btnStatus){
+    serial = new Serial(this, selectedport, selectedbaudrate);
+    cntbutton.setLabel("Disconnect");
+    btnStatus = true;
+    println("Connected", selectedport, "at", selectedbaudrate);
+  }
+  else {
+    serial.stop();
+    cntbutton.setLabel("Connect");
+    btnStatus = false;
+    println("Disconnected from", selectedport);
+    
+  }
+}
+
+void M1andM2(){
+  
+  
+}
+
+void draw(){
+  background(200);
+  M1andM2();
+  fill(0);
+  
+    try{
+    
+    if (slider1Value != lastSent1Value || slider2Value != lastSent2Value || slider3Value != lastSent3Value || slider4Value != lastSent4Value || slider5Value != lastSent5Value || slider6Value != lastSent6Value) {
+      String message = "M1:" + (int)slider1Value + "M1end| M2:" + (int)slider2Value + "M2end| M3:" + (int)slider3Value + "M3end| M4:" + (int)slider4Value + "M4end| M5:" + (int)slider5Value + "M5end| M6:" + (int)slider6Value + "\n";
+      serial.write(message);
+      lastSent1Value = slider1Value;
+      lastSent2Value = slider2Value;
+      lastSent3Value = slider3Value;
+      lastSent4Value = slider4Value;
+      lastSent5Value = slider5Value;
+      lastSent6Value = slider6Value;
+      // Update last sent value
+    
+   }
+   String data = serial.readStringUntil('\n');
+  if (data != null) {
+    data = data.trim();
+    receivedArea.setText("Arduino: " + data); // Show data in textarea
+    println("Arduino: " + data);
+  }
+  
+  }  catch (Exception e) {
+    println("Error opening serial port: " + e.getMessage());
+  }
+  
+}
+void controlEvent(ControlEvent event) {
+  if (event.isFrom(slider1)) {
+    slider1Value = event.getController().getValue();
+    slider2Value = 725 - slider1Value;  // Opposite calculation
+    slider2.setValue(slider2Value);  // Update slider 2
+    slider1.setLabel("Motor1: " + nf(slider1Value, 0, 2));  
+    slider2.setLabel("Motor2: " + nf(slider2Value, 0, 2));
+  }
+  
+  if (event.isFrom(slider2)) {
+    slider2Value = event.getController().getValue();
+    slider1Value = 725 - slider2Value;  // Opposite calculation
+    slider1.setValue(slider1Value);  // Update slider 1
+    slider1.setLabel("Motor1: " + nf(slider1Value, 0, 2));
+    slider2.setLabel("Motor2: " + nf(slider2Value, 0, 2));
+  }
+}
