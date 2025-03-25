@@ -15,7 +15,7 @@ class UserInterface {
     baudlist.setVisible(uiVisible);
     receivedArea.setVisible(uiVisible);
   }
-  public void connectionUI(int x, int y) {
+  public void connectionUI(int x, int y) { //Function that creates the connection UI
 
     cntbutton = cp5.addButton("button")
       .setLabel("Connect")
@@ -45,7 +45,7 @@ class UserInterface {
       .setColorBackground(80);
     arduinoConsole = cp5.addConsole(receivedArea);
 
-    String[] availableports = Serial.list();
+    String[] availableports = Serial.list(); //   <-------------------- Søren explain plz
     for (int i = 0; i < availableports.length; i++) {
       portlist.addItem(availableports[i], availableports[i]);
     }
@@ -59,7 +59,7 @@ class UserInterface {
     slider5.setVisible(uiVisible);
     slider6.setVisible(uiVisible);
   }
-  public void thetaSliders(int x, int y, int ya) {
+  public void thetaSliders(int x, int y, int ya) { //Function that creates theta sliders.
     slider1 = cp5.addSlider("theta1")
       .setPosition(x, y)
       .setSize(200, 20)
