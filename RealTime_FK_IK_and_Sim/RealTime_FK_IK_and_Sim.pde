@@ -1,7 +1,8 @@
-import controlP5.*;//------------------------Libaries--------------------------
-import org.apache.commons.math3.linear.*;
-import org.apache.commons.math3.geometry.euclidean.threed.*;
-import processing.serial.*;
+//------------------------Libaries--------------------------
+import controlP5.*; //ControlP5 for the sliders and such UI.
+import org.apache.commons.math3.linear.*; //Apache for matrix operations
+import org.apache.commons.math3.geometry.euclidean.threed.*; //Apache for matrix operations
+import processing.serial.*; //asdasdasd
 
 //------------------------Objects-----------(/ in some cases called data types)------
 Utils WP = new Utils(); //Make instance(object) of the utils class, so we can use it's public functions.
@@ -105,8 +106,8 @@ void draw() {
   rect(0, 0, tempHWForWiz, tempHWForWiz); //plane between X and Y. Just to see the orientation of the coordinate system easier.
   pushMatrix(); //The origins of the .obj files does not line up with the origins of the joint.
   rotateX(3.14159265/2); //This fixes that offset for this particular .obj.
-  shape(Base);  //base.obj
-  popMatrix(); //Go back to before the "fix .obj" transformations. so we can keep drawing from that reference frame.
+  shape(Base);  //Draw base.obj
+  popMatrix(); //Go back to before the "fix .obj" transformations. so we can keep drawing from that previous reference frame.
 
   SS.applyRealMatrix(joints[1].iMatrix); //apply matrix
   SS.coordSystem(); //1st coordinate system.
