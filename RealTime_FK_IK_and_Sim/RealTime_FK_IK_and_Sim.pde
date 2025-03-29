@@ -90,8 +90,8 @@ void draw() {
   rotateZ(rotY);
   rectMode(CENTER);
   noStroke();                    //https://processing.org/reference/
-  fill(255);
-  rect(0, 0, 1000, 1000);      //Ground/talbe/build area/white plate/motherfuga
+  fill(255);                    //Fill() sets a global variable that shapes use as color.
+  rect(0, 0, 1000, 1000);      //Ground/talbe/build-area/white-plate/motherfuga
   rectMode(CORNER);
 
   //After the rotate pan zoom transformations have taken place, we draw the joint coordinate systems.
@@ -164,8 +164,9 @@ void draw() {
   rotateY(3.14159265/2);
   shape(Link2);
   popMatrix();
+
+  popMatrix(); //Pop out of the "camera" transformations.
   
-  popMatrix();
 }
 
 
