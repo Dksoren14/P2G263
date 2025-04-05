@@ -10,6 +10,19 @@ SimStuff SS = new SimStuff(); //Same here.
 UserInterface UI = new UserInterface(); //Same here.
 ControlP5 cp5; //Same
 Joint[] joints = new Joint[7]; //Make 7 objects for the 7 coordinate systems/joints. The joint object currently just contains a transformationmatrix corresponding to a row in DH. 0th is counted.
+//NewJoint[] joints1 = new NewJoint[7];
+
+
+double[][] MDHTemp1 =  { //The reason why it overwrites the old MDH every time is because it is the easiest way update the theta values.
+  //Alpha, a, d, theta
+  {0, 0, 122.65, 0},
+  {-90, 39.43, 0, -90},
+  {0, 115.49, 0, 0},
+  {-90, 0, 115.49*2, 0},
+  {90, 0, 0, 0},
+  {-90, 0, 0, 0}};
+
+Arm arm1 = new Arm(MDHTemp1, 6);
 
 Serial serial;  //used to communicate with the arduino. dunno how. sourse: Søren.
 Textarea receivedArea; //sourse: Søren to explain. Think it is a CP5 thing.
@@ -103,70 +116,12 @@ void draw() {
   rect(0, 0, tempHWForWiz, tempHWForWiz);
   SS.coordSystem(); //A coordinate system. Base if you will.
 
-  SS.applyRealMatrix(joints[0].iMatrix); //Apply transformation matrix.
-  SS.coordSystem(); //Draw 0th coordinate system.
-  fill(0, 255, 0); //change color
-  rect(0, 0, tempHWForWiz, tempHWForWiz); //plane between X and Y. Just to see the orientation of the coordinate system easier.
-  pushMatrix(); //The origins of the .obj files does not line up with the origins of the joint.
-  rotateX(3.14159265/2); //This fixes that offset for this particular .obj.
-  shape(Base);  //Draw base.obj
-  popMatrix(); //Go back to before the "fix .obj" transformations. so we can keep drawing from that previous reference frame.
-
-  SS.applyRealMatrix(joints[1].iMatrix); //apply matrix
-  SS.coordSystem(); //1st coordinate system.
-  fill(0, 0, 255);
-  rect(0, 0, tempHWForWiz, tempHWForWiz);
-  pushMatrix(); //Fix move .obj to line up.
-  rotateX(3.14159265/2);
-  rotateY(-3.14159265/2);
-  shape(Link1);
-  popMatrix();
-
-  SS.applyRealMatrix(joints[2].iMatrix);
-  SS.coordSystem();
-  fill(255, 255, 0);
-  rect(0, 0, tempHWForWiz, tempHWForWiz);
   pushMatrix();
-  rotateY(3.14159265/2);
-  rotateX(3.14159265/2);
-  translate(0, 0, 0);
-  shape(Link2);
+  arm1.moveAndDraw();
   popMatrix();
 
-  SS.applyRealMatrix(joints[3].iMatrix);
-  SS.coordSystem();
-  fill(255, 0, 255);
-  rect(0, 0, tempHWForWiz, tempHWForWiz);
-  pushMatrix();
-  rotateY(3.14159265/2);
-  shape(Link2);
-  popMatrix();
+  buttonOfTheDocument();
 
-  SS.applyRealMatrix(joints[4].iMatrix);
-  SS.coordSystem();
-  fill(0, 255, 255);
-  rect(0, 0, tempHWForWiz, tempHWForWiz);
-  pushMatrix();
-  rotateX(3.14159265/2);
-  rotateY(3.14159265/2);
-  translate(0, -115.49, 0);
-  shape(Link2);
-  popMatrix();
-
-  SS.applyRealMatrix(joints[5].iMatrix);
-  SS.coordSystem();
-  fill(255, 125, 125);
-  rect(0, 0, tempHWForWiz, tempHWForWiz);
-
-  SS.applyRealMatrix(joints[6].iMatrix);
-  SS.coordSystem();
-  fill(125, 125, 255);
-  rect(0, 0, tempHWForWiz, tempHWForWiz);
-  pushMatrix();
-  rotateX(3.14159265/2);
-  rotateY(3.14159265/2);
-  shape(Link2);
-  popMatrix();
 
   popMatrix(); //Pop out of the "camera" transformations.
 
@@ -297,4 +252,77 @@ void button() {
     connectButtonStatus = false;
     println("Disconnected from", selectedport);
   }
+}
+
+
+
+
+
+
+void buttonOfTheDocument() {
+
+  SS.applyRealMatrix(joints[0].iMatrix); //Apply transformation matrix.
+  SS.coordSystem(); //Draw 0th coordinate system.
+  fill(0, 255, 0); //change color
+  rect(0, 0, tempHWForWiz, tempHWForWiz); //plane between X and Y. Just to see the orientation of the coordinate system easier.
+  pushMatrix(); //The origins of the .obj files does not line up with the origins of the joint.
+  rotateX(3.14159265/2); //This fixes that offset for this particular .obj.
+  shape(Base);  //Draw base.obj
+  popMatrix(); //Go back to before the "fix .obj" transformations. so we can keep drawing from that previous reference frame.
+
+  SS.applyRealMatrix(joints[1].iMatrix); //apply matrix
+  SS.coordSystem(); //1st coordinate system.
+  fill(0, 0, 255);
+  rect(0, 0, tempHWForWiz, tempHWForWiz);
+  pushMatrix(); //Fix move .obj to line up.
+  rotateX(3.14159265/2);
+  rotateY(-3.14159265/2);
+  shape(Link1);
+  popMatrix();
+
+  SS.applyRealMatrix(joints[2].iMatrix);
+  SS.coordSystem();
+  fill(255, 255, 0);
+  rect(0, 0, tempHWForWiz, tempHWForWiz);
+  pushMatrix();
+  rotateY(3.14159265/2);
+  rotateX(3.14159265/2);
+  translate(0, 0, 0);
+  shape(Link2);
+  popMatrix();
+
+  SS.applyRealMatrix(joints[3].iMatrix);
+  SS.coordSystem();
+  fill(255, 0, 255);
+  rect(0, 0, tempHWForWiz, tempHWForWiz);
+  pushMatrix();
+  rotateY(3.14159265/2);
+  shape(Link2);
+  popMatrix();
+
+  SS.applyRealMatrix(joints[4].iMatrix);
+  SS.coordSystem();
+  fill(0, 255, 255);
+  rect(0, 0, tempHWForWiz, tempHWForWiz);
+  pushMatrix();
+  rotateX(3.14159265/2);
+  rotateY(3.14159265/2);
+  translate(0, -115.49, 0);
+  shape(Link2);
+  popMatrix();
+
+  SS.applyRealMatrix(joints[5].iMatrix);
+  SS.coordSystem();
+  fill(255, 125, 125);
+  rect(0, 0, tempHWForWiz, tempHWForWiz);
+
+  SS.applyRealMatrix(joints[6].iMatrix);
+  SS.coordSystem();
+  fill(125, 125, 255);
+  rect(0, 0, tempHWForWiz, tempHWForWiz);
+  pushMatrix();
+  rotateX(3.14159265/2);
+  rotateY(3.14159265/2);
+  shape(Link2);
+  popMatrix();
 }

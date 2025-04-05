@@ -28,18 +28,18 @@ class SimStuff { //Utils for simulation stuff
 
 class Joint {
 
-  double[] MHDRow;
+  double[] MDHRow;
   int jointNr;
   RealMatrix iMatrix;
 
-  Joint(double[] MHDRowT, int jointNrT) {
-    MHDRow = MHDRowT;
+  Joint(double[] MDHRowT, int jointNrT) {
+    MDHRow = MDHRowT;
     jointNr = jointNrT;
     updateMatrix();
   }
 
   public void updateMatrix() {
-    iMatrix = WP.transformationMatrixFromMDH0(MHDRow);
+    iMatrix = WP.transformationMatrixFromMDH0(MDHRow);
   }
 
 

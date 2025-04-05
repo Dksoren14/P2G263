@@ -64,15 +64,24 @@ class Utils { //This class contains a lot of the
       {-90, 0, 115.49*2, theta4},
       {90, 0, 0, theta5},
       {-90, 0, 0, theta6}};
+    
 
     for (int i = 0; i < joints.length; i++) {
       if (joints[i] == null) {                //Initializing joints if they are not allready.
         joints[i] = new Joint(MDH[i], i);
       } else {
-        joints[i].MHDRow = MDH[i];      //inputting the updated MDH values into the corrosponding joint.
+        joints[i].MDHRow = MDH[i];      //inputting the updated MDH values into the corrosponding joint.
         joints[i].updateMatrix();      //Updating the joint's transformation matrix, now based on the updated MDH.
       }
     }
+    //for (int i = 0; i < joints1.length; i++) {
+    //  if (joints1[i] == null) {                //Initializing joints if they are not allready.
+    //    joints1[i] = new NewJoint(MDH[i]);
+    //  } else {
+    //    joints1[i].angle(Math.toRadians(theta[i]));      //inputting the updated MDH values into the corrosponding joint.
+    //    //joints[i].updateMatrix();      //Updating the joint's transformation matrix, now based on the updated MDH.
+    //  }
+    //}
   }
 
   public void calculateResultMatrix() {    //This calculates the result transformation matrix from joint 1 to the last joint in MDH.
