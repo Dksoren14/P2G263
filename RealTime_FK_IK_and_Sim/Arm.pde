@@ -1,8 +1,8 @@
 class Arm {
   NewJoint[] joints1;
 
-  Arm(double[][] MDHT, int amountOfAJoints) {
-    joints1 = new NewJoint[amountOfAJoints+1];
+  Arm(double[][] MDHT) {
+    joints1 = new NewJoint[MDHT.length+1];
     double[] coordSystem0 = {0,0,0,0};
     joints1[0] = new NewJoint(coordSystem0);
     for (int i = 0; i < MDHT.length; i++) {

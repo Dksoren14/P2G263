@@ -22,7 +22,7 @@ double[][] MDHTemp1 =  { //The reason why it overwrites the old MDH every time i
   {90, 0, 0, 0},
   {-90, 0, 0, 0}};
 
-Arm arm1 = new Arm(MDHTemp1, 6);
+Arm arm1 = new Arm(MDHTemp1);
 
 Serial serial;  //used to communicate with the arduino. dunno how. sourse: Søren.
 Textarea receivedArea; //sourse: Søren to explain. Think it is a CP5 thing.
