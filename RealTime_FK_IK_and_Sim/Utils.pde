@@ -57,7 +57,7 @@ class Utils { //This class contains a lot of the
 
   public void updateMDH() { //This is where the Denavit-Hartenberg parameters is inserted. It make a "new"(overwrites) MDH 2D double every time it is called.
     MDH = new double[][] { //The reason why it overwrites the old MDH every time is because it is the easiest way update the theta values.
-      {0, 0, 0, theta0},
+      {0, 0, 0, theta0}, //Alpha, a, d, theta
       {0, 0, 122.65, theta1},
       {-90, 39.43, 0, theta2-90},
       {0, 115.49, 0, theta3},

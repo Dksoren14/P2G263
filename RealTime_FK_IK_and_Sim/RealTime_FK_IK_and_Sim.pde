@@ -49,6 +49,8 @@ String[] coordinateNames = {"X", "Y", "Z", "Roll", "Pitch", "Yaw"}; //XYZRPY
 
 boolean keyVariableA, keyVariableB; //Track key A and B
 
+double[] time = {millis(), 0};
+
 
 void setup() {
   size(1625, 900, P3D);           //Make the canvas/window. Size 1625x by 900y. P3D means it is a 3D "canvas"
@@ -62,6 +64,7 @@ void setup() {
   Base = loadShape("Base.obj");   //Initialize the "PShape" with a .obj file.
   Link1 = loadShape("Link1.obj"); //same
   Link2 = loadShape("Link2.obj"); //same
+  frameRate(60);
 }
 
 void draw() {
@@ -166,7 +169,10 @@ void draw() {
   popMatrix();
 
   popMatrix(); //Pop out of the "camera" transformations.
-  
+
+  time[1] = (double)millis()-time[0];
+  time[0] = millis();
+  WP.drawMatrix(10, 150, time);
 }
 
 
