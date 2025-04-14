@@ -9,18 +9,18 @@ Utils WP = new Utils(); //Make instance(object) of the utils class, so we can us
 SimStuff SS = new SimStuff(); //Same here.
 UserInterface UI = new UserInterface(); //Same here.
 ControlP5 cp5; //Same
-Joint[] joints = new Joint[7]; //Make 7 objects for the 7 coordinate systems/joints. The joint object currently just contains a transformationmatrix corresponding to a row in DH. 0th is counted.
+//Joint[] joints = new Joint[7]; //Make 7 objects for the 7 coordinate systems/joints. The joint object currently just contains a transformationmatrix corresponding to a row in DH. 0th is counted.
 //NewJoint[] joints1 = new NewJoint[7];
 
 
 double[][] MDHTemp1 =  { //The reason why it overwrites the old MDH every time is because it is the easiest way update the theta values.
   //Alpha, a, d, theta
   {0, 0, 122.65, 0},
-  {-90, 39.43, 0, -90},
+  {90, 39.43, 0, 90},
   {0, 115.49, 0, 0},
-  {-90, 0, 115.49*2, 0},
-  {90, 0, 0, 0},
-  {-90, 0, 0, 0}};
+  {90, 0, 115.49*2, 0},
+  {-90, 0, 0, 0},
+  {90, 0, 0, 0}};
 
 Arm arm1 = new Arm(MDHTemp1);
 
@@ -32,7 +32,7 @@ ScrollableList baudlist;
 
 Button cntbutton, toggleUI; //Declaring button objects. They are most likely made in "class UserInterface" somewhere.
 Slider slider1, slider2, slider3, slider4, slider5, slider6; //Declaring sliders, also made in UserInterface.
-RealMatrix matrix01, matrix02, matrix03, matrix04, matrix05, matrix06, result; //Declaring some global variables of the "RealMatrix" type.
+
 
 
 int posX, posY; //Declaring a kind of center position of the coordinate system. Initialized in setup.
@@ -68,12 +68,12 @@ double[] time = {millis(), 0};
 void setup() {
   size(1625, 900, P3D);           //Make the canvas/window. Size 1625x by 900y. P3D means it is a 3D "canvas"
   posX = width/2-325;             //x and y positions of the new orego of the coordinate system in terms of the window.
-  posY = height;                  //Used in a "translate" function in "draw".
+  posY = height-100;                  //Used in a "translate" function in "draw".
   menuWidth = width-375;          //Initialized here because it has to be after the "size()" function, to know what "width" is.
   cp5 = new ControlP5(this);      //Initialize cp5.
   UI.makeUI();                    //Call the function that loads / makes the UI (Buttons and sliders etc.)
   UI.showConnectionUI(false);     //Hide the connection UI again. Don't need it right now. toggleUI button will show it.
-  WP.updateMDH();                 //Updating / making the MDH parameters for the first time
+  //Updating / making the MDH parameters for the first time
   Base = loadShape("Base.obj");   //Initialize the "PShape" with a .obj file.
   Link1 = loadShape("Link1.obj"); //same
   Link2 = loadShape("Link2.obj"); //same
@@ -88,16 +88,8 @@ void draw() {
   rect(0, 0, width, menuHeight);                                    //Make rectangle at position 0x 0y with a width of "width" and height of menuHeight.
   rect(menuWidth, menuHeight, width-menuHeight, height-menuHeight); //Look up https://processing.org/reference/ for more information about these kind of things.
   UI.sendData();                                                    //Call function to send data to the arduino.
-  WP.calculateResultMatrix();                                       //Calculating a
-  WP.drawMatrix(width-325, 70, cordinateOutput);                    //Drawing a matrix with "drawMatrix" function from "class Utils". The instance of "class Utils" is called "WP".
-  WP.drawMatrix(width-225, 70, coordinateNames);                    //same
 
-  if (keyVariableA == true) {
-    SS.applyRealMatrix(joints[2].iMatrix);
-  }
-  if (keyVariableB == true) {
-    WP.drawMatrix(200, 50, result);
-  }
+  arm1.drawResult(width-325, 70);
 
   //Under here is where the transformations from the rotate pan zoom functionality happens.
   pushMatrix();                                //Look up the reference sheet "processing.org/reference". It is like making a quicksave before making changes.
@@ -109,7 +101,7 @@ void draw() {
   fill(255);                    //Fill() sets a global variable that shapes use as color.
   rect(0, 0, 1000, 1000);      //Ground/talbe/build-area/white-plate/motherfuga
   rectMode(CORNER);
-
+  scale(1, -1, 1);
   //After the rotate pan zoom transformations have taken place, we draw the joint coordinate systems.
   //We draw the first joint, apply the transformation matrix belonging to the next joint, and then draw the next joint.
   fill(255, 0, 0); //red
@@ -120,14 +112,19 @@ void draw() {
   arm1.moveAndDraw();
   popMatrix();
 
-  buttonOfTheDocument();
-
 
   popMatrix(); //Pop out of the "camera" transformations.
 
-  time[1] = (double)millis()-time[0];
-  time[0] = millis();
-  WP.drawMatrix(10, 150, time);
+
+
+  if (keyVariableA == true) {
+    time[1] = (double)millis()-time[0];
+    time[0] = millis();
+    WP.drawMatrix(10, 150, time);
+  }
+  if (keyVariableB == true) {
+    //WP.drawMatrix(200, 50, result);
+  }
 }
 
 
@@ -261,68 +258,68 @@ void button() {
 
 void buttonOfTheDocument() {
 
-  SS.applyRealMatrix(joints[0].iMatrix); //Apply transformation matrix.
-  SS.coordSystem(); //Draw 0th coordinate system.
-  fill(0, 255, 0); //change color
-  rect(0, 0, tempHWForWiz, tempHWForWiz); //plane between X and Y. Just to see the orientation of the coordinate system easier.
-  pushMatrix(); //The origins of the .obj files does not line up with the origins of the joint.
-  rotateX(3.14159265/2); //This fixes that offset for this particular .obj.
-  shape(Base);  //Draw base.obj
-  popMatrix(); //Go back to before the "fix .obj" transformations. so we can keep drawing from that previous reference frame.
+  //  SS.applyRealMatrix(joints[0].iMatrix); //Apply transformation matrix.
+  //  SS.coordSystem(); //Draw 0th coordinate system.
+  //  fill(0, 255, 0); //change color
+  //  rect(0, 0, tempHWForWiz, tempHWForWiz); //plane between X and Y. Just to see the orientation of the coordinate system easier.
+  //  pushMatrix(); //The origins of the .obj files does not line up with the origins of the joint.
+  //  rotateX(3.14159265/2); //This fixes that offset for this particular .obj.
+  //  shape(Base);  //Draw base.obj
+  //  popMatrix(); //Go back to before the "fix .obj" transformations. so we can keep drawing from that previous reference frame.
 
-  SS.applyRealMatrix(joints[1].iMatrix); //apply matrix
-  SS.coordSystem(); //1st coordinate system.
-  fill(0, 0, 255);
-  rect(0, 0, tempHWForWiz, tempHWForWiz);
-  pushMatrix(); //Fix move .obj to line up.
-  rotateX(3.14159265/2);
-  rotateY(-3.14159265/2);
-  shape(Link1);
-  popMatrix();
+  //  SS.applyRealMatrix(joints[1].iMatrix); //apply matrix
+  //  SS.coordSystem(); //1st coordinate system.
+  //  fill(0, 0, 255);
+  //  rect(0, 0, tempHWForWiz, tempHWForWiz);
+  //  pushMatrix(); //Fix move .obj to line up.
+  //  rotateX(3.14159265/2);
+  //  rotateY(-3.14159265/2);
+  //  shape(Link1);
+  //  popMatrix();
 
-  SS.applyRealMatrix(joints[2].iMatrix);
-  SS.coordSystem();
-  fill(255, 255, 0);
-  rect(0, 0, tempHWForWiz, tempHWForWiz);
-  pushMatrix();
-  rotateY(3.14159265/2);
-  rotateX(3.14159265/2);
-  translate(0, 0, 0);
-  shape(Link2);
-  popMatrix();
+  //  SS.applyRealMatrix(joints[2].iMatrix);
+  //  SS.coordSystem();
+  //  fill(255, 255, 0);
+  //  rect(0, 0, tempHWForWiz, tempHWForWiz);
+  //  pushMatrix();
+  //  rotateY(3.14159265/2);
+  //  rotateX(3.14159265/2);
+  //  translate(0, 0, 0);
+  //  shape(Link2);
+  //  popMatrix();
 
-  SS.applyRealMatrix(joints[3].iMatrix);
-  SS.coordSystem();
-  fill(255, 0, 255);
-  rect(0, 0, tempHWForWiz, tempHWForWiz);
-  pushMatrix();
-  rotateY(3.14159265/2);
-  shape(Link2);
-  popMatrix();
+  //  SS.applyRealMatrix(joints[3].iMatrix);
+  //  SS.coordSystem();
+  //  fill(255, 0, 255);
+  //  rect(0, 0, tempHWForWiz, tempHWForWiz);
+  //  pushMatrix();
+  //  rotateY(3.14159265/2);
+  //  shape(Link2);
+  //  popMatrix();
 
-  SS.applyRealMatrix(joints[4].iMatrix);
-  SS.coordSystem();
-  fill(0, 255, 255);
-  rect(0, 0, tempHWForWiz, tempHWForWiz);
-  pushMatrix();
-  rotateX(3.14159265/2);
-  rotateY(3.14159265/2);
-  translate(0, -115.49, 0);
-  shape(Link2);
-  popMatrix();
+  //  SS.applyRealMatrix(joints[4].iMatrix);
+  //  SS.coordSystem();
+  //  fill(0, 255, 255);
+  //  rect(0, 0, tempHWForWiz, tempHWForWiz);
+  //  pushMatrix();
+  //  rotateX(3.14159265/2);
+  //  rotateY(3.14159265/2);
+  //  translate(0, -115.49, 0);
+  //  shape(Link2);
+  //  popMatrix();
 
-  SS.applyRealMatrix(joints[5].iMatrix);
-  SS.coordSystem();
-  fill(255, 125, 125);
-  rect(0, 0, tempHWForWiz, tempHWForWiz);
+  //  SS.applyRealMatrix(joints[5].iMatrix);
+  //  SS.coordSystem();
+  //  fill(255, 125, 125);
+  //  rect(0, 0, tempHWForWiz, tempHWForWiz);
 
-  SS.applyRealMatrix(joints[6].iMatrix);
-  SS.coordSystem();
-  fill(125, 125, 255);
-  rect(0, 0, tempHWForWiz, tempHWForWiz);
-  pushMatrix();
-  rotateX(3.14159265/2);
-  rotateY(3.14159265/2);
-  shape(Link2);
-  popMatrix();
+  //  SS.applyRealMatrix(joints[6].iMatrix);
+  //  SS.coordSystem();
+  //  fill(125, 125, 255);
+  //  rect(0, 0, tempHWForWiz, tempHWForWiz);
+  //  pushMatrix();
+  //  rotateX(3.14159265/2);
+  //  rotateY(3.14159265/2);
+  //  shape(Link2);
+  //  popMatrix();
 }

@@ -55,53 +55,7 @@ class Utils { //This class contains a lot of the
     return matrix;  //Returns that "RealMatrix".
   }
 
-  public void updateMDH() { //This is where the Denavit-Hartenberg parameters is inserted. It make a "new"(overwrites) MDH 2D double every time it is called.
-    MDH = new double[][] { //The reason why it overwrites the old MDH every time is because it is the easiest way update the theta values.
-      {0, 0, 0, theta0}, //Alpha, a, d, theta
-      {0, 0, 122.65, theta1},
-      {-90, 39.43, 0, theta2-90},
-      {0, 115.49, 0, theta3},
-      {-90, 0, 115.49*2, theta4},
-      {90, 0, 0, theta5},
-      {-90, 0, 0, theta6}};
-    
-
-    for (int i = 0; i < joints.length; i++) {
-      if (joints[i] == null) {                //Initializing joints if they are not allready.
-        joints[i] = new Joint(MDH[i], i);
-      } else {
-        joints[i].MDHRow = MDH[i];      //inputting the updated MDH values into the corrosponding joint.
-        joints[i].updateMatrix();      //Updating the joint's transformation matrix, now based on the updated MDH.
-      }
-    }
-    //for (int i = 0; i < joints1.length; i++) {
-    //  if (joints1[i] == null) {                //Initializing joints if they are not allready.
-    //    joints1[i] = new NewJoint(MDH[i]);
-    //  } else {
-    //    joints1[i].angle(Math.toRadians(theta[i]));      //inputting the updated MDH values into the corrosponding joint.
-    //    //joints[i].updateMatrix();      //Updating the joint's transformation matrix, now based on the updated MDH.
-    //  }
-    //}
-  }
-
-  public void calculateResultMatrix() {    //This calculates the result transformation matrix from joint 1 to the last joint in MDH.
-    WP.updateMDH();
-    result = WP.transformationMatrixFromMDH0(MDH[1]);
-    for (int i = 2; i < MDH.length; i++) {
-      result = result.multiply(WP.transformationMatrixFromMDH0(MDH[i]));   //the "result" matrix is a global variable.
-    }
-    //matrix01 = WP.transformationMatrixFromMDH1(MDH[1]);                      //This is what it does:
-    //matrix02 = matrix01.multiply(WP.transformationMatrixFromMDH1(MDH[2]));   //Multiply the last result matrix, with the next transformation matrix.
-    //matrix03 = matrix02.multiply(WP.transformationMatrixFromMDH1(MDH[3]));
-    //matrix04 = matrix03.multiply(WP.transformationMatrixFromMDH1(MDH[4]));
-    //matrix05 = matrix04.multiply(WP.transformationMatrixFromMDH1(MDH[5]));
-    //matrix06 = matrix05.multiply(WP.transformationMatrixFromMDH1(MDH[6]));
-    //result = matrix06;
-    double[][] data = result.getData();
-    WP.coordinateOutput(data);
-  }
-
-  public void coordinateOutput(double[][] howdi) {  //Søren
+  public double[] coordinateOutput(double[][] howdi) {  //Søren
 
     double y = -(howdi[2][0]);
     double x = Math.sqrt(Math.pow(howdi[0][0], 2) + Math.pow(howdi[1][0], 2));
@@ -115,11 +69,7 @@ class Utils { //This class contains a lot of the
     double l = howdi[0][0]/Math.cos(Roty);
     double Rotz = Math.atan2(k, l);
 
-    cordinateOutput[0] = howdi[0][3];
-    cordinateOutput[1] = howdi[1][3];
-    cordinateOutput[2] = howdi[2][3];
-    cordinateOutput[3] = Math.toDegrees(Rotx);
-    cordinateOutput[4] = Math.toDegrees(Roty);
-    cordinateOutput[5] = Math.toDegrees(Rotz);
+    double[] coords = {howdi[0][3], howdi[1][3], howdi[2][3], Math.toDegrees(Rotx), Math.toDegrees(Roty), Math.toDegrees(Rotz)};
+    return coords;
   }
 }

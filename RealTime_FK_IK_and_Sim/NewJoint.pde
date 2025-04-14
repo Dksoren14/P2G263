@@ -3,7 +3,7 @@ class NewJoint {
 
   double[] MDHRow;
   double[][] transformationMatrix;
-
+  RealMatrix realTransformationMatrix;
   double alpha, cosAlpha, sinAlpha;
   double a;
   double d;
@@ -17,21 +17,22 @@ class NewJoint {
     thetaOffset = Math.toRadians(MDHRow[3]);
     sinAlpha = Math.sin(alpha);
     cosAlpha = Math.cos(alpha);
-    
+
     transformationMatrix = angle(0);
   }
 
   public double[][] angle(double thetaT) {
-   
+
     double cosTheta = Math.cos(thetaOffset+thetaT);
     double sinTheta = Math.sin(thetaOffset+thetaT);
-    
+
     double[][] matrix = {
       {cosTheta, -sinTheta, 0, a},
       {sinTheta*cosAlpha, cosTheta*cosAlpha, -sinAlpha, -sinAlpha*d},
       {sinTheta*sinAlpha, cosTheta*sinAlpha, cosAlpha, cosAlpha*d},
       {0, 0, 0, 1}};
-      transformationMatrix = matrix;
+    transformationMatrix = matrix;
+    realTransformationMatrix = new Array2DRowRealMatrix(matrix);
     return matrix;
   }
 
