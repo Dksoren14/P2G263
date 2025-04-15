@@ -159,7 +159,8 @@ void parseMessage(String msg) {
 
     if (startIndex != -1 && endIndex != -1) {
       String valueStr = msg.substring(startIndex + motorTag.length(), endIndex);
-      theta[i] = convertAngle(valueStr.toFloat(),i+1);
+      float temp = valueStr.toFloat();
+      theta[i] = convertAngle(temp, i+1); 
 
     } else {
       theta[i] = 0;  // Default or error handling
@@ -169,9 +170,10 @@ void parseMessage(String msg) {
 
 float convertAngle(float angle, int id) {
   float servoAngle = angle+180;
-  if (id = 2) {
+  if (id == 2) {
     servoAngle += 45;
   }
+  return servoAngle;
 }
 
 void loop() {
@@ -182,12 +184,10 @@ void loop() {
     stringComplete = false;
 
     // Just for testing: print out the extracted theta values
-    for (int i = 0; i < 3; i++) {
       Serial.print("Theta ");
-      Serial.print(i + 1);
+      Serial.print(0);
       Serial.print(": ");
-      Serial.println(theta[i]);
-    }
+      Serial.println(theta[0]);
   }
 
   //test3DOF();
