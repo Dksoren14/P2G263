@@ -159,7 +159,8 @@ void parseMessage(String msg) {
 
     if (startIndex != -1 && endIndex != -1) {
       String valueStr = msg.substring(startIndex + motorTag.length(), endIndex);
-      theta[i] = valueStr.toFloat();
+      theta[i] = convertAngle(valueStr.toFloat(),i+1);
+
     } else {
       theta[i] = 0;  // Default or error handling
     }
@@ -175,7 +176,7 @@ float convertAngle(float angle, int id) {
 
 void loop() {
 
-  /* if (stringComplete) {
+   if (stringComplete) {
     parseMessage(inputString);
     inputString = "";
     stringComplete = false;
@@ -187,10 +188,10 @@ void loop() {
       Serial.print(": ");
       Serial.println(theta[i]);
     }
-  }*/
+  }
 
-  test3DOF();
-  delay(10000);
+  //test3DOF();
+  //delay(10000);
   /*
   // Read and print the servo's current position
   dxl.setGoalPosition(DXL_ID1, 2046);
