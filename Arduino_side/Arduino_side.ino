@@ -1,9 +1,5 @@
-int motor1Value = 0;  // Motor 1
-int motor2Value = 0;  // Motor 2
-int motor3Value = 0;  // Motor 3
-int motor4Value = 0;  // Motor 4
-int motor5Value = 0;  // Motor 5
-int motor6Value = 0;  // Motor 6
+float[] motorValue = {0,0,0,0,0,0};  
+
 
 #include <Adafruit_PWMServoDriver.h>
 Adafruit_PWMServoDriver board1 = Adafruit_PWMServoDriver(0x40);  // called this way, it uses the default address 0x40
@@ -55,13 +51,12 @@ void processSerialData(String data) {
     int motor6End = data.length();
 
     // Extract motor 1 value
-    motor1Value = data.substring(m1Index + 3, motor1End).toInt();
-    motor2Value = data.substring(m2Index + 3, motor2End).toInt();
-    motor3Value = data.substring(m3Index + 3, motor3End).toInt();
-    motor4Value = data.substring(m4Index + 3, motor4End).toInt();
-    motor5Value = data.substring(m5Index + 3, motor5End).toInt();
-    // Extract motor 2 value
-    motor6Value = data.substring(m6Index + 3, motor6End).toInt();
+    motorValue[0] = data.substring(m1Index + 3, motor1End).toInt();
+    motorValue[1] = data.substring(m2Index + 3, motor2End).toInt();
+    motorValue[2] = data.substring(m3Index + 3, motor3End).toInt();
+    motorValue[3] = data.substring(m4Index + 3, motor4End).toInt();
+    motorValue[4] = data.substring(m5Index + 3, motor5End).toInt();
+    motorValue[5] = data.substring(m6Index + 3, motor6End).toInt();
 
     // Send confirmation back to Processing
     Serial.print("Motor 1: ");
