@@ -3,6 +3,7 @@ class Joint {
   double[] MDHRow;
   double alpha, a, d, thetaOffset, sinAlpha, cosAlpha;
   double[][] transformationMatrix;
+  RealMatrix realTransformationMatrix;
 
   Joint(double[] name) {
 
@@ -15,7 +16,7 @@ class Joint {
     cosAlpha = Math.cos(alpha);
   }
 
-  void trans(float thetaT) {
+  void trans(double thetaT) {
     double cosTheta = Math.cos(thetaOffset+thetaT);
     double sinTheta = Math.sin(thetaOffset+thetaT);
 
@@ -26,5 +27,6 @@ class Joint {
       {0, 0, 0, 1}};
       
       transformationMatrix = matrix;
+      realTransformationMatrix = new Array2DRowRealMatrix(matrix);
   }
 }
