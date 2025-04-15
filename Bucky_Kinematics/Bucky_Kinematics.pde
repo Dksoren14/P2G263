@@ -12,10 +12,9 @@ ScrollableList baudlist;
 float theta4, theta5, theta6; //Theta values.
 float lastSentValue1, lastSentValue2, lastSentValue3, lastSentValue4, lastSentValue5, lastSentValue6; //Track what values was last sent to the arduino.
 boolean connectButtonStatus = false; //Status of the connect button
-int uiSwNum = 1; //Status of the "toggleUI" button.
 String selectedport; //Søren
 int selectedbaudrate; //Søren
-Button cntbutton, toggleUI;
+Button cntbutton;
 
 
 ControlP5 cp5;
@@ -50,19 +49,19 @@ void setup() {
   slider1 = cp5.addSlider("theta1")
     .setPosition(150, 100)
     .setSize(200, 20)
-    .setRange(-180, 180)
+    .setRange(-90, 90)
     .setValue(0)
     .setColorCaptionLabel(color(20, 20, 20));
   slider2 = cp5.addSlider("theta2")
     .setPosition(150, 150)
     .setSize(200, 20)
-    .setRange(-180, 180)
+    .setRange(-90, 65)
     .setValue(0)
     .setColorCaptionLabel(color(20, 20, 20));
   slider3 = cp5.addSlider("theta3")
     .setPosition(150, 200)
     .setSize(200, 20)
-    .setRange(-180, 180)
+    .setRange(-90, 90)
     .setValue(0)
     .setColorCaptionLabel(color(20, 20, 20));
 }
@@ -79,6 +78,20 @@ void draw() {
   jointArray[3].trans(Math.toRadians(theta3));
   sendData();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
