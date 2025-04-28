@@ -54,6 +54,7 @@ String selectedport; //Søren
 int selectedbaudrate; //Søren
 
 float theta0, theta1, theta2, theta3, theta4, theta5, theta6; //Theta values.
+double[] theta = {0, 0, 0, 0, 0, 0, 0};
 float lastSentValue1, lastSentValue2, lastSentValue3, lastSentValue4, lastSentValue5, lastSentValue6; //Track what values was last sent to the arduino.
 double[][] MDH; //MDH parameters are declared here as global variables, but only initialized in the "updateMDH" function.
 
@@ -109,7 +110,8 @@ void draw() {
   SS.coordSystem(); //A coordinate system. Base if you will.
 
   pushMatrix();
-  arm1.moveAndDraw();
+  WP.updateThetaFromSliders();
+  arm1.moveAndDraw(theta);
   popMatrix();
 
 

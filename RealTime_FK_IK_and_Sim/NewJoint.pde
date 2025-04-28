@@ -1,5 +1,5 @@
 
-class NewJoint {
+class Joint {
 
   double[] MDHRow;
   double[][] transformationMatrix;
@@ -9,7 +9,7 @@ class NewJoint {
   double d;
   double thetaOffset;
 
-  NewJoint(double[] MDHRowT) {
+  Joint(double[] MDHRowT) {
     MDHRow = MDHRowT;
     alpha = Math.toRadians(MDHRow[0]);
     a = MDHRow[1];

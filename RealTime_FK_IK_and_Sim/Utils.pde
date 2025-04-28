@@ -72,4 +72,22 @@ class Utils { //This class contains a lot of the
     double[] coords = {howdi[0][3], howdi[1][3], howdi[2][3], Math.toDegrees(Rotx), Math.toDegrees(Roty), Math.toDegrees(Rotz)};
     return coords;
   }
-}
+  
+  
+  
+  
+  
+  
+  public void updateThetaFromSliders(){
+   theta[0] = theta0;
+   theta[1] = theta1;
+   theta[2] = theta2;
+   theta[3] = theta3;
+   theta[4] = theta4;
+   theta[5] = theta5;
+   theta[6] = theta6;
+   }
+    
+  }
+  
+  
