@@ -4,7 +4,7 @@
 
 
 SoftwareSerial soft_serial(7, 8);     // DYNAMIXELShield UART RX/TX
-SoftwareSerial soft_serial1(22, 23);  // DYNAMIXELShield UART RX/TX
+SoftwareSerial soft_serial1(23, 24);  // DYNAMIXELShield UART RX/TX
 
 #define DXL_SERIAL Serial1
 #define DXL_SERIAL1 Serial2
@@ -16,7 +16,7 @@ bool stringComplete = false;
 float theta[6];
 String inputString = "";
 //const int DXL_DIR_PIN = 2;    // Direction control pin for RS-485
-const int DXL_DIR_PIN1 = 24;  // Direction control pin for RS-485
+const int DXL_DIR_PIN1 = 22;  // Direction control pin for RS-485
 
 
 const uint8_t DXL_ID1 = 1;  // Set your Dynamixel servo ID
@@ -24,7 +24,7 @@ const uint8_t DXL_ID2 = 2;  // Set your Dynamixel servo ID
 const uint8_t DXL_ID4 = 4;  // Set your Dynamixel servo ID
 const uint8_t DXL_ID3 = 3;  // Set your Dynamixel servo ID
 
-const uint8_t DXL_ID1b = 0;  // Set your Dynamixel servo ID
+const uint8_t DXL_ID1b = 1;  // Set your Dynamixel servo ID
 
 
 
@@ -32,8 +32,8 @@ const uint8_t DXL_ID1b = 0;  // Set your Dynamixel servo ID
 const float DXL_PROTOCOL_VERSION = 2.0;  // Use 2.0 for newer servos
 
 // Initialize the Dynamixel2Arduino library
-Dynamixel2Arduino dxl(DXL_SERIAL, 2);
-Dynamixel2Arduino dxl1(DXL_SERIAL1, DXL_DIR_PIN1);
+DynamixelShield dxl(DXL_SERIAL, 2);
+DynamixelShield dxl1(DXL_SERIAL1, DXL_DIR_PIN1);
 
 
 // Use namespace for control table items
@@ -54,15 +54,18 @@ void setup() {
 
   Serial.begin(57600);
   dxl.begin(57600);
+  dxl1.begin(9600);
   //dxl1.begin(9600);
   // Set Port Protocol Version. This has to match with DYNAMIXEL protocol version.
   dxl.setPortProtocolVersion(DXL_PROTOCOL_VERSION);
+  dxl1.setPortProtocolVersion(DXL_PROTOCOL_VERSION);
   //dxl1.setPortProtocolVersion(DXL_PROTOCOL_VERSION);
   // Get DYNAMIXEL information
   dxl.ping(DXL_ID1);
   dxl.ping(DXL_ID2);
   dxl.ping(DXL_ID4);
   dxl.ping(DXL_ID3);
+  dxl1.ping(DXL_ID1b);
 
   //dxl1.ping(DXL_ID1b);
 
@@ -81,11 +84,13 @@ void setup() {
   dxl.setOperatingMode(DXL_ID4, OP_POSITION);
   dxl.torqueOn(DXL_ID4);
 
-
   dxl.torqueOff(DXL_ID3);
   dxl.setOperatingMode(DXL_ID3, OP_POSITION);
   dxl.torqueOn(DXL_ID3);
 
+  dxl1.torqueOff(DXL_ID1b);
+  dxl1.setOperatingMode(DXL_ID1b, OP_POSITION);
+  dxl1.torqueOn(DXL_ID1b);
 
   //dxl1.torqueOff(DXL_ID1b);
   //dxl1.setOperatingMode(DXL_ID1b, OP_POSITION);
@@ -95,9 +100,10 @@ void setup() {
   dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, 50);
   dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID4, 50);
   dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID3, 50);
+  dxl1.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1b, 50);
 
-  readUserInputs();
-  //dxl1.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1b, 100);
+  //readUserInputs();
+  dxl1.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1b, 100);
 }
 void readUserInputs() {
   value1 = readFloat("Enter value 1:");
@@ -160,8 +166,7 @@ void parseMessage(String msg) {
     if (startIndex != -1 && endIndex != -1) {
       String valueStr = msg.substring(startIndex + motorTag.length(), endIndex);
       float temp = valueStr.toFloat();
-      theta[i] = convertAngle(temp, i+1); 
-
+      theta[i] = convertAngle(temp, i + 1);
     } else {
       theta[i] = 0;  // Default or error handling
     }
@@ -169,7 +174,7 @@ void parseMessage(String msg) {
 }
 
 float convertAngle(float angle, int id) {
-  float servoAngle = angle+180;
+  float servoAngle = angle + 180;
   if (id == 2) {
     servoAngle += 45;
   }
@@ -177,17 +182,25 @@ float convertAngle(float angle, int id) {
 }
 
 void loop() {
+  //dxl.setGoalPosition(DXL_ID3, 180, UNIT_DEGREE);
 
-   if (stringComplete) {
+  /*dxl1.setGoalPosition(DXL_ID1b, 2000);
+  dxl.setGoalPosition(DXL_ID1, 2000);
+  delay(2000);
+  dxl.setGoalPosition(1, 500);
+  delay(2000);*/
+  if (stringComplete) {
     parseMessage(inputString);
     inputString = "";
     stringComplete = false;
-
+    dxl.setGoalPosition(DXL_ID1, theta[0], UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID2, theta[1], UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID4, theta[2], UNIT_DEGREE);
     // Just for testing: print out the extracted theta values
-      Serial.print("Theta ");
-      Serial.print(0);
-      Serial.print(": ");
-      Serial.println(theta[0]);
+    Serial.print("Theta ");
+    Serial.print(0);
+    Serial.print(": ");
+    Serial.println(theta[0]);
   }
 
   //test3DOF();
