@@ -9,21 +9,22 @@ Textarea receivedArea; //sourse: Søren to explain. Think it is a CP5 thing.
 Println arduinoConsole;//Søren
 ScrollableList portlist;
 ScrollableList baudlist;
-float theta4, theta5, theta6; //Theta values.
 float lastSentValue1, lastSentValue2, lastSentValue3, lastSentValue4, lastSentValue5, lastSentValue6; //Track what values was last sent to the arduino.
 boolean connectButtonStatus = false; //Status of the connect button
 String selectedport; //Søren
 int selectedbaudrate; //Søren
 Button cntbutton;
 
+boolean keyVariableA, keyVariableB, keyVariableC, keyVariable1, keyVariable2, keyVariable3, keyVariable4, keyVariable5, keyVariable6, keyVariable7, keyVariable8; //Track key A and B
+float saveThetaValues[][] = new float[4][7];
 
 ControlP5 cp5;
 Utils utils = new Utils();
 Arm Arm1 = new Arm();
-Joint jointArray[] = new Joint[4];
-Slider slider1, slider2, slider3;
-float theta1, theta2, theta3;
-float[] theta = {0, 0, 0, 0, 0, 0};
+Joint jointArray[] = new Joint[7];
+Slider slider1, slider2, slider3, slider4, slider5, slider6;
+float theta1, theta2, theta3, theta4, theta5, theta6; //Theta values
+float[] theta = {0, 0, 0, 0, 0, 0, 0};
 
 double[][] MDH = {
   {0, 0, 100, 0},
@@ -39,13 +40,73 @@ void setup() {
   size(1440, 810);
   cp5 = new ControlP5(this);
 
-  for (int i = 0; i<4; i++) {
+  for (int i = 0; i<7; i++) {
     jointArray[i] = new Joint(MDH[i]);
     jointArray[i].trans(0);
   }
-  
+
   connectionUI(1000, 400);
-  
+
+  slidersFunction();
+}
+
+void draw() {
+  background(125, 125, 250);
+  utils.drawResult(theta, 500, 150);
+  //utils.drawResult(MDH, 650, 150);
+  Arm1.finalMatrix();
+  utils.drawResult(Arm1.resultMatrix, 650, 150);
+
+  jointArray[1].trans(Math.toRadians(theta[1]));
+  jointArray[2].trans(Math.toRadians(theta[2]));
+  jointArray[3].trans(Math.toRadians(theta[3]));
+  jointArray[4].trans(Math.toRadians(theta[4]));
+  jointArray[5].trans(Math.toRadians(theta[5]));
+  jointArray[6].trans(Math.toRadians(theta[6]));
+  sendData();
+
+  checkButtons();
+}
+
+
+
+
+
+
+
+void playSliderValues() {
+  theta[1] = theta1;
+  theta[2] = theta2;
+  theta[3] = theta3;
+  theta[4] = theta4;
+  theta[5] = theta5;
+  theta[6] = theta6;
+}
+
+
+void saveThetaValues(int a) {
+  saveThetaValues[a][0] = 0;
+  saveThetaValues[a][1] = theta1;
+  saveThetaValues[a][2] = theta2;
+  saveThetaValues[a][3] = theta3;
+  saveThetaValues[a][5] = theta5;
+  saveThetaValues[a][6] = theta6;
+}
+
+void playSavedThetaValues(int a) {
+  theta[1] = saveThetaValues[a][1];
+  theta[2] = saveThetaValues[a][2];
+  theta[3] = saveThetaValues[a][3];
+  theta[4] = saveThetaValues[a][4];
+  theta[5] = saveThetaValues[a][5];
+  theta[6] = saveThetaValues[a][6];
+}
+
+
+
+
+void slidersFunction() {
+
   slider1 = cp5.addSlider("theta1")
     .setPosition(150, 100)
     .setSize(200, 20)
@@ -64,32 +125,122 @@ void setup() {
     .setRange(-90, 90)
     .setValue(0)
     .setColorCaptionLabel(color(20, 20, 20));
+  slider4 = cp5.addSlider("theta4")
+    .setPosition(150, 250)
+    .setSize(200, 20)
+    .setRange(-90, 90)
+    .setValue(0)
+    .setColorCaptionLabel(color(20, 20, 20));
+  slider5 = cp5.addSlider("theta5")
+    .setPosition(150, 300)
+    .setSize(200, 20)
+    .setRange(-90, 65)
+    .setValue(0)
+    .setColorCaptionLabel(color(20, 20, 20));
+  slider6 = cp5.addSlider("theta6")
+    .setPosition(150, 350)
+    .setSize(200, 20)
+    .setRange(-90, 90)
+    .setValue(0)
+    .setColorCaptionLabel(color(20, 20, 20));
 }
 
-void draw() {
-  background(125, 125, 250);
-  utils.drawResult(theta, 500, 150);
-  //utils.drawResult(MDH, 650, 150);
-  Arm1.finalMatrix();
-  utils.drawResult(Arm1.resultMatrix, 650, 150);
 
-  jointArray[1].trans(Math.toRadians(theta1));
-  jointArray[2].trans(Math.toRadians(theta2));
-  jointArray[3].trans(Math.toRadians(theta3));
-  sendData();
+
+
+void keyPressed() {         //keyPressed is a built-in function that is called once every time a key is pressed.
+  if (keyCode==65) {        //To check what key is pressed, simple "if".
+    keyVariableA = true;    //This variable is (at the time of writing this) being used for drawing something. It is therefore made like a flip-flop, to draw it every frame and not just once.
+  } else {                  //The variable will only be turned "false" if any other button that ASCII 65 (ASCII 65 = A) is pressed.
+    keyVariableA = false;
+  }
+  if (keyCode==66) {
+    keyVariableB = true;
+  } else {
+    keyVariableB = false;
+  }
+  if (keyCode==67) {
+    keyVariableC = true;
+  } else {
+    keyVariableC = false;
+  }
+  if (keyCode==49) {
+    keyVariable1 = true;
+  } else {
+    keyVariable1 = false;
+  }
+  if (keyCode==50) {
+    keyVariable2 = true;
+  } else {
+    keyVariable2 = false;
+  }
+  if (keyCode==51) {
+    keyVariable3 = true;
+  } else {
+    keyVariable3 = false;
+  }
+  if (keyCode==52) {
+    keyVariable4 = true;
+  } else {
+    keyVariable4 = false;
+  }
+  if (keyCode==53) {
+    keyVariable5 = true;
+  } else {
+    keyVariable5 = false;
+  }
+  if (keyCode==54) {
+    keyVariable6 = true;
+  } else {
+    keyVariable6 = false;
+  }
+  if (keyCode==55) {
+    keyVariable7 = true;
+  } else {
+    keyVariable7 = false;
+  }
+  if (keyCode==56) {
+    keyVariable8 = true;
+  } else {
+    keyVariable8 = false;
+  }
 }
 
-
-
-
-
-
-
-
-
-
-
-
+void checkButtons() {
+  if (keyVariableA == true) {
+    saveThetaValues(1);
+  }
+  if (keyVariableB == true) {
+    //playSavedThetaValues();
+  }
+  if (keyVariableC == true) {
+    playSliderValues();
+  }
+  if (keyVariable1 == true) {
+    saveThetaValues(0);
+  }
+  if (keyVariable2 == true) {
+    saveThetaValues(1);
+  }
+  if (keyVariable3 == true) {
+    saveThetaValues(2);
+  }
+  if (keyVariable4 == true) {
+    saveThetaValues(3);
+  }
+  if (keyVariable5 == true) {
+    playSavedThetaValues(0);
+  }
+  if (keyVariable6 == true) {
+    playSavedThetaValues(1);
+  }
+  if (keyVariable7 == true) {
+    playSavedThetaValues(2);
+  }
+  if (keyVariable8 == true) {
+    playSavedThetaValues(3);
+  }
+}
 
 
 
@@ -98,15 +249,15 @@ void draw() {
 
 public void sendData() { //Sends some data to arduino. Søren write more comments.
   try {
-    if (theta1 != lastSentValue1 || theta2 != lastSentValue2 || theta3 != lastSentValue3 || theta4 != lastSentValue4 || theta5 != lastSentValue5 || theta6 != lastSentValue6) {
-      String message = "M1:" + theta1 + "M1end| M2:" + theta2 + "M2end| M3:" + theta3 + "M3end| M4:" + theta4 + "M4end| M5:" + theta5 + "M5end| M6:" + theta6 + "\n";
+    if (theta[1] != lastSentValue1 || theta[2] != lastSentValue2 || theta[3] != lastSentValue3 || theta[4] != lastSentValue4 || theta[5] != lastSentValue5 || theta[6] != lastSentValue6) {
+      String message = "M1:" + theta[1] + "M1end| M2:" + theta[2] + "M2end| M3:" + theta[3] + "M3end| M4:" + theta[4] + "M4end| M5:" + theta[5] + "M5end| M6:" + theta[6] + "\n";
       serial.write(message);
-      lastSentValue1 = theta1;
-      lastSentValue2 = theta2;
-      lastSentValue3 = theta3;
-      lastSentValue4 = theta4;
-      lastSentValue5 = theta5;
-      lastSentValue6 = theta6;
+      lastSentValue1 = theta[1];
+      lastSentValue2 = theta[2];
+      lastSentValue3 = theta[3];
+      lastSentValue4 = theta[4];
+      lastSentValue5 = theta[5];
+      lastSentValue6 = theta[6];
     }
     String data = serial.readStringUntil('\n');
     if (data != null) {
