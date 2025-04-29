@@ -28,11 +28,11 @@ float theta1, theta2, theta3, theta4, theta5, theta6; //Theta values
 float[] theta = {0, 0, 0, 0, 0, 0, 0};
 
 double[][] MDH = { //Alpha, a, d, theta offset
+  {0, 0, 122.65, 0},
   {0, 0, 0, 0},
-  {0, 0, 100, 0},
-  {90, 110, 0, 90},
-  {0, 120, 0, 0},
-  {90, 0, 130, 0},
+  {90, 39.43, 0, 90},
+  {0, 115.49, 0, 0},
+  {90, 0, 115.49*2, 0},
   {-90, 0, 0, 0},
   {90, 0, 0, 0}};
   
@@ -50,7 +50,7 @@ void setup() {
 
 
 
-  connectionUI(1000, 400);
+  //connectionUI(1000, 400);
 
   slidersFunction();
 }
@@ -64,7 +64,7 @@ void draw() {
   utils.drawResult(Arm1.IK(Arm1.resultMatrix.getData()), 100, 100);
   
   
-  sendData();
+  //sendData();
   
   checkButtons();
 }
@@ -253,85 +253,85 @@ void checkButtons() {
 
 
 
-public void sendData() { //Sends some data to arduino. Søren write more comments.
-  try {
-    if (theta[1] != lastSentValue1 || theta[2] != lastSentValue2 || theta[3] != lastSentValue3 || theta[4] != lastSentValue4 || theta[5] != lastSentValue5 || theta[6] != lastSentValue6) {
-      String message = "M1:" + theta[1] + "M1end| M2:" + theta[2] + "M2end| M3:" + theta[3] + "M3end| M4:" + theta[4] + "M4end| M5:" + theta[5] + "M5end| M6:" + theta[6] + "\n";
-      serial.write(message);
-      lastSentValue1 = theta[1];
-      lastSentValue2 = theta[2];
-      lastSentValue3 = theta[3];
-      lastSentValue4 = theta[4];
-      lastSentValue5 = theta[5];
-      lastSentValue6 = theta[6];
-    }
-    String data = serial.readStringUntil('\n');
-    if (data != null) {
-      data = data.trim();
-      receivedArea.setText("Arduino: " + data);
-      println("Arduino: " + data);
-    }
-  }
-  catch (Exception e) {
-    println("Error opening serial port: " + e.getMessage());
-  }
-}
+//public void sendData() { //Sends some data to arduino. Søren write more comments.
+//  try {
+//    if (theta[1] != lastSentValue1 || theta[2] != lastSentValue2 || theta[3] != lastSentValue3 || theta[4] != lastSentValue4 || theta[5] != lastSentValue5 || theta[6] != lastSentValue6) {
+//      String message = "M1:" + theta[1] + "M1end| M2:" + theta[2] + "M2end| M3:" + theta[3] + "M3end| M4:" + theta[4] + "M4end| M5:" + theta[5] + "M5end| M6:" + theta[6] + "\n";
+//      serial.write(message);
+//      lastSentValue1 = theta[1];
+//      lastSentValue2 = theta[2];
+//      lastSentValue3 = theta[3];
+//      lastSentValue4 = theta[4];
+//      lastSentValue5 = theta[5];
+//      lastSentValue6 = theta[6];
+//    }
+//    String data = serial.readStringUntil('\n');
+//    if (data != null) {
+//      data = data.trim();
+//      receivedArea.setText("Arduino: " + data);
+//      println("Arduino: " + data);
+//    }
+//  }
+//  catch (Exception e) {
+//    println("Error opening serial port: " + e.getMessage());
+//  }
+//}
 
-void baudratelist(int index) {
-  String baudstring;
-  baudstring = baudlist.getItem(index).get("name").toString();
-  selectedbaudrate = Integer.parseInt(baudstring);
-  println("Selected", selectedbaudrate);
-}
-void comportlist(int index) {
-  selectedport = portlist.getItem(index).get("name").toString();
-  println("Selected", selectedport);
-}
-void button() {
-  if (!connectButtonStatus) {
-    serial = new Serial(this, selectedport, selectedbaudrate);
-    cntbutton.setLabel("Disconnect");
-    connectButtonStatus = true;
-    println("Connected", selectedport, "at", selectedbaudrate);
-  } else {
-    serial.stop();
-    cntbutton.setLabel("Connect");
-    connectButtonStatus = false;
-    println("Disconnected from", selectedport);
-  }
-}
-public void connectionUI(int x, int y) { //Function that creates the connection UI
+//void baudratelist(int index) {
+//  String baudstring;
+//  baudstring = baudlist.getItem(index).get("name").toString();
+//  selectedbaudrate = Integer.parseInt(baudstring);
+//  println("Selected", selectedbaudrate);
+//}
+//void comportlist(int index) {
+//  selectedport = portlist.getItem(index).get("name").toString();
+//  println("Selected", selectedport);
+//}
+//void button() {
+//  if (!connectButtonStatus) {
+//    serial = new Serial(this, selectedport, selectedbaudrate);
+//    cntbutton.setLabel("Disconnect");
+//    connectButtonStatus = true;
+//    println("Connected", selectedport, "at", selectedbaudrate);
+//  } else {
+//    serial.stop();
+//    cntbutton.setLabel("Connect");
+//    connectButtonStatus = false;
+//    println("Disconnected from", selectedport);
+//  }
+//}
+//public void connectionUI(int x, int y) { //Function that creates the connection UI
 
-  cntbutton = cp5.addButton("button")
-    .setLabel("Connect")
-    .setSize(70, 30)
-    .setPosition(x, y);
+//  cntbutton = cp5.addButton("button")
+//    .setLabel("Connect")
+//    .setSize(70, 30)
+//    .setPosition(x, y);
 
-  portlist = cp5.addScrollableList("comportlist")
-    .setLabel("select port")
-    .setBarHeight(30)
-    .setPosition(x+100, y)
-    .setItemHeight(25);
+//  portlist = cp5.addScrollableList("comportlist")
+//    .setLabel("select port")
+//    .setBarHeight(30)
+//    .setPosition(x+100, y)
+//    .setItemHeight(25);
 
-  baudlist = cp5.addScrollableList("baudratelist")
-    .setLabel("select baudrate")
-    .setBarHeight(30)
-    .setPosition(x+220, y)
-    .setItemHeight(24);
+//  baudlist = cp5.addScrollableList("baudratelist")
+//    .setLabel("select baudrate")
+//    .setBarHeight(30)
+//    .setPosition(x+220, y)
+//    .setItemHeight(24);
 
-  baudlist.addItem("9600", 9600);
-  baudlist.addItem("19200", 19200);
-  baudlist.addItem("38400", 38400);
-  baudlist.addItem("57600", 57600);
+//  baudlist.addItem("9600", 9600);
+//  baudlist.addItem("19200", 19200);
+//  baudlist.addItem("38400", 38400);
+//  baudlist.addItem("57600", 57600);
 
-  receivedArea = cp5.addTextarea("receivedData")
-    .setSize(360, 140)
-    .setPosition(x, y+250)
-    .setColorBackground(80);
-  arduinoConsole = cp5.addConsole(receivedArea);
+//  receivedArea = cp5.addTextarea("receivedData")
+//    .setSize(360, 140)
+//    .setPosition(x, y+250)
+//    .setColorBackground(80);
+//  arduinoConsole = cp5.addConsole(receivedArea);
 
-  String[] availableports = Serial.list(); //   <-------------------- Søren explain plz
-  for (int i = 0; i < availableports.length; i++) {
-    portlist.addItem(availableports[i], availableports[i]);
-  }
-}
+//  String[] availableports = Serial.list(); //   <-------------------- Søren explain plz
+//  for (int i = 0; i < availableports.length; i++) {
+//    portlist.addItem(availableports[i], availableports[i]);
+//  }
+//}

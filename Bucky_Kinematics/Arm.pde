@@ -36,12 +36,16 @@ class Arm {
     double[] angle = new double[7];
     
     angle[1] = Math.atan2(inputMatrix[1][3], inputMatrix[0][3]);
-    double a = (inputMatrix[0][3]/Math.cos(angle[1]))-MDH[0][2];
-    println(a);
+    double a = Math.sqrt(Math.pow(inputMatrix[0][3],2)+Math.pow(inputMatrix[1][3],2)); //(inputMatrix[0][3]/Math.cos(angle[1]))-MDH[0][2]
+    text(nf((float)a, 0, 4), 200, 500);
     double b = inputMatrix[2][3]-MDH[0][2];
+    text(nf((float)b, 0, 4), 200, 550);
     double c = Math.sqrt(a*a+b*b);
-    angle[2] = Math.acos((Math.pow(MDH[3][1],2)+c*c+MDH[4][2])/2*MDH[3][1]*c)+Math.atan2(b,a)-Math.toRadians(90);
-    angle[3] = Math.acos((Math.pow(MDH[3][1],2)+c*c+MDH[4][2])/2*MDH[3][1]*MDH[4][2])-Math.toRadians(90);
+    text(nf((float)Math.pow(MDH[4][2],2), 0, 4), 200, 600);
+    System.out.println(Math.pow(MDH[4][2],2));
+    angle[2] = Math.acos((Math.pow(MDH[3][1],2)+Math.pow(c,2)+Math.pow(MDH[4][2],2))/2*MDH[3][1]*c)+Math.atan2(b,a)-Math.toRadians(90);
+    text(nf((float)angle[2], 0, 4), 200, 650);
+    angle[3] = Math.acos((Math.pow(MDH[3][1],2)+c*c+Math.pow(MDH[4][2],2))/2*MDH[3][1]*MDH[4][2])-Math.toRadians(90);
     
     RealMatrix Matrix03 = jointArray[0].realTransformationMatrix;
     for (int i=1; i<3; i++) {
