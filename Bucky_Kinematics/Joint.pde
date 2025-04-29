@@ -14,9 +14,10 @@ class Joint {
     thetaOffset = Math.toRadians(MDHRow[3]);
     sinAlpha = Math.sin(alpha);
     cosAlpha = Math.cos(alpha);
+    updateTransformationMatrix(0);
   }
 
-  void trans(double thetaT) {
+  void updateTransformationMatrix(double thetaT) {
     double cosTheta = Math.cos(thetaOffset+thetaT);
     double sinTheta = Math.sin(thetaOffset+thetaT);
 

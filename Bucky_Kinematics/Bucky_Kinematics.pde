@@ -15,35 +15,40 @@ String selectedport; //Søren
 int selectedbaudrate; //Søren
 Button cntbutton;
 
-boolean keyVariableA, keyVariableB, keyVariableC, keyVariable1, keyVariable2, keyVariable3, keyVariable4, keyVariable5, keyVariable6, keyVariable7, keyVariable8; //Track key A and B
+boolean keyVariableA, keyVariableB, keyVariable1, keyVariable2, keyVariable3, keyVariable4, keyVariable5, keyVariable6, keyVariable7, keyVariable8; //Track key A and B
+boolean keyVariableC = true;
 float saveThetaValues[][] = new float[4][7];
 
 ControlP5 cp5;
 Utils utils = new Utils();
-Arm Arm1 = new Arm();
-Joint jointArray[] = new Joint[7];
+Arm Arm1;
+
 Slider slider1, slider2, slider3, slider4, slider5, slider6;
 float theta1, theta2, theta3, theta4, theta5, theta6; //Theta values
 float[] theta = {0, 0, 0, 0, 0, 0, 0};
 
-double[][] MDH = {
-  {0, 0, 100, 0},
+double[][] MDH = { //Alpha, a, d, theta offset
   {0, 0, 0, 0},
+  {0, 0, 100, 0},
   {90, 110, 0, 90},
   {0, 120, 0, 0},
   {90, 0, 130, 0},
   {-90, 0, 0, 0},
   {90, 0, 0, 0}};
+  
+  double[][] pos1 = { //Alpha, a, d, theta offset
+  {0, 0, 0, 0},
+  {0, 0, 100, 0},
+  {90, 110, 0, 90},
+  {0, 120, 0, 0}};
 
 
 void setup() {
   size(1440, 810);
   cp5 = new ControlP5(this);
+  Arm1 = new Arm(MDH);
 
-  for (int i = 0; i<7; i++) {
-    jointArray[i] = new Joint(MDH[i]);
-    jointArray[i].trans(0);
-  }
+
 
   connectionUI(1000, 400);
 
@@ -53,18 +58,14 @@ void setup() {
 void draw() {
   background(125, 125, 250);
   utils.drawResult(theta, 500, 150);
-  //utils.drawResult(MDH, 650, 150);
-  Arm1.finalMatrix();
+  Arm1.moveArm(theta);
+
   utils.drawResult(Arm1.resultMatrix, 650, 150);
-
-  jointArray[1].trans(Math.toRadians(theta[1]));
-  jointArray[2].trans(Math.toRadians(theta[2]));
-  jointArray[3].trans(Math.toRadians(theta[3]));
-  jointArray[4].trans(Math.toRadians(theta[4]));
-  jointArray[5].trans(Math.toRadians(theta[5]));
-  jointArray[6].trans(Math.toRadians(theta[6]));
+  utils.drawResult(Arm1.IK(Arm1.resultMatrix.getData()), 100, 100);
+  
+  
   sendData();
-
+  
   checkButtons();
 }
 
@@ -85,7 +86,6 @@ void playSliderValues() {
 
 
 void saveThetaValues(int a) {
-  saveThetaValues[a][0] = 0;
   saveThetaValues[a][1] = theta1;
   saveThetaValues[a][2] = theta2;
   saveThetaValues[a][3] = theta3;
@@ -160,9 +160,11 @@ void keyPressed() {         //keyPressed is a built-in function that is called o
     keyVariableB = false;
   }
   if (keyCode==67) {
-    keyVariableC = true;
-  } else {
-    keyVariableC = false;
+    if (keyVariableC) {
+      keyVariableC = false;
+    } else {
+      keyVariableC = true;
+    }
   }
   if (keyCode==49) {
     keyVariable1 = true;
@@ -213,9 +215,7 @@ void checkButtons() {
   if (keyVariableB == true) {
     //playSavedThetaValues();
   }
-  if (keyVariableC == true) {
-    playSliderValues();
-  }
+
   if (keyVariable1 == true) {
     saveThetaValues(0);
   }
@@ -228,17 +228,23 @@ void checkButtons() {
   if (keyVariable4 == true) {
     saveThetaValues(3);
   }
-  if (keyVariable5 == true) {
-    playSavedThetaValues(0);
-  }
-  if (keyVariable6 == true) {
-    playSavedThetaValues(1);
-  }
-  if (keyVariable7 == true) {
-    playSavedThetaValues(2);
-  }
-  if (keyVariable8 == true) {
-    playSavedThetaValues(3);
+
+  if (keyVariableC == true) {
+    playSliderValues();
+  } else {
+
+    if (keyVariable5 == true) {
+      playSavedThetaValues(0);
+    }
+    if (keyVariable6 == true) {
+      playSavedThetaValues(1);
+    }
+    if (keyVariable7 == true) {
+      playSavedThetaValues(2);
+    }
+    if (keyVariable8 == true) {
+      playSavedThetaValues(3);
+    }
   }
 }
 
