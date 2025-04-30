@@ -1,6 +1,7 @@
 class Arm {
 
   RealMatrix resultMatrix;
+  RealMatrix resultMatrix03;
   Joint[] jointArray;
   double[][] MDH;
 
@@ -14,21 +15,23 @@ class Arm {
   }
 
   void moveArm(float[] a) {
+    jointArray[0].updateTransformationMatrix(Math.toRadians(a[0]));
     jointArray[1].updateTransformationMatrix(Math.toRadians(a[1]));
     jointArray[2].updateTransformationMatrix(Math.toRadians(a[2]));
     jointArray[3].updateTransformationMatrix(Math.toRadians(a[3]));
     jointArray[4].updateTransformationMatrix(Math.toRadians(a[4]));
     jointArray[5].updateTransformationMatrix(Math.toRadians(a[5]));
-    jointArray[6].updateTransformationMatrix(Math.toRadians(a[6]));
+    
     calculateFinalMatrix();
   }
   void moveArm(double[] a) {
+    jointArray[0].updateTransformationMatrix(Math.toRadians(a[0]));
     jointArray[1].updateTransformationMatrix(Math.toRadians(a[1]));
     jointArray[2].updateTransformationMatrix(Math.toRadians(a[2]));
     jointArray[3].updateTransformationMatrix(Math.toRadians(a[3]));
     jointArray[4].updateTransformationMatrix(Math.toRadians(a[4]));
     jointArray[5].updateTransformationMatrix(Math.toRadians(a[5]));
-    jointArray[6].updateTransformationMatrix(Math.toRadians(a[6]));
+    
     calculateFinalMatrix();
   }
 
@@ -39,6 +42,12 @@ class Arm {
     for (int i=1; i<jointArray.length; i++) {
       resultMatrix = resultMatrix.multiply(jointArray[i].realTransformationMatrix);
     }
+    
+    resultMatrix03 = jointArray[0].realTransformationMatrix;
+    for (int i=1; i<3; i++) {
+      resultMatrix03 = resultMatrix03.multiply(jointArray[i].realTransformationMatrix);
+    }
+    
   }
 
   double[] IK(double[][] inputMatrix) {
@@ -60,7 +69,7 @@ class Arm {
     RealMatrix Matrix30 = new LUDecomposition(Matrix03).getSolver().getInverse();
     RealMatrix Matrix36 = Matrix30.multiply(Matrix06);
     double[][] inputMatrix36 = Matrix36.getData();
-    
+    utils.drawResult(Matrix03, 450, 450);
     angle[5] = Math.acos(-inputMatrix36[0][2]);
     angle[4] = Math.atan2(inputMatrix36[2][2],inputMatrix[0][2]);
     angle[6] = Math.atan2(inputMatrix36[1][1],inputMatrix[1][0]);

@@ -25,11 +25,10 @@ Arm Arm1;
 
 Slider slider1, slider2, slider3, slider4, slider5, slider6;
 float theta1, theta2, theta3, theta4, theta5, theta6; //Theta values
-float[] theta = {0, 0, 0, 0, 0, 0, 0};
+float[] theta = {0, 0, 0, 0, 0, 0};
 
 double[][] MDH = { //Alpha, a, d, theta offset
   {0, 0, 122.65, 0},
-  {0, 0, 0, 0},
   {90, 39.43, 0, 90},
   {0, 115.49, 0, 0},
   {90, 0, 115.49*2, 0},
@@ -60,11 +59,12 @@ void draw() {
 
   Arm1.moveArm(theta);
   utils.drawResult(theta, 30, 70);
-  utils.drawResult(Arm1.resultMatrix, 450, 150);
+  utils.drawResult(Arm1.resultMatrix03, 450, 150);
+  //utils.drawResult(Arm1.resultMatrix, 450, 150);
   double[] temp1 = Arm1.IK(Arm1.resultMatrix.getData());
   utils.drawResult(temp1, 1100, 70);
   Arm1.moveArm(temp1);
-  utils.drawResult(Arm1.resultMatrix, 450, 450);
+  //utils.drawResult(Arm1.resultMatrix, 450, 450);
 
 
   //sendData();
@@ -79,30 +79,31 @@ void draw() {
 
 
 void playSliderValues() {
-  theta[1] = theta1;
-  theta[2] = theta2;
-  theta[3] = theta3;
-  theta[4] = theta4;
-  theta[5] = theta5;
-  theta[6] = theta6;
+  theta[0] = theta1;
+  theta[1] = theta2;
+  theta[2] = theta3;
+  theta[3] = theta4;
+  theta[4] = theta5;
+  theta[5] = theta6;
 }
 
 
 void saveThetaValues(int a) {
-  saveThetaValues[a][1] = theta1;
-  saveThetaValues[a][2] = theta2;
-  saveThetaValues[a][3] = theta3;
-  saveThetaValues[a][5] = theta5;
-  saveThetaValues[a][6] = theta6;
+  saveThetaValues[a][0] = theta1;
+  saveThetaValues[a][1] = theta2;
+  saveThetaValues[a][2] = theta3;
+  saveThetaValues[a][3] = theta4;
+  saveThetaValues[a][4] = theta5;
+  saveThetaValues[a][5] = theta6;
 }
 
 void playSavedThetaValues(int a) {
-  theta[1] = saveThetaValues[a][1];
-  theta[2] = saveThetaValues[a][2];
-  theta[3] = saveThetaValues[a][3];
-  theta[4] = saveThetaValues[a][4];
-  theta[5] = saveThetaValues[a][5];
-  theta[6] = saveThetaValues[a][6];
+  theta[0] = saveThetaValues[a][1];
+  theta[1] = saveThetaValues[a][2];
+  theta[2] = saveThetaValues[a][3];
+  theta[3] = saveThetaValues[a][4];
+  theta[4] = saveThetaValues[a][5];
+  theta[5] = saveThetaValues[a][6];
 }
 
 
