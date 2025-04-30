@@ -61,7 +61,7 @@ class Arm {
     RealMatrix Matrix36 = Matrix30.multiply(Matrix06);
     double[][] inputMatrix36 = Matrix36.getData();
     
-    angle[5] = Math.acos(inputMatrix36[0][2]);
+    angle[5] = Math.acos(-inputMatrix36[0][2]);
     angle[4] = Math.atan2(inputMatrix36[2][2],inputMatrix[0][2]);
     angle[6] = Math.atan2(inputMatrix36[1][1],inputMatrix[1][0]);
     double[] angleDegrees = new double[angle.length];
