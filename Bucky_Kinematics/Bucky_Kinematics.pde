@@ -35,7 +35,7 @@ double[][] MDH = { //Alpha, a, d, theta offset
   {-90, 0, 0, 0},
   {90, 0, 0, 0}};
 
-double[][] pos1 = { //Alpha, a, d, theta offset
+double[][] pos1 = { //Not used
   {0, 0, 0, 0},
   {0, 0, 100, 0},
   {90, 110, 0, 90},
