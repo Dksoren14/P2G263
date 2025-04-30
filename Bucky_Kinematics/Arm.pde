@@ -2,6 +2,7 @@ class Arm {
 
   RealMatrix resultMatrix;
   RealMatrix resultMatrix03;
+  RealMatrix Matrix03FromIK;
   Joint[] jointArray;
   double[][] MDH;
 
@@ -51,28 +52,32 @@ class Arm {
   }
 
   double[] IK(double[][] inputMatrix) {
-    double[] angle = new double[7];
+    double[] angle = new double[6];
     
-    angle[1] = Math.atan2(inputMatrix[1][3], inputMatrix[0][3]);
+    angle[0] = Math.atan2(inputMatrix[1][3], inputMatrix[0][3]);
     double a = Math.sqrt(Math.pow(inputMatrix[0][3],2)+Math.pow(inputMatrix[1][3],2)); //(inputMatrix[0][3]/Math.cos(angle[1]))-MDH[0][2]
     double b = inputMatrix[2][3]-MDH[0][2];
     double c = Math.sqrt(a*a+b*b);
-    angle[2] = Math.acos((Math.pow(MDH[3][1],2)+Math.pow(c,2)-Math.pow(MDH[4][2],2))/(2*MDH[3][1]*c))+Math.atan2(b,a)-Math.toRadians(90);
-    angle[3] = Math.acos((Math.pow(MDH[3][1],2)+c*c-Math.pow(MDH[4][2],2))/(2*MDH[3][1]*MDH[4][2]))-Math.toRadians(90);
+    angle[1] = Math.acos((Math.pow(MDH[2][1],2)+Math.pow(c,2)-Math.pow(MDH[3][2],2))/(2*MDH[2][1]*c))+Math.atan2(b,a)-Math.toRadians(90);
+    angle[2] = Math.acos((Math.pow(MDH[2][1],2)+c*c-Math.pow(MDH[3][2],2))/(2*MDH[2][1]*MDH[3][2]))-Math.toRadians(90);
     
-    RealMatrix Matrix03 = jointArray[0].realTransformationMatrix;
+    Matrix03FromIK = jointArray[0].realTransformationMatrix;
     for (int i=1; i<3; i++) {
       jointArray[i].updateTransformationMatrix(angle[i]);
-      Matrix03 = Matrix03.multiply(jointArray[i].realTransformationMatrix);
+      Matrix03FromIK = Matrix03FromIK.multiply(jointArray[i].realTransformationMatrix);
     }
+    
     RealMatrix Matrix06 = new Array2DRowRealMatrix(inputMatrix);
-    RealMatrix Matrix30 = new LUDecomposition(Matrix03).getSolver().getInverse();
+    RealMatrix Matrix30 = new LUDecomposition(Matrix03FromIK).getSolver().getInverse();
     RealMatrix Matrix36 = Matrix30.multiply(Matrix06);
     double[][] inputMatrix36 = Matrix36.getData();
-    utils.drawResult(Matrix03, 450, 450);
-    angle[5] = Math.acos(-inputMatrix36[0][2]);
-    angle[4] = Math.atan2(inputMatrix36[2][2],inputMatrix[0][2]);
-    angle[6] = Math.atan2(inputMatrix36[1][1],inputMatrix[1][0]);
+    
+    
+    
+    
+    angle[4] = Math.acos(-inputMatrix36[0][2]);
+    angle[3] = Math.atan2(inputMatrix36[2][2],inputMatrix[0][2]);
+    angle[5] = Math.atan2(inputMatrix36[1][1],inputMatrix[1][0]);
     double[] angleDegrees = new double[angle.length];
     for (int i = 0; i<angle.length; i++) {
       angleDegrees[i] = Math.toDegrees(angle[i]);

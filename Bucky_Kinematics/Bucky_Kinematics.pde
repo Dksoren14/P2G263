@@ -58,14 +58,14 @@ void draw() {
   background(125, 125, 250);
 
   Arm1.moveArm(theta);
-  utils.drawResult(theta, 30, 70);
-  utils.drawResult(Arm1.resultMatrix03, 450, 150);
-  //utils.drawResult(Arm1.resultMatrix, 450, 150);
+  utils.drawResult(theta, 30, 120);
+  //utils.drawResult(Arm1.resultMatrix03, 450, 150);
+  utils.drawResult(Arm1.resultMatrix, 450, 150);
   double[] temp1 = Arm1.IK(Arm1.resultMatrix.getData());
-  utils.drawResult(temp1, 1100, 70);
+  utils.drawResult(temp1, 1100, 120);
   Arm1.moveArm(temp1);
-  //utils.drawResult(Arm1.resultMatrix, 450, 450);
-
+  utils.drawResult(Arm1.resultMatrix, 450, 450);
+  //utils.drawResult(Arm1.Matrix03FromIK, 450, 450);
 
   //sendData();
 
@@ -98,12 +98,12 @@ void saveThetaValues(int a) {
 }
 
 void playSavedThetaValues(int a) {
-  theta[0] = saveThetaValues[a][1];
-  theta[1] = saveThetaValues[a][2];
-  theta[2] = saveThetaValues[a][3];
-  theta[3] = saveThetaValues[a][4];
-  theta[4] = saveThetaValues[a][5];
-  theta[5] = saveThetaValues[a][6];
+  theta[0] = saveThetaValues[a][0];
+  theta[1] = saveThetaValues[a][1];
+  theta[2] = saveThetaValues[a][2];
+  theta[3] = saveThetaValues[a][3];
+  theta[4] = saveThetaValues[a][4];
+  theta[5] = saveThetaValues[a][5];
 }
 
 
