@@ -35,8 +35,8 @@ double[][] MDH = { //Alpha, a, d, theta offset
   {90, 0, 115.49*2, 0},
   {-90, 0, 0, 0},
   {90, 0, 0, 0}};
-  
-  double[][] pos1 = { //Alpha, a, d, theta offset
+
+double[][] pos1 = { //Alpha, a, d, theta offset
   {0, 0, 0, 0},
   {0, 0, 100, 0},
   {90, 110, 0, 90},
@@ -57,15 +57,18 @@ void setup() {
 
 void draw() {
   background(125, 125, 250);
-  utils.drawResult(theta, 500, 150);
-  Arm1.moveArm(theta);
 
-  utils.drawResult(Arm1.resultMatrix, 650, 150);
-  utils.drawResult(Arm1.IK(Arm1.resultMatrix.getData()), 100, 100);
-  
-  
+  Arm1.moveArm(theta);
+  utils.drawResult(theta, 30, 70);
+  utils.drawResult(Arm1.resultMatrix, 450, 150);
+  double[] temp1 = Arm1.IK(Arm1.resultMatrix.getData());
+  utils.drawResult(temp1, 1100, 70);
+  Arm1.moveArm(temp1);
+  utils.drawResult(Arm1.resultMatrix, 450, 450);
+
+
   //sendData();
-  
+
   checkButtons();
 }
 
