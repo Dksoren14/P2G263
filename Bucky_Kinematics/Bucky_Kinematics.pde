@@ -34,6 +34,11 @@ double[][] MDH = { //Alpha, a, d, theta offset
   {90, 0, 115.49*2, 0},
   {-90, 0, 0, 0},
   {90, 0, 0, 0}};
+  
+  
+  RealMatrix Matrix1232 = new Array2DRowRealMatrix(new double[][] {{15,20,30,40},{1,2,3.5,4.1},{10,29,30,40},{1,2,3.2,4}});
+  RealMatrix Matrix1233 = new Array2DRowRealMatrix(new double[][] {{1,2,3,4},{5,6,7,8},{9,10,11,12},{13,14,15,16}});
+  
 
 void setup() {
   size(1440, 810);
@@ -49,14 +54,18 @@ void draw() {
   Arm1.moveArm(theta); //Move arm with slider values
   utils.drawResult("Slider angles", 30, 70);
   utils.drawResult(theta, 30, 120); //Draw slider values
-  utils.drawResult("Arm1 result matrix with slider angles (T06)", 450, 100);
-  utils.drawResult(Arm1.resultMatrix, 450, 150); //Result matrix calculated from slider angles.
+  //utils.drawResult("Arm1 result matrix with slider angles (T06)", 450, 100);
+  //utils.drawResult(Arm1.resultMatrix, 450, 150); //Result matrix calculated from slider angles.
+  utils.drawResult("Some matrix", 450, 100);
+  RealMatrix temp69 = Arm1.jointArray[0].realTransformationMatrix.multiply(Arm1.jointArray[1].realTransformationMatrix);
+  utils.drawResult(temp69, 450, 150); //Result matrix calculated from slider angles.
   double[] temp1 = Arm1.IK(Arm1.resultMatrix.getData()); //Calculate the IK angle based on the result matrix which is made from slider angles.
   utils.drawResult("IK angles", 1100, 70);
   utils.drawResult(temp1, 1100, 120); //Draw the IK angles
   Arm1.moveArm(temp1); //Move arm with IK angles
   utils.drawResult("Arm1 result matrix with IK angles (T06)", 450, 400);
-  utils.drawResult(Arm1.resultMatrix, 450, 450); //Draw result matrix based on IK angles.
+  utils.drawResult(Matrix1232.multiply(Matrix1233), 450, 450);
+  //utils.drawResult(Arm1.resultMatrix, 450, 450); //Draw result matrix based on IK angles.
   //utils.drawResult(Arm1.Matrix03FromIK, 450, 450);
 
   //sendData();
@@ -107,37 +116,37 @@ void slidersFunction() {
     .setPosition(150, 100)
     .setSize(200, 20)
     .setRange(-90, 90)
-    .setValue(0)
+    .setValue(60)
     .setColorCaptionLabel(color(20, 20, 20));
   slider2 = cp5.addSlider("theta2")
     .setPosition(150, 150)
     .setSize(200, 20)
     .setRange(-90, 65)
-    .setValue(0)
+    .setValue(60)
     .setColorCaptionLabel(color(20, 20, 20));
   slider3 = cp5.addSlider("theta3")
     .setPosition(150, 200)
     .setSize(200, 20)
     .setRange(-90, 90)
-    .setValue(0)
+    .setValue(60)
     .setColorCaptionLabel(color(20, 20, 20));
   slider4 = cp5.addSlider("theta4")
     .setPosition(150, 250)
     .setSize(200, 20)
     .setRange(-90, 90)
-    .setValue(0)
+    .setValue(60)
     .setColorCaptionLabel(color(20, 20, 20));
   slider5 = cp5.addSlider("theta5")
     .setPosition(150, 300)
     .setSize(200, 20)
     .setRange(-90, 65)
-    .setValue(0)
+    .setValue(60)
     .setColorCaptionLabel(color(20, 20, 20));
   slider6 = cp5.addSlider("theta6")
     .setPosition(150, 350)
     .setSize(200, 20)
     .setRange(-90, 90)
-    .setValue(0)
+    .setValue(60)
     .setColorCaptionLabel(color(20, 20, 20));
 }
 

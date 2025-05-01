@@ -5,9 +5,9 @@ class Joint {
   double[][] transformationMatrix;
   RealMatrix realTransformationMatrix;
 
-  Joint(double[] name) {
+  Joint(double[] MDHRowT) {
 
-    MDHRow = name;
+    MDHRow = MDHRowT;
     alpha = Math.toRadians(MDHRow[0]);
     a = MDHRow[1];
     d = MDHRow[2];
@@ -18,8 +18,8 @@ class Joint {
   }
 
   void updateTransformationMatrix(double thetaT) {
-    double cosTheta = Math.cos(thetaOffset+thetaT);
-    double sinTheta = Math.sin(thetaOffset+thetaT);
+    double cosTheta = Math.cos(thetaOffset+Math.toRadians(thetaT));
+    double sinTheta = Math.sin(thetaOffset+Math.toRadians(thetaT));
 
     double[][] matrix = {
       {cosTheta, -sinTheta, 0, a},
