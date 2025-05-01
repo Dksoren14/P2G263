@@ -61,9 +61,11 @@ void draw() {
   utils.drawResult(theta, 30, 120);
   //utils.drawResult(Arm1.resultMatrix03, 450, 150);
   utils.drawResult(Arm1.resultMatrix, 450, 150);
+  utils.drawResult("Arm1 result matrix (T06)", 450, 100);
   double[] temp1 = Arm1.IK(Arm1.resultMatrix.getData());
   utils.drawResult(temp1, 1100, 120);
   Arm1.moveArm(temp1);
+  utils.drawResult("Arm1 result matrix (T06)", 450, 100);
   utils.drawResult(Arm1.resultMatrix, 450, 450);
   //utils.drawResult(Arm1.Matrix03FromIK, 450, 450);
 
