@@ -35,22 +35,11 @@ double[][] MDH = { //Alpha, a, d, theta offset
   {-90, 0, 0, 0},
   {90, 0, 0, 0}};
 
-double[][] pos1 = { //Not used
-  {0, 0, 0, 0},
-  {0, 0, 100, 0},
-  {90, 110, 0, 90},
-  {0, 120, 0, 0}};
-
-
 void setup() {
   size(1440, 810);
   cp5 = new ControlP5(this);
   Arm1 = new Arm(MDH);
-
-
-
   //connectionUI(1000, 400);
-
   slidersFunction();
 }
 
@@ -60,13 +49,13 @@ void draw() {
   Arm1.moveArm(theta); //Move arm with slider values
   utils.drawResult("Slider angles", 30, 70);
   utils.drawResult(theta, 30, 120); //Draw slider values
-  utils.drawResult("Arm1 result matrix (T06)", 450, 100);
+  utils.drawResult("Arm1 result matrix with slider angles (T06)", 450, 100);
   utils.drawResult(Arm1.resultMatrix, 450, 150); //Result matrix calculated from slider angles.
   double[] temp1 = Arm1.IK(Arm1.resultMatrix.getData()); //Calculate the IK angle based on the result matrix which is made from slider angles.
   utils.drawResult("IK angles", 1100, 70);
   utils.drawResult(temp1, 1100, 120); //Draw the IK angles
   Arm1.moveArm(temp1); //Move arm with IK angles
-  utils.drawResult("Arm1 result matrix with IK angles", 450, 400);
+  utils.drawResult("Arm1 result matrix with IK angles (T06)", 450, 400);
   utils.drawResult(Arm1.resultMatrix, 450, 450); //Draw result matrix based on IK angles.
   //utils.drawResult(Arm1.Matrix03FromIK, 450, 450);
 
