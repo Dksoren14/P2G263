@@ -24,6 +24,11 @@ class Utils {
       text(nf((float)a[i], 0, 4), x, y + i * 50);
     }
   }
+  void drawResult(double a, int x, int y) {
+    fill(0);
+    textSize(30);
+    text(nf((float)a, 0, 4), x, y);
+  }
   void drawResult(RealMatrix r, int x, int y) {
     double[][] a = r.getData();
     fill(0);
