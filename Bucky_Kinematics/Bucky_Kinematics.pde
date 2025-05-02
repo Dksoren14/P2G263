@@ -15,9 +15,21 @@ String selectedport; //Søren
 int selectedbaudrate; //Søren
 Button cntbutton;
 
+int posX, posY; //Declaring a kind of center position of the coordinate system. Initialized in setup.
+float panX = 0, panY = 0; //Declaring and making the panning offsets. Startvalue is 0.
+float rotX = -1, rotY = -0.75; //Rotation angles (in radians). Start value != 0, so the view starts at a nice angle.
+float lastMouseX, lastMouseY; //Used to track where the mouse was last. Used when the mouse is dragged to pan and rotate.
+boolean rightMousePressed = false; //Used to track which mouse button is the one being pressed.
+boolean leftMousePressed = false;  //Used to track which mouse button is being pressed.
+int menuHeight = 50;      //The height the "menu" goes down to. The "menu" is not a object at the moment.
+int menuWidth;      //The menu is just some boxes where the color is different and the "mouseDragged()" function doesn't do anything. Initialized in setup.
+int zoom = 800;          //Start zoom / start distande from the view.
+
+
 boolean keyVariableA, keyVariableB, keyVariable1, keyVariable2, keyVariable3, keyVariable4, keyVariable5, keyVariable6, keyVariable7, keyVariable8; //Track key A and B
 boolean keyVariableC = true;
 float saveThetaValues[][] = new float[4][7];
+
 
 ControlP5 cp5;
 Utils utils = new Utils();
@@ -34,41 +46,90 @@ double[][] MDH = { //Alpha, a, d, theta offset
   {90, 0, 115.49*2, 0},
   {-90, 0, 0, 0},
   {90, 0, 0, 0}};
-  
-  
-  RealMatrix Matrix1232 = new Array2DRowRealMatrix(new double[][] {{15,20,30,40},{1,2,3.5,4.1},{10,29,30,40},{1,2,3.2,4}});
-  RealMatrix Matrix1233 = new Array2DRowRealMatrix(new double[][] {{1,2,3,4},{5,6,7,8},{9,10,11,12},{13,14,15,16}});
-  
+
+
+RealMatrix Matrix1232 = new Array2DRowRealMatrix(new double[][] {{15, 20, 30, 40}, {1, 2, 3.5, 4.1}, {10, 29, 30, 40}, {1, 2, 3.2, 4}});
+RealMatrix Matrix1233 = new Array2DRowRealMatrix(new double[][] {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}});
+
 
 void setup() {
-  size(1440, 810);
+  size(1625, 900, P3D);           //Make the canvas/window. Size 1625x by 900y. P3D means it is a 3D "canvas"
+  posX = width/2-325;             //x and y positions of the new orego of the coordinate system in terms of the window.
+  posY = height-100;                  //Used in a "translate" function in "draw".
+  menuWidth = width-375;
   cp5 = new ControlP5(this);
   Arm1 = new Arm(MDH);
   //connectionUI(1000, 400);
-  slidersFunction();
+  slidersFunction(width-325, 450, 50);
 }
 
 void draw() {
   background(125, 125, 250);
 
-  Arm1.moveArm(theta); //Move arm with slider values
+  background(200);                                                  //Make background color 200. It goes between black 0-255 white. It is also possible to use (R,G,B) as input.
+  directionalLight(126, 126, 126, 0, 0, -1);                        //Make some random ass light. Needed so we can get a perception of the depth of the PShapes.
+  ambientLight(102, 102, 102);                                      //Some light shit.
+  fill(200, 200, 255);                                              //Fill kinda sets a global variable that shapes use as color. In this case the next rectangle will be colored (R,G,B) (200, 200, 255).
+  rect(0, 0, width, menuHeight);                                    //Make rectangle at position 0x 0y with a width of "width" and height of menuHeight.
+  rect(menuWidth, menuHeight, width-menuHeight, height-menuHeight); //Look up https://processing.org/reference/ for more information about these kind of things.
+
+
+  //Under here is where the transformations from the rotate pan zoom functionality happens.
+  pushMatrix();                                //Look up the reference sheet "processing.org/reference". It is like making a quicksave before making changes.
+  fill(0);  
   utils.drawResult("Slider angles", 30, 70);
   utils.drawResult(theta, 30, 120); //Draw slider values
-  utils.drawResult("Arm1 result matrix with slider angles (T06)", 450, 100);
-  utils.drawResult(Arm1.resultMatrix, 450, 150); //Result matrix calculated from slider angles.
-  //utils.drawResult("Some matrix", 450, 100);
-  //RealMatrix temp69 = Arm1.jointArray[0].realTransformationMatrix.multiply(Arm1.jointArray[1].realTransformationMatrix);
- //utils.drawResult(temp69, 450, 150); //Result matrix calculated from slider angles.
-  double[] temp1 = Arm1.IK(Arm1.resultMatrix.getData()); //Calculate the IK angle based on the result matrix which is made from slider angles.
-  utils.drawResult("IK angles", 1100, 70);
-  utils.drawResult(temp1, 1100, 120); //Draw the IK angles
-  Arm1.moveArm(temp1); //Move arm with IK angles
-  utils.drawResult("Arm1 result matrix with IK angles (T06)", 450, 400);
-  //utils.drawResult(Matrix1232.multiply(Matrix1233), 450, 450);
-  utils.drawResult(Arm1.resultMatrix, 450, 450); //Draw result matrix based on IK angles.
-  //utils.drawResult(Arm1.Matrix03FromIK, 450, 450);
 
-  //sendData();
+
+  utils.drawResult("Arm1 result matrix with slider angles (T06)", 175, 100);
+  
+  translate(posX + panX, posY + panY, -zoom);  //Translate will move the coordinate system in XYZ. See reference sheet.
+  rotateX(-rotX);                              //Self explanatory.
+  rotateZ(rotY);
+  rectMode(CENTER);
+  noStroke();                    //https://processing.org/reference/
+  fill(255);                    //Fill() sets a global variable that shapes use as color.
+  rect(0, 0, 1000, 1000);      //Ground/talbe/build-area/white-plate/motherfuga
+  rectMode(CORNER);
+  scale(1, -1, 1);
+
+
+
+  
+
+  pushMatrix();
+  translate(-100, 0);
+  Arm1.moveArm(theta);
+
+  popMatrix();
+  popMatrix();
+  
+  utils.drawResult(Arm1.resultMatrix, 175, 150);
+  double[] temp1 = Arm1.IK(Arm1.resultMatrix.getData()); //Calculate the IK angle based on the result matrix which is made from slider angles.
+  utils.drawResult("IK angles", 800, 70);
+  utils.drawResult(temp1, 800, 120);
+  utils.drawResult("Arm1 result matrix with IK angles (T06)", 1000, 100);
+
+  pushMatrix();                                //Look up the reference sheet "processing.org/reference". It is like making a quicksave before making changes.
+  translate(posX + panX, posY + panY, -zoom);  //Translate will move the coordinate system in XYZ. See reference sheet.
+  rotateX(-rotX);                              //Self explanatory.
+  rotateZ(rotY);
+  rectMode(CENTER);
+  noStroke();                    //https://processing.org/reference/
+  fill(255);                    //Fill() sets a global variable that shapes use as color.
+  rect(0, 0, 1000, 1000);      //Ground/talbe/build-area/white-plate/motherfuga
+  rectMode(CORNER);
+  scale(1, -1, 1);
+  
+
+  
+  pushMatrix();
+  translate(100, 0);
+  Arm1.moveArm(temp1);
+
+  popMatrix();
+  popMatrix();
+  utils.drawResult(Arm1.resultMatrix, 1000, 150);
 
   checkButtons();
 }
@@ -109,9 +170,47 @@ void playSavedThetaValues(int a) {
 
 
 
-
-void slidersFunction() {
-int start = 0;
+public void slidersFunction(int x, int y, int ya) { //Function that creates theta sliders.
+  int start = 0;
+    slider1 = cp5.addSlider("theta1")
+      .setPosition(x, y)
+      .setSize(200, 20)
+      .setRange(-180, 180)
+      .setValue(start)
+      .setColorCaptionLabel(color(20, 20, 20));
+    slider2 = cp5.addSlider("theta2")
+      .setPosition(x, y + ya)
+      .setSize(200, 20)
+      .setRange(-180, 180)
+      .setValue(start)
+      .setColorCaptionLabel(color(20, 20, 20));
+    slider3 = cp5.addSlider("theta3")
+      .setPosition(x, y + ya * 2)
+      .setSize(200, 20)
+      .setRange(-180, 180)
+      .setValue(start)
+      .setColorCaptionLabel(color(20, 20, 20));
+    slider4 = cp5.addSlider("theta4")
+      .setPosition(x, y + ya * 3)
+      .setSize(200, 20)
+      .setRange(-180, 180)
+      .setValue(start)
+      .setColorCaptionLabel(color(20, 20, 20));
+    slider5 = cp5.addSlider("theta5")
+      .setPosition(x, y + ya * 4)
+      .setSize(200, 20)
+      .setRange(-180, 180)
+      .setValue(start)
+      .setColorCaptionLabel(color(20, 20, 20));
+    slider6 = cp5.addSlider("theta6")
+      .setPosition(x, y + ya * 5)
+      .setSize(200, 20)
+      .setRange(-180, 180)
+      .setValue(start)
+      .setColorCaptionLabel(color(20, 20, 20));
+  }
+void slidersFunction1() {
+  int start = 0;
   slider1 = cp5.addSlider("theta1")
     .setPosition(150, 100)
     .setSize(200, 20)
@@ -253,6 +352,53 @@ void checkButtons() {
   }
 }
 
+
+void mousePressed() { //mousePressed is a built-in function that is called once every time a mouse button is pressed.
+  lastMouseX = mouseX; //Record the position of the mouse at the time it is pressed.
+  lastMouseY = mouseY;
+
+  if (mouseButton == RIGHT) { //Determine what mouse button is pressed.
+    rightMousePressed = true;
+  }
+  if (mouseButton == LEFT) {
+    leftMousePressed = true;
+  }
+}
+
+
+void mouseDragged() {                       //mouseDragged is a built-in function that is called every time the mouse moves WHILE a mouse button is pressed.
+  float changeX = mouseX - lastMouseX;      //Declaring and finding the change in mouse position since last time the lastMouse was updated.
+  float changeY = mouseY - lastMouseY;      //The change is in pixels, so if the mouse moves 10 pixels Y axis, changeY will be 10.
+
+  if (rightMousePressed && mouseY > menuHeight && mouseX < menuWidth) { //Only if the right mouse is clicked, and the mouse is inside the given area.
+    //Pan values are used in a "translate()" function at the top of the "draw()" function.
+    panX += changeX;                        //They accumulate the change, to be used as a 'offset' in the translate function.
+    panY += changeY;                        //The result will be that whatever is drawn afterwards is moved with this offset.
+  }                                         //We can see it as the camera moving.
+  if (leftMousePressed && mouseY > menuHeight && mouseX < menuWidth) { //Only if the left mouse is clicked, and the mouse is inside the given area.
+    //Tilt the same as pan
+    rotX += changeY * 0.01;                 //Multiplied with 0.01 to act as sensitivity.
+    rotY += changeX * 0.01;                 //It it was not multiplied with 0.01 it would rotate the changeX and changeY in radians, and not a lot of radians is a lot of rotation...
+  }
+
+  lastMouseX = mouseX;                      //update lastMouse
+  lastMouseY = mouseY;
+}
+
+void mouseReleased() {                      //Runs once when mouse is released.
+  rightMousePressed = false;
+  leftMousePressed = false;
+}
+
+void mouseWheel(MouseEvent event) {         //mouseWheel is the same as mousePressed, but for mouse wheel. MouseEvent is to alow us to use shit like ".getCounts" from the mouse.
+  if (mouseY > menuHeight && mouseX < menuWidth){
+  float e = event.getCount();               //"event.getCount()" detects scroll direction. Returns "1" or "-1".
+  zoom += e * 40;                           //Zoom is also just used in a "translate()" in "draw()". Just on the Z axis (towards and away from view), instead of XY.
+  zoom = constrain(zoom, -350, 3000);       //Set zoom limits
+  panX += (mouseX-(width/2))*0.1*e;         //This is just a little extra to make the camera zoom kinda towards the mouse position.
+  panY += (mouseY-(height/2))*0.1*e;        //It is not accurate, it is just better that nothing.
+  }
+}
 
 
 
