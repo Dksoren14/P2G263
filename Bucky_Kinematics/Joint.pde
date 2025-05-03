@@ -4,6 +4,7 @@ class Joint {
   double alpha, a, d, thetaOffset, sinAlpha, cosAlpha;
   double[][] transformationMatrix;
   RealMatrix realTransformationMatrix;
+  PShape texture;
 
   Joint(double[] MDHRowT) {
 
@@ -34,6 +35,7 @@ class Joint {
 
   void display() {
     //utils.applyRealMatrix(realTransformationMatrix);
+    pushStyle();
     stroke(255, 0, 0);
     line(0, 0, 0, 100, 0, 0);
     stroke(0, 255, 0);
@@ -41,5 +43,12 @@ class Joint {
     stroke(0, 0, 255);
     line(0, 0, 0, 0, 0, 100);
     noStroke();
+    popStyle();
+    pushMatrix();
+    rotateX(radians(90));
+    if (texture != null) {
+      shape(texture);
+    }
+    popMatrix();
   }
 }

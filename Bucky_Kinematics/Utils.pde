@@ -3,11 +3,13 @@ class Utils {
 
 
   void drawResult(float[] a, int x, int y) {
+    pushStyle();
     fill(0);
     textSize(30);
     for (int i = 0; i<a.length; i++) {
       text(nf(a[i], 0, 4), x, y + i * 50);
     }
+    popStyle();
   }
   void drawResult(double[][] a, int x, int y) {
     fill(0);
@@ -39,6 +41,7 @@ class Utils {
     }
   }
   void drawResult(String[] a, int x, int y) { //Function with same name (fucntion overloading). Draw Vector from data type "1d string array", at position "x" and "y".
+    fill(0);
     textSize(30);
     for (int i = 0; i < a.length; i++) {
       //fill(255);
@@ -48,6 +51,7 @@ class Utils {
     }
   }
   void drawResult(String a, int x, int y) { //Function with same name (fucntion overloading). Draw Vector from data type "1d string array", at position "x" and "y".
+    fill(0);
     textSize(30);
     text(a, x, y);
   }

@@ -13,9 +13,25 @@ class Arm {
     for (int i = 0; i < MDHT.length; i++) {
       jointArray[i] = new Joint(MDHT[i]);
     }
+    calculateFinalMatrix();
+  }
+  Arm(double[][] MDHT, PShape[] textures) {
+    MDH = MDHT;
+    jointArray = new Joint[MDHT.length];
+
+    for (int i = 0; i < MDHT.length; i++) {
+      jointArray[i] = new Joint(MDHT[i]);
+      if (textures[i] != null) {
+        jointArray[i].texture = textures[i+1];
+      }
+    }
+    calculateFinalMatrix();
   }
 
   void moveAndDraw(float[] a) {
+    if (textures[0] != null) {
+      shape(textures[0]);
+    }
     for (int i = 0; i < jointArray.length; i++) {
       jointArray[i].updateTransformationMatrix(Math.toRadians(a[i]));
       utils.applyRealMatrix(jointArray[i].realTransformationMatrix);
@@ -23,8 +39,11 @@ class Arm {
     }
     calculateFinalMatrix();
   }
-  
+
   void moveAndDraw(double[] a) {
+    if (textures[0] != null) {
+      shape(textures[0]);
+    }
     for (int i = 0; i < jointArray.length; i++) {
       jointArray[i].updateTransformationMatrix(Math.toRadians(a[i]));
       utils.applyRealMatrix(jointArray[i].realTransformationMatrix);
@@ -47,7 +66,7 @@ class Arm {
     }
   }
 
-  double[] IK(double[][] inputMatrix) {
+  double[] anglesFromIK(double[][] inputMatrix) {
     double[] angle = new double[6];
 
     angle[0] = Math.atan2(inputMatrix[1][3], inputMatrix[0][3]);

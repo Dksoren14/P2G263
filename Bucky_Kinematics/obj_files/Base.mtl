@@ -1,0 +1,8 @@
+# Blender 4.3.2 MTL File: 'None'
+# www.blender.org
+#Ka 0.2 0.2 0.2     # Ambient color
+#Kd 0.8 0.8 0.8     # Diffuse color
+#Ks 1.0 1.0 1.0     # Specular color
+#Ns 100.0           # Shininess
+#d 1.0              # Transparency (1.0 = opaque, 0.0 = fully transparent)
+#map_Kd texture.jpg # Diffuse texture map
