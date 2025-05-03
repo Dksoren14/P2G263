@@ -28,7 +28,7 @@ int zoom = 800;          //Start zoom / start distande from the view.
 
 boolean keyVariableA, keyVariableB, keyVariable1, keyVariable2, keyVariable3, keyVariable4, keyVariable5, keyVariable6, keyVariable7, keyVariable8; //Track key A and B
 boolean keyVariableC = true;
-float saveThetaValues[][] = new float[4][7];
+float saveThetaValues[][] = new float[4][6];
 
 
 ControlP5 cp5;
@@ -76,13 +76,13 @@ void draw() {
 
   //Under here is where the transformations from the rotate pan zoom functionality happens.
   pushMatrix();                                //Look up the reference sheet "processing.org/reference". It is like making a quicksave before making changes.
-  fill(0);  
+  fill(0);
   utils.drawResult("Slider angles", 30, 70);
   utils.drawResult(theta, 30, 120); //Draw slider values
 
 
   utils.drawResult("Arm1 result matrix with slider angles (T06)", 175, 100);
-  
+
   translate(posX + panX, posY + panY, -zoom);  //Translate will move the coordinate system in XYZ. See reference sheet.
   rotateX(-rotX);                              //Self explanatory.
   rotateZ(rotY);
@@ -93,17 +93,13 @@ void draw() {
   rectMode(CORNER);
   scale(1, -1, 1);
 
-
-
-  
-
   pushMatrix();
   translate(-100, 0);
-  Arm1.moveArm(theta);
+  Arm1.moveAndDraw(theta);
 
   popMatrix();
   popMatrix();
-  
+
   utils.drawResult(Arm1.resultMatrix, 175, 150);
   double[] temp1 = Arm1.IK(Arm1.resultMatrix.getData()); //Calculate the IK angle based on the result matrix which is made from slider angles.
   utils.drawResult("IK angles", 800, 70);
@@ -120,12 +116,12 @@ void draw() {
   rect(0, 0, 1000, 1000);      //Ground/talbe/build-area/white-plate/motherfuga
   rectMode(CORNER);
   scale(1, -1, 1);
-  
 
-  
+
+
   pushMatrix();
   translate(100, 0);
-  Arm1.moveArm(temp1);
+  Arm1.moveAndDraw(temp1);
 
   popMatrix();
   popMatrix();
@@ -172,43 +168,43 @@ void playSavedThetaValues(int a) {
 
 public void slidersFunction(int x, int y, int ya) { //Function that creates theta sliders.
   int start = 0;
-    slider1 = cp5.addSlider("theta1")
-      .setPosition(x, y)
-      .setSize(200, 20)
-      .setRange(-180, 180)
-      .setValue(start)
-      .setColorCaptionLabel(color(20, 20, 20));
-    slider2 = cp5.addSlider("theta2")
-      .setPosition(x, y + ya)
-      .setSize(200, 20)
-      .setRange(-180, 180)
-      .setValue(start)
-      .setColorCaptionLabel(color(20, 20, 20));
-    slider3 = cp5.addSlider("theta3")
-      .setPosition(x, y + ya * 2)
-      .setSize(200, 20)
-      .setRange(-180, 180)
-      .setValue(start)
-      .setColorCaptionLabel(color(20, 20, 20));
-    slider4 = cp5.addSlider("theta4")
-      .setPosition(x, y + ya * 3)
-      .setSize(200, 20)
-      .setRange(-180, 180)
-      .setValue(start)
-      .setColorCaptionLabel(color(20, 20, 20));
-    slider5 = cp5.addSlider("theta5")
-      .setPosition(x, y + ya * 4)
-      .setSize(200, 20)
-      .setRange(-180, 180)
-      .setValue(start)
-      .setColorCaptionLabel(color(20, 20, 20));
-    slider6 = cp5.addSlider("theta6")
-      .setPosition(x, y + ya * 5)
-      .setSize(200, 20)
-      .setRange(-180, 180)
-      .setValue(start)
-      .setColorCaptionLabel(color(20, 20, 20));
-  }
+  slider1 = cp5.addSlider("theta1")
+    .setPosition(x, y)
+    .setSize(200, 20)
+    .setRange(-180, 180)
+    .setValue(start)
+    .setColorCaptionLabel(color(20, 20, 20));
+  slider2 = cp5.addSlider("theta2")
+    .setPosition(x, y + ya)
+    .setSize(200, 20)
+    .setRange(-180, 180)
+    .setValue(start)
+    .setColorCaptionLabel(color(20, 20, 20));
+  slider3 = cp5.addSlider("theta3")
+    .setPosition(x, y + ya * 2)
+    .setSize(200, 20)
+    .setRange(-180, 180)
+    .setValue(start)
+    .setColorCaptionLabel(color(20, 20, 20));
+  slider4 = cp5.addSlider("theta4")
+    .setPosition(x, y + ya * 3)
+    .setSize(200, 20)
+    .setRange(-180, 180)
+    .setValue(start)
+    .setColorCaptionLabel(color(20, 20, 20));
+  slider5 = cp5.addSlider("theta5")
+    .setPosition(x, y + ya * 4)
+    .setSize(200, 20)
+    .setRange(-180, 180)
+    .setValue(start)
+    .setColorCaptionLabel(color(20, 20, 20));
+  slider6 = cp5.addSlider("theta6")
+    .setPosition(x, y + ya * 5)
+    .setSize(200, 20)
+    .setRange(-180, 180)
+    .setValue(start)
+    .setColorCaptionLabel(color(20, 20, 20));
+}
 void slidersFunction1() {
   int start = 0;
   slider1 = cp5.addSlider("theta1")
@@ -314,7 +310,7 @@ void keyPressed() {         //keyPressed is a built-in function that is called o
 
 void checkButtons() {
   if (keyVariableA == true) {
-    saveThetaValues(1);
+    //saveThetaValues(1);
   }
   if (keyVariableB == true) {
     //playSavedThetaValues();
@@ -322,15 +318,19 @@ void checkButtons() {
 
   if (keyVariable1 == true) {
     saveThetaValues(0);
+    keyVariable1 = false;
   }
   if (keyVariable2 == true) {
     saveThetaValues(1);
+    keyVariable2 = false;
   }
   if (keyVariable3 == true) {
     saveThetaValues(2);
+    keyVariable3 = false;
   }
   if (keyVariable4 == true) {
     saveThetaValues(3);
+    keyVariable4 = false;
   }
 
   if (keyVariableC == true) {
@@ -391,12 +391,12 @@ void mouseReleased() {                      //Runs once when mouse is released.
 }
 
 void mouseWheel(MouseEvent event) {         //mouseWheel is the same as mousePressed, but for mouse wheel. MouseEvent is to alow us to use shit like ".getCounts" from the mouse.
-  if (mouseY > menuHeight && mouseX < menuWidth){
-  float e = event.getCount();               //"event.getCount()" detects scroll direction. Returns "1" or "-1".
-  zoom += e * 40;                           //Zoom is also just used in a "translate()" in "draw()". Just on the Z axis (towards and away from view), instead of XY.
-  zoom = constrain(zoom, -350, 3000);       //Set zoom limits
-  panX += (mouseX-(width/2))*0.1*e;         //This is just a little extra to make the camera zoom kinda towards the mouse position.
-  panY += (mouseY-(height/2))*0.1*e;        //It is not accurate, it is just better that nothing.
+  if (mouseY > menuHeight && mouseX < menuWidth) {
+    float e = event.getCount();               //"event.getCount()" detects scroll direction. Returns "1" or "-1".
+    zoom += e * 40;                           //Zoom is also just used in a "translate()" in "draw()". Just on the Z axis (towards and away from view), instead of XY.
+    zoom = constrain(zoom, -350, 3000);       //Set zoom limits
+    panX += (mouseX-(width/2))*0.1*e;         //This is just a little extra to make the camera zoom kinda towards the mouse position.
+    panY += (mouseY-(height/2))*0.1*e;        //It is not accurate, it is just better that nothing.
   }
 }
 

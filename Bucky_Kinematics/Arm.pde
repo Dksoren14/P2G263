@@ -15,18 +15,20 @@ class Arm {
     }
   }
 
-  void moveArm(float[] a) {
+  void moveAndDraw(float[] a) {
     for (int i = 0; i < jointArray.length; i++) {
       jointArray[i].updateTransformationMatrix(Math.toRadians(a[i]));
-      jointArray[i].translate();
+      utils.applyRealMatrix(jointArray[i].realTransformationMatrix);
+      jointArray[i].display();
     }
     calculateFinalMatrix();
   }
   
-  void moveArm(double[] a) {
+  void moveAndDraw(double[] a) {
     for (int i = 0; i < jointArray.length; i++) {
       jointArray[i].updateTransformationMatrix(Math.toRadians(a[i]));
-      jointArray[i].translate();
+      utils.applyRealMatrix(jointArray[i].realTransformationMatrix);
+      jointArray[i].display();
     }
     calculateFinalMatrix();
   }

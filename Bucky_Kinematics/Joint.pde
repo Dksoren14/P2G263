@@ -32,8 +32,8 @@ class Joint {
     realTransformationMatrix = new Array2DRowRealMatrix(matrix);
   }
 
-  void translate() {
-    utils.applyRealMatrix(realTransformationMatrix);
+  void display() {
+    //utils.applyRealMatrix(realTransformationMatrix);
     stroke(255, 0, 0);
     line(0, 0, 0, 100, 0, 0);
     stroke(0, 255, 0);
