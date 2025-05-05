@@ -247,6 +247,10 @@ public void sendData() { //Sends some data to arduino. Søren write more comment
   }
 }
 
+public void readData(){
+  
+}
+
 void baudratelistFunction(int index) {
   String baudstring;
   baudstring = baudlist.getItem(index).get("name").toString();
