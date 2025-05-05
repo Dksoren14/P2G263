@@ -9,7 +9,7 @@ Textarea receivedArea; //sourse: Søren to explain. Think it is a CP5 thing.
 Println arduinoConsole;//Søren
 ScrollableList portlist;
 ScrollableList baudlist;
-float[] lastSentValue; //Track what values was last sent to the arduino.
+float[] lastSentValue = new float[6]; //Track what values was last sent to the arduino.
 boolean connectButtonStatus = false; //Status of the connect button
 String selectedport; //Søren
 int selectedbaudrate; //Søren
@@ -132,6 +132,9 @@ void draw() {
 
 
   popMatrix();
+  
+  sendData();
+  
 }
 
 
@@ -226,14 +229,11 @@ void toggleConnectionUI() { //Will toggle the UI. Runs when "toggleUI" button is
 public void sendData() { //Sends some data to arduino. Søren write more comments.
   try {
     if (theta[0] != lastSentValue[0] || theta[1] != lastSentValue[1] || theta[2] != lastSentValue[2] || theta[3] != lastSentValue[3] || theta[4] != lastSentValue[4] || theta[5] != lastSentValue[5]) {
-      String message = "M1:" + theta[1] + "M1end| M2:" + theta[2] + "M2end| M3:" + theta[3] + "M3end| M4:" + theta[4] + "M4end| M5:" + theta[5] + "M5end| M6:" + theta[6] + "\n";
+      String message = "M1:" + theta[0] + "M1end| M2:" + theta[1] + "M2end| M3:" + theta[2] + "M3end| M4:" + theta[3] + "M4end| M5:" + theta[4] + "M5end| M6:" + theta[5] + "\n";
       serial.write(message);
-      lastSentValue[0] = theta[0];
-      lastSentValue[1] = theta[1];
-      lastSentValue[2] = theta[2];
-      lastSentValue[3] = theta[3];
-      lastSentValue[4] = theta[4];
-      lastSentValue[5] = theta[5];
+      for (int i = 0; i < theta.length; i++){
+      lastSentValue[i] = theta[i];
+      }
     }
     String data = serial.readStringUntil('\n');
     if (data != null) {
