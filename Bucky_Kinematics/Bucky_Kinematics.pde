@@ -65,14 +65,15 @@ void setup() {
   posY = height-100;                  //Used in a "translate" function in "draw".
   menuWidth = width-375;
 
-  textures[0] = loadShape("obj_files/Base.obj");
-  textures[1] = loadShape("obj_files/Link1.obj");
-  textures[2] = loadShape("obj_files/Link2.obj");
+  //textures[0] = loadShape("obj_files/Base.obj");
+  //textures[1] = loadShape("obj_files/Link1.obj");
+  //textures[2] = loadShape("obj_files/Link2.obj");
 
   cp5 = new ControlP5(this);
   Arm1 = new Arm(MDH, textures);
   Arm2 = new Arm(MDH, textures);
-  //connectionUI(1000, 400);
+ 
+  
   makeSlidersFunction(width-325, 450, 50);
   connectionUI(10, 10);
   infoButton = cp5.addButton("infoButton") //Make button "toggleUI".
