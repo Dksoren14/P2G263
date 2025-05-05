@@ -120,7 +120,7 @@ void draw() {
 
 
   pushMatrix();
-  translate(-100, 0);
+  translate(-300, 0);
   Arm1.moveAndDraw(theta);
   popMatrix();
 
