@@ -42,6 +42,8 @@ Arm Arm1, Arm2;
 Slider slider1, slider2, slider3, slider4, slider5, slider6;
 float theta1, theta2, theta3, theta4, theta5, theta6; //Theta values
 float[] theta = {0, 0, 0, 0, 0, 0};
+//float[] startTheta;
+double[] speed = new double[6];
 
 double[][] MDH = { //Alpha, a, d, theta offset
   {0, 0, 122.65, 0},
@@ -50,6 +52,13 @@ double[][] MDH = { //Alpha, a, d, theta offset
   {90, 0, 115.49*2, 0},
   {-90, 0, 0, 0},
   {90, 0, 0, 0}};
+
+
+double[][] someTargetMatrix = {
+  {0, -0.9178, 0.3971, 107},
+  {0, -0.3971, -0.9178, -248},
+  {1, 0, 0, 238},
+  {0, 0, 0, 1}};
 
 
 RealMatrix Matrix1232 = new Array2DRowRealMatrix(new double[][] {{15, 20, 30, 40}, {1, 2, 3.5, 4.1}, {10, 29, 30, 40}, {1, 2, 3.2, 4}});
@@ -72,8 +81,8 @@ void setup() {
   cp5 = new ControlP5(this);
   Arm1 = new Arm(MDH, textures);
   Arm2 = new Arm(MDH, textures);
- 
-  
+
+
   makeSlidersFunction(width-325, 450, 50);
   connectionUI(10, 10);
   infoButton = cp5.addButton("infoButton") //Make button "toggleUI".
@@ -103,7 +112,12 @@ void draw() {
     utils.drawResult("Arm1 result matrix with IK angles (T06)", 1000, 100);
     utils.drawResult(Arm2.resultMatrix, 1000, 150);
   }
-
+  if (keyVariableA) {
+    double[] startTheta = {0, 0, 0, 0, 0, 0};
+    Arm1.executeMovement(someTargetMatrix, 3000, startTheta);
+    keyVariableA = false;
+  }
+  utils.drawResult(speed, 900, 450);
 
   //Under this is where the transformations from the rotate pan zoom functionality happens.
   pushMatrix();                                //Look up the reference sheet "processing.org/reference". It is like making a quicksave before making changes.
@@ -132,9 +146,8 @@ void draw() {
 
 
   popMatrix();
-  
+
   sendData();
-  
 }
 
 
@@ -227,98 +240,97 @@ void toggleConnectionUI() { //Will toggle the UI. Runs when "toggleUI" button is
 
 
 public void sendData() { //Sends some data to arduino. Søren write more comments.
-  try {
-    if (theta[0] != lastSentValue[0] || theta[1] != lastSentValue[1] || theta[2] != lastSentValue[2] || theta[3] != lastSentValue[3] || theta[4] != lastSentValue[4] || theta[5] != lastSentValue[5]) {
-      String message = "M1:" + theta[0] + "M1end| M2:" + theta[1] + "M2end| M3:" + theta[2] + "M3end| M4:" + theta[3] + "M4end| M5:" + theta[4] + "M5end| M6:" + theta[5] + "\n";
-      serial.write(message);
-      for (int i = 0; i < theta.length; i++){
-      lastSentValue[i] = theta[i];
-      }
-    }
-    String data = serial.readStringUntil('\n');
-    if (data != null) {
-      data = data.trim();
-      receivedArea.setText("Arduino: " + data);
-      println("Arduino: " + data);
-    }
-  }
-  catch (Exception e) {
-    println("Error opening serial port: " + e.getMessage());
-  }
+  //try {
+  //  if (theta[0] != lastSentValue[0] || theta[1] != lastSentValue[1] || theta[2] != lastSentValue[2] || theta[3] != lastSentValue[3] || theta[4] != lastSentValue[4] || theta[5] != lastSentValue[5]) {
+  //    String message = "M1:" + theta[0] + "M1end| M2:" + theta[1] + "M2end| M3:" + theta[2] + "M3end| M4:" + theta[3] + "M4end| M5:" + theta[4] + "M5end| M6:" + theta[5] + "\n";
+  //    serial.write(message);
+  //    for (int i = 0; i < theta.length; i++) {
+  //      lastSentValue[i] = theta[i];
+  //    }
+  //  }
+  //  String data = serial.readStringUntil('\n');
+  //  if (data != null) {
+  //    data = data.trim();
+  //    receivedArea.setText("Arduino: " + data);
+  //    println("Arduino: " + data);
+  //  }
+  //}
+  //catch (Exception e) {
+  //  println("Error opening serial port: " + e.getMessage());
+  //}
 }
 
-public void readData(){
-  
-}
+//public void readData() {
+//}
 
-void baudratelistFunction(int index) {
-  String baudstring;
-  baudstring = baudlist.getItem(index).get("name").toString();
-  selectedbaudrate = Integer.parseInt(baudstring);
-  println("Selected", selectedbaudrate);
-}
-void comportlistFunction(int index) {
-  selectedport = portlist.getItem(index).get("name").toString();
-  println("Selected", selectedport);
-}
-void connectButtonFunction() {
-  if (!connectButtonStatus) {
-    serial = new Serial(this, selectedport, selectedbaudrate);
-    connectionButton.setLabel("Disconnect");
-    connectButtonStatus = true;
-    println("Connected", selectedport, "at", selectedbaudrate);
-  } else {
-    serial.stop();
-    connectionButton.setLabel("Connect");
-    connectButtonStatus = false;
-    println("Disconnected from", selectedport);
-  }
-}
+//void baudratelistFunction(int index) {
+//  String baudstring;
+//  baudstring = baudlist.getItem(index).get("name").toString();
+//  selectedbaudrate = Integer.parseInt(baudstring);
+//  println("Selected", selectedbaudrate);
+//}
+//void comportlistFunction(int index) {
+//  selectedport = portlist.getItem(index).get("name").toString();
+//  println("Selected", selectedport);
+//}
+//void connectButtonFunction() {
+//  if (!connectButtonStatus) {
+//    serial = new Serial(this, selectedport, selectedbaudrate);
+//    connectionButton.setLabel("Disconnect");
+//    connectButtonStatus = true;
+//    println("Connected", selectedport, "at", selectedbaudrate);
+//  } else {
+//    serial.stop();
+//    connectionButton.setLabel("Connect");
+//    connectButtonStatus = false;
+//    println("Disconnected from", selectedport);
+//  }
+//}
 
 
 void connectionUI(int x, int y) { //Function that creates the connection UI
-  toggleConnectionUIButton = cp5.addButton("toggleConnectionUI") //Make button "toggleUI".
-    .setLabel("Connection UI")
-    .setSize(100, 30)
-    .setPosition(x, y);
-  y=y+50;
-  connectionButton = cp5.addButton("connectButtonFunction")
-    .setLabel("Connect")
-    .setSize(70, 30)
-    .setPosition(x, y);
+  //toggleConnectionUIButton = cp5.addButton("toggleConnectionUI") //Make button "toggleUI".
+  //  .setLabel("Connection UI")
+  //  .setSize(100, 30)
+  //  .setPosition(x, y);
+  //y=y+50;
+  //connectionButton = cp5.addButton("connectButtonFunction")
+  //  .setLabel("Connect")
+  //  .setSize(70, 30)
+  //  .setPosition(x, y);
 
-  portlist = cp5.addScrollableList("comportlistFunction")
-    .setLabel("select port")
-    .setBarHeight(30)
-    .setPosition(x+100, y)
-    .setItemHeight(25);
+  //portlist = cp5.addScrollableList("comportlistFunction")
+  //  .setLabel("select port")
+  //  .setBarHeight(30)
+  //  .setPosition(x+100, y)
+  //  .setItemHeight(25);
 
-  baudlist = cp5.addScrollableList("baudratelistFunction")
-    .setLabel("select baudrate")
-    .setBarHeight(30)
-    .setPosition(x+220, y)
-    .setItemHeight(24);
+  //baudlist = cp5.addScrollableList("baudratelistFunction")
+  //  .setLabel("select baudrate")
+  //  .setBarHeight(30)
+  //  .setPosition(x+220, y)
+  //  .setItemHeight(24);
 
-  baudlist.addItem("9600", 9600);
-  baudlist.addItem("19200", 19200);
-  baudlist.addItem("38400", 38400);
-  baudlist.addItem("57600", 57600);
+  //baudlist.addItem("9600", 9600);
+  //baudlist.addItem("19200", 19200);
+  //baudlist.addItem("38400", 38400);
+  //baudlist.addItem("57600", 57600);
 
-  receivedArea = cp5.addTextarea("receivedData")
-    .setSize(360, 140)
-    .setPosition(x, y+250)
-    .setColorBackground(80);
-  arduinoConsole = cp5.addConsole(receivedArea);
+  //receivedArea = cp5.addTextarea("receivedData")
+  //  .setSize(360, 140)
+  //  .setPosition(x, y+250)
+  //  .setColorBackground(80);
+  //arduinoConsole = cp5.addConsole(receivedArea);
 
-  String[] availableports = Serial.list(); //   <-------------------- Søren explain plz
-  for (int i = 0; i < availableports.length; i++) {
-    portlist.addItem(availableports[i], availableports[i]);
-  }
+  //String[] availableports = Serial.list(); //   <-------------------- Søren explain plz
+  //for (int i = 0; i < availableports.length; i++) {
+  //  portlist.addItem(availableports[i], availableports[i]);
+  //}
 
-  connectionButton.setVisible(false);
-  portlist.setVisible(false);
-  baudlist.setVisible(false);
-  receivedArea.setVisible(false);
+  //connectionButton.setVisible(false);
+  //portlist.setVisible(false);
+  //baudlist.setVisible(false);
+  //receivedArea.setVisible(false);
 }
 
 void infoButton() {

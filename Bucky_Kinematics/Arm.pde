@@ -66,6 +66,29 @@ class Arm {
     }
   }
 
+  void executeMovement(double[][] targetMatrix, double targetTime, double[] startAngle) {
+    double startTime = millis();
+    double currentTime = millis()-startTime;
+    double[] targetAngle = anglesFromIK(targetMatrix);
+    
+
+    while (currentTime < targetTime) {
+      currentTime = millis()-startTime;
+      for (int i = 0; i < 6; i++) {
+        speed[i] = (float)trajectoryPlanning(targetAngle[i], targetTime, startAngle[i], currentTime);
+        println("Speed " + i + " = " + speed[i]);
+        //println("targetAngle " + i + " = " + targetAngle[i]);
+      }
+      utils.drawResult(speed, 900, 450);
+      utils.drawResult(123, 800,450);
+      //println("currentTime = " + currentTime);
+      sendData();
+    }
+  }
+
+
+
+
   double[] anglesFromIK(double[][] inputMatrix) {
     double[] angle = new double[6];
 
@@ -83,7 +106,7 @@ class Arm {
     Matrix03FromIK = Matrix03FromIK.multiply(jointArray[1].realTransformationMatrix);
     jointArray[2].updateTransformationMatrix(angle[2]);
     Matrix03FromIK = Matrix03FromIK.multiply(jointArray[2].realTransformationMatrix);
-    
+
     //for (int i=1; i<3; i++) {
     //  jointArray[i].updateTransformationMatrix(angle[i]);
     //  Matrix03FromIK = Matrix03FromIK.multiply(jointArray[i].realTransformationMatrix);
@@ -108,17 +131,17 @@ class Arm {
     return angleDegrees;
   }
 
-  double[] trajectoryPlanning(double [] end_angles, double target_time, double[] angles, double t) {
-    double[] speed = new double[6];
+  double trajectoryPlanning(double endAngle, double targetTimeT, double startAngle, double currentTimeT) {
+    double targetTime = targetTimeT/1000;
+    double currentTime = currentTimeT/1000;
+    //println(currentTime);
+    double a_0 = startAngle;
+    double a_1 = 0;
+    double a_2 = (3/Math.pow(targetTime, 2)*(endAngle - startAngle));
+    double a_3 = (-2/Math.pow(targetTime, 3)*(endAngle - startAngle));
 
-    for (int i=0; i>6; i++) {
-      double a_0 = angles[i];
-      double a_1 = 0;
-      double a_2 = (3/Math.pow(target_time, 2)*(end_angles[i] - angles[i]));
-      double a_3 = (-2/Math.pow(target_time, 3)*(end_angles[i] - angles[i]));
-
-      speed[i] = a_1 + 2*a_2*t + 3*a_3*(Math.pow(t, 2));
-    }
+    double speed = a_1 + 2*a_2*currentTime + 3*a_3*(Math.pow(currentTime, 2));
+    //println(speed);
     return speed;
   }
 }
