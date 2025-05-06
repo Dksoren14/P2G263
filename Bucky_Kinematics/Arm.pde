@@ -5,7 +5,11 @@ class Arm {
   RealMatrix Matrix03FromIK;
   Joint[] jointArray;
   double[][] MDH;
-
+  double startTime;
+  double currentTime;
+  double[] targetAngle;
+  
+  
   Arm(double[][] MDHT) {
     MDH = MDHT;
     jointArray = new Joint[MDHT.length];
@@ -67,20 +71,23 @@ class Arm {
   }
 
   void executeMovement(double[][] targetMatrix, double targetTime, double[] startAngle) {
-    double startTime = millis();
-    double currentTime = millis()-startTime;
-    double[] targetAngle = anglesFromIK(targetMatrix);
     
-
-    while (currentTime < targetTime) {
+    if(!haveRun){
+      startTime = millis();
+      currentTime = millis()-startTime;
+      targetAngle = anglesFromIK(targetMatrix);
+      haveRun = true;
+    }
+    
+    if (currentTime < targetTime) {
       currentTime = millis()-startTime;
       for (int i = 0; i < 6; i++) {
-        speed[i] = (float)trajectoryPlanning(targetAngle[i], targetTime, startAngle[i], currentTime);
+        speed[i] = abs((float)trajectoryPlanning(targetAngle[i], targetTime, startAngle[i], currentTime));
         println("Speed " + i + " = " + speed[i]);
         //println("targetAngle " + i + " = " + targetAngle[i]);
       }
       utils.drawResult(speed, 900, 450);
-      utils.drawResult(123, 800,450);
+      //utils.drawResult(123, 800,450);
       //println("currentTime = " + currentTime);
       sendData();
     }

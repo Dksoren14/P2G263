@@ -29,6 +29,7 @@ boolean leftMousePressed = false;  //Used to track which mouse button is being p
 int menuHeight = 50;      //The height the "menu" goes down to. The "menu" is not a object at the moment.
 int menuWidth;      //The menu is just some boxes where the color is different and the "mouseDragged()" function doesn't do anything. Initialized in setup.
 int zoom = 800;          //Start zoom / start distande from the view.
+boolean haveRun = false;
 
 
 
@@ -115,7 +116,7 @@ void draw() {
   if (keyVariableA) {
     double[] startTheta = {0, 0, 0, 0, 0, 0};
     Arm1.executeMovement(someTargetMatrix, 3000, startTheta);
-    keyVariableA = false;
+    
   }
   utils.drawResult(speed, 900, 450);
 
@@ -242,7 +243,7 @@ void toggleConnectionUI() { //Will toggle the UI. Runs when "toggleUI" button is
 public void sendData() { //Sends some data to arduino. Søren write more comments.
   //try {
   //  if (theta[0] != lastSentValue[0] || theta[1] != lastSentValue[1] || theta[2] != lastSentValue[2] || theta[3] != lastSentValue[3] || theta[4] != lastSentValue[4] || theta[5] != lastSentValue[5]) {
-  //    String message = "M1:" + theta[0] + "M1end| M2:" + theta[1] + "M2end| M3:" + theta[2] + "M3end| M4:" + theta[3] + "M4end| M5:" + theta[4] + "M5end| M6:" + theta[5] + "\n";
+  //    String message = "M1:" + theta[0] + "M1end| M2:" + theta[1] + "M2end| M3:" + theta[2] + "M3end| M4:" + theta[3] + "M4end| M5:" + theta[4] + "M5end| M6:" + theta[5] + "M6end| S1" + speed[1] "\n";
   //    serial.write(message);
   //    for (int i = 0; i < theta.length; i++) {
   //      lastSentValue[i] = theta[i];
@@ -439,6 +440,7 @@ void checkKeyPressed() { //-----------------------------------------------------
   }
   if (keyVariableB == true) {
     //playSavedThetaValues();
+    haveRun = false;
   }
 
   if (keyVariable1 == true) {
