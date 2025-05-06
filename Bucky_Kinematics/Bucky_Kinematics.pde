@@ -44,7 +44,7 @@ Slider slider1, slider2, slider3, slider4, slider5, slider6;
 float theta1, theta2, theta3, theta4, theta5, theta6; //Theta values
 float[] theta = {0, 0, 0, 0, 0, 0};
 //float[] startTheta;
-double[] speed = new double[6];
+
 
 double[][] MDH = { //Alpha, a, d, theta offset
   {0, 0, 122.65, 0},
@@ -115,11 +115,10 @@ void draw() {
   }
   if (keyVariableA) {
     double[] startTheta = {0, 0, 0, 0, 0, 0};
-    Arm1.executeMovement(someTargetMatrix, 3000, startTheta);
-    
+    Arm1.executeMovement(someTargetMatrix, 1000, startTheta);
   }
-  utils.drawResult(speed, 900, 450);
-
+  utils.drawResult(Arm1.speed, 900, 450);
+  utils.drawResult(Arm1.pos, 1100, 450);
   //Under this is where the transformations from the rotate pan zoom functionality happens.
   pushMatrix();                                //Look up the reference sheet "processing.org/reference". It is like making a quicksave before making changes.
   translate(posX + panX, posY + panY, -zoom);  //Translate will move the coordinate system in XYZ. See reference sheet.

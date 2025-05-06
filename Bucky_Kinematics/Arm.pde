@@ -8,8 +8,10 @@ class Arm {
   double startTime;
   double currentTime;
   double[] targetAngle;
-  
-  
+  double[] speed = new double[6];
+  float[] pos = new float[6];
+
+
   Arm(double[][] MDHT) {
     MDH = MDHT;
     jointArray = new Joint[MDHT.length];
@@ -71,22 +73,21 @@ class Arm {
   }
 
   void executeMovement(double[][] targetMatrix, double targetTime, double[] startAngle) {
-    
-    if(!haveRun){
+
+    if (!haveRun) {
       startTime = millis();
       currentTime = millis()-startTime;
       targetAngle = anglesFromIK(targetMatrix);
       haveRun = true;
     }
-    
+
     if (currentTime < targetTime) {
       currentTime = millis()-startTime;
       for (int i = 0; i < 6; i++) {
-        speed[i] = abs((float)trajectoryPlanning(targetAngle[i], targetTime, startAngle[i], currentTime));
-        println("Speed " + i + " = " + speed[i]);
-        //println("targetAngle " + i + " = " + targetAngle[i]);
+        speed[i] = abs((float)getSpeed(targetAngle[i], targetTime, startAngle[i], currentTime));
+        pos[i] = (float)getPos(targetAngle[i], targetTime, startAngle[i], currentTime);
       }
-      utils.drawResult(speed, 900, 450);
+      theta = pos;
       //utils.drawResult(123, 800,450);
       //println("currentTime = " + currentTime);
       sendData();
@@ -114,16 +115,11 @@ class Arm {
     jointArray[2].updateTransformationMatrix(angle[2]);
     Matrix03FromIK = Matrix03FromIK.multiply(jointArray[2].realTransformationMatrix);
 
-    //for (int i=1; i<3; i++) {
-    //  jointArray[i].updateTransformationMatrix(angle[i]);
-    //  Matrix03FromIK = Matrix03FromIK.multiply(jointArray[i].realTransformationMatrix);
-    //}
-
     RealMatrix Matrix06 = new Array2DRowRealMatrix(inputMatrix);
     RealMatrix Matrix30 = new LUDecomposition(Matrix03FromIK).getSolver().getInverse();
     RealMatrix Matrix36 = Matrix30.multiply(Matrix06);
     double[][] inputMatrix36 = Matrix36.getData();
-    utils.drawResult(inputMatrix36, 150, 450);
+
     double d = Math.sqrt(Math.pow(inputMatrix36[0][2], 2)+Math.pow(inputMatrix36[2][2], 2));
 
     angle[4] = Math.atan2(d, -inputMatrix36[1][2]);
@@ -138,17 +134,29 @@ class Arm {
     return angleDegrees;
   }
 
-  double trajectoryPlanning(double endAngle, double targetTimeT, double startAngle, double currentTimeT) {
+  double getSpeed(double endAngle, double targetTimeT, double startAngle, double currentTimeT) {
     double targetTime = targetTimeT/1000;
     double currentTime = currentTimeT/1000;
-    //println(currentTime);
+
     double a_0 = startAngle;
     double a_1 = 0;
     double a_2 = (3/Math.pow(targetTime, 2)*(endAngle - startAngle));
     double a_3 = (-2/Math.pow(targetTime, 3)*(endAngle - startAngle));
 
     double speed = a_1 + 2*a_2*currentTime + 3*a_3*(Math.pow(currentTime, 2));
-    //println(speed);
     return speed;
+  }
+
+  double getPos(double endAngle, double targetTimeT, double startAngle, double currentTimeT) {
+    double targetTime = targetTimeT/1000;
+    double currentTime = currentTimeT/1000;
+
+    double a_0 = startAngle;
+    double a_1 = 0;
+    double a_2 = (3/Math.pow(targetTime, 2)*(endAngle - startAngle));
+    double a_3 = (-2/Math.pow(targetTime, 3)*(endAngle - startAngle));
+
+    double pos = a_0 + a_1 * currentTime + a_2*Math.pow(currentTime, 2) + a_3*(Math.pow(currentTime, 3));
+    return pos;
   }
 }
