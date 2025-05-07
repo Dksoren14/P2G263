@@ -1,8 +1,6 @@
 class Arm {
 
   RealMatrix resultMatrix;
-  RealMatrix resultMatrix03;
-  RealMatrix Matrix03FromIK;
   Joint[] jointArray;
   double[][] MDH;
   double startTime;
@@ -12,7 +10,7 @@ class Arm {
   double[] speed = new double[6];
   double[] pos = new double[6];
   double[] acc = new double[6];
-  boolean runningMovement = false;
+  boolean executingMovement = false;
   double[] currentPos = {0, 0, 0, 0, 0, 0};
 
   Arm(double[][] MDHT) {
@@ -37,7 +35,7 @@ class Arm {
     calculateFinalMatrix();
   }
 
-  void moveAndDraw(float[] a) {
+  void draw(float[] a) {
     if (textures[0] != null) {
       shape(textures[0]);
     }
@@ -49,7 +47,7 @@ class Arm {
     calculateFinalMatrix();
   }
 
-  void moveAndDraw(double[] a) {
+  void draw(double[] a) {
     if (textures[0] != null) {
       shape(textures[0]);
     }
@@ -78,22 +76,18 @@ class Arm {
       resultMatrix = resultMatrix.multiply(jointArray[i].realTransformationMatrix);
     }
 
-    resultMatrix03 = jointArray[0].realTransformationMatrix;
-    for (int i=1; i<3; i++) {
-      resultMatrix03 = resultMatrix03.multiply(jointArray[i].realTransformationMatrix);
-    }
   }
 
   int executeMovement(double[][] targetMatrix, double targetTime) {
     int temp = 0;
-    if (!runningMovement) {
+    if (!executingMovement) {
       for (int i = 0; i < currentPos.length; i++) {
         startAngle[i] = currentPos[i];
       }
       startTime = millis();
       currentTime = millis()-startTime;
       targetAngle = anglesFromIK(targetMatrix);
-      runningMovement = true;
+      executingMovement = true;
     }
 
     if (currentTime < targetTime) {
@@ -103,12 +97,10 @@ class Arm {
         pos[i] = getPos(targetAngle[i], targetTime, startAngle[i], currentTime);
         acc[i] = getAcc(targetAngle[i], targetTime, startAngle[i], currentTime);
       }
-
-      sendData();
     }
     if (millis() > startTime+targetTime) {
       keyVariableA = false;
-      runningMovement = false;
+      executingMovement = false;
       temp = 1;
       for (int i = 0; i < currentPos.length; i++) {
         currentPos[i] = pos[i];
@@ -118,27 +110,25 @@ class Arm {
   }
 
 
-
-
-  double[] anglesFromIK(double[][] inputMatrix) {
+  double[] anglesFromIK(double[][] targetMatrix) {
     double[] angle = new double[6];
 
-    angle[0] = Math.atan2(inputMatrix[1][3], inputMatrix[0][3]);
-    double a = Math.sqrt(Math.pow(inputMatrix[0][3], 2)+Math.pow(inputMatrix[1][3], 2))-MDH[1][1]; //(inputMatrix[0][3]/Math.cos(angle[1]))-MDH[0][2]
-    double b = inputMatrix[2][3]-MDH[0][2];
+    angle[0] = Math.atan2(targetMatrix[1][3], targetMatrix[0][3]);
+    double a = Math.sqrt(Math.pow(targetMatrix[0][3], 2)+Math.pow(targetMatrix[1][3], 2))-MDH[1][1]; //(inputMatrix[0][3]/Math.cos(angle[1]))-MDH[0][2]
+    double b = targetMatrix[2][3]-MDH[0][2];
     double c = Math.sqrt(a*a+b*b);
     angle[1] = Math.acos((Math.pow(MDH[2][1], 2)+Math.pow(c, 2)-Math.pow(MDH[3][2], 2))/(2*MDH[2][1]*c))+Math.atan2(b, a)-Math.toRadians(90);
 
     angle[2] = Math.acos((Math.pow(MDH[2][1], 2)+Math.pow(MDH[3][2], 2)-(c*c))/(2*MDH[2][1]*MDH[3][2]))-Math.toRadians(90);
 
     jointArray[0].updateTransformationMatrix(angle[0]);
-    Matrix03FromIK = jointArray[0].realTransformationMatrix;
+    RealMatrix Matrix03FromIK = jointArray[0].realTransformationMatrix;
     jointArray[1].updateTransformationMatrix(angle[1]);
     Matrix03FromIK = Matrix03FromIK.multiply(jointArray[1].realTransformationMatrix);
     jointArray[2].updateTransformationMatrix(angle[2]);
     Matrix03FromIK = Matrix03FromIK.multiply(jointArray[2].realTransformationMatrix);
 
-    RealMatrix Matrix06 = new Array2DRowRealMatrix(inputMatrix);
+    RealMatrix Matrix06 = new Array2DRowRealMatrix(targetMatrix);
     RealMatrix Matrix30 = new LUDecomposition(Matrix03FromIK).getSolver().getInverse();
     RealMatrix Matrix36 = Matrix30.multiply(Matrix06);
     double[][] inputMatrix36 = Matrix36.getData();

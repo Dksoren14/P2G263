@@ -52,23 +52,22 @@ double[][] MDH = { //Alpha, a, d, theta offset
   {-90, 0, 0, 0},
   {90, 0, 0, 0}};
 
-double[][] zeroPointMatrix = {
-  {0, 0, 1, 270.41},
-  {0, -1, 0, 0},
-  {1, 0, 0, 238.14},
-  {0, 0, 0, 1}};
-
-double[][] someTargetMatrix = {
-  {0, -0.9178, 0.3971, 107},
-  {0, -0.3971, -0.9178, -248},
-  {1, 0, 0, 238},
-  {0, 0, 0, 1}};
-
-double[][] someTargetMatrix2 = {
-  {0, -0.9178, 0.3971, 107},
-  {0, -0.3971, -0.9178, -248},
-  {1, 0, 0, 150},
-  {0, 0, 0, 1}};
+double[][][] locationMatrix = {{
+    {0, 0, 1, 270.41},
+    {0, -1, 0, 0},
+    {1, 0, 0, 238.14},
+    {0, 0, 0, 1}
+  }, {
+    {0, -0.9178, 0.3971, 107},
+    {0, -0.3971, -0.9178, -248},
+    {1, 0, 0, 238},
+    {0, 0, 0, 1}
+  }, {
+    {0, -0.9178, 0.3971, 107},
+    {0, -0.3971, -0.9178, -248},
+    {1, 0, 0, 150},
+    {0, 0, 0, 1}
+}};
 
 int switchProgramVariable = 0;
 
@@ -145,7 +144,7 @@ void draw() {
 
   pushMatrix();
   translate(-300, 0);
-  Arm1.moveAndDraw(theta);
+  Arm1.draw(theta);
   popMatrix();
 
 
@@ -180,6 +179,7 @@ void saveThetaValues(int a) {
   saveThetaValues[a][4] = theta5;
   saveThetaValues[a][5] = theta6;
 }
+
 
 void playSavedThetaValues(int a) {
   theta[0] = saveThetaValues[a][0];
@@ -443,13 +443,13 @@ void checkKeyPressed() { //-----------------------------------------------------
   if (true) { //Movement program
     switch(switchProgramVariable) {
     case 0:
-      switchProgramVariable += Arm2.executeMovement(someTargetMatrix, 1000);
+      switchProgramVariable += Arm2.executeMovement(locationMatrix[1], 1000);
       break;
     case 1:
-      switchProgramVariable += Arm2.executeMovement(someTargetMatrix2, 1000);
+      switchProgramVariable += Arm2.executeMovement(locationMatrix[2], 1000);
       break;
     case 2:
-      switchProgramVariable += Arm2.executeMovement(zeroPointMatrix, 1000);
+      switchProgramVariable += Arm2.executeMovement(locationMatrix[0], 1000);
       break;
     case 3:
       switchProgramVariable = 0;
