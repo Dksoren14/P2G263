@@ -72,8 +72,8 @@ class Arm {
     }
   }
 
-  void executeMovement(double[][] targetMatrix, double targetTime, double[] startAngle) {
-
+  int executeMovement(double[][] targetMatrix, double targetTime, double[] startAngle) {
+    int temp = 0; 
     if (!haveRun) {
       startTime = millis();
       currentTime = millis()-startTime;
@@ -93,7 +93,9 @@ class Arm {
     if (millis() > startTime+targetTime) {
       keyVariableA = false;
       haveRun = false;
+      temp = 1; 
     }
+    return temp; 
   }
 
 

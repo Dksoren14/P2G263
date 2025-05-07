@@ -51,7 +51,12 @@ double[][] MDH = { //Alpha, a, d, theta offset
   {90, 0, 115.49*2, 0},
   {-90, 0, 0, 0},
   {90, 0, 0, 0}};
-
+  
+double[][] zeroPointMatrix = {
+  {0, 0, 1, 270.41},
+  {0, -1, 0, 0},
+  {1, 0, 0, 238.14},
+  {0, 0, 0, 1}};
 
 double[][] someTargetMatrix = {
   {0, -0.9178, 0.3971, 107},
@@ -59,6 +64,14 @@ double[][] someTargetMatrix = {
   {1, 0, 0, 238},
   {0, 0, 0, 1}};
 
+double[][] someTargetMatrix2 = {
+  {0, -0.9178, 0.3971, 107},
+  {0, -0.3971, -0.9178, -248},
+  {1, 0, 0, 150},
+  {0, 0, 0, 1}};
+
+int switchProgramVariable = 0;
+double[] startTheta = {0, 0, 0, 0, 0, 0};
 
 RealMatrix Matrix1232 = new Array2DRowRealMatrix(new double[][] {{15, 20, 30, 40}, {1, 2, 3.5, 4.1}, {10, 29, 30, 40}, {1, 2, 3.2, 4}});
 RealMatrix Matrix1233 = new Array2DRowRealMatrix(new double[][] {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}});
@@ -376,7 +389,7 @@ public void makeSlidersFunction(int x, int y, int space) { //Function that creat
 
 void keyPressed() {         //keyPressed is a built-in function that is called once every time a key is pressed.
   if (keyCode==65) {        //To check what key is pressed, simple "if".
-    keyVariableA = !keyVariableA;    //This variable is (at the time of writing this) being used for drawing something. It is therefore made like a flip-flop, to draw it every frame and not just once.
+    keyVariableA = true;    //This variable is (at the time of writing this) being used for drawing something. It is therefore made like a flip-flop, to draw it every frame and not just once.
   }
   if (keyCode==66) {
     keyVariableB = !keyVariableB;
@@ -427,13 +440,32 @@ void keyPressed() {         //keyPressed is a built-in function that is called o
 }
 
 void checkKeyPressed() { //----------------------------------------------------------------------------------------
-  if (keyVariableA) {
-    double[] startTheta = {0, 0, 0, 0, 0, 0};
-    Arm1.executeMovement(someTargetMatrix, 1000, startTheta);
+  if (keyVariableA) { //Movement program
+    switch(switchProgramVariable) {
+    case 0:
+      for (int i = 0; i < theta.length; i++) {
+        startTheta[i] = (double)theta[i];
+      }
+      switchProgramVariable += Arm1.executeMovement(someTargetMatrix, 1000, startTheta);
+      break;
+    case 1:
+      for (int i = 0; i < theta.length; i++) {
+        startTheta[i] = (double)theta[i];
+      }
+      switchProgramVariable += Arm1.executeMovement(someTargetMatrix2, 1000, startTheta);
+      break;
+    case 2:
+      for (int i = 0; i < theta.length; i++) {
+        startTheta[i] = (double)theta[i];
+      }
+      switchProgramVariable += Arm1.executeMovement(zeroPointMatrix, 1000, startTheta);
+      break;
+    case 3:
+      switchProgramVariable = 0;
+    }
   }
 
   if (keyVariableB) {
-    //playSavedThetaValues();
   }
 
   if (keyVariable1) {
