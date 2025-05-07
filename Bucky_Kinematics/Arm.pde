@@ -11,6 +11,7 @@ class Arm {
   double[] speed = new double[6];
   float[] pos = new float[6];
   boolean haveRun = false;
+  float[] theta = {0, 0, 0, 0, 0, 0};
 
   Arm(double[][] MDHT) {
     MDH = MDHT;
@@ -58,6 +59,15 @@ class Arm {
     calculateFinalMatrix();
   }
 
+  void draw() {
+    for (int i = 0; i < jointArray.length; i++) {
+      jointArray[i].updateTransformationMatrix(Math.toRadians(pos[i]));
+      utils.applyRealMatrix(jointArray[i].realTransformationMatrix);
+      jointArray[i].display();
+    }
+    calculateFinalMatrix();
+  }
+
 
   void calculateFinalMatrix() {
 
@@ -73,7 +83,7 @@ class Arm {
   }
 
   int executeMovement(double[][] targetMatrix, double targetTime, double[] startAngle) {
-    int temp = 0; 
+    int temp = 0;
     if (!haveRun) {
       startTime = millis();
       currentTime = millis()-startTime;
@@ -93,9 +103,9 @@ class Arm {
     if (millis() > startTime+targetTime) {
       keyVariableA = false;
       haveRun = false;
-      temp = 1; 
+      temp = 1;
     }
-    return temp; 
+    return temp;
   }
 
 

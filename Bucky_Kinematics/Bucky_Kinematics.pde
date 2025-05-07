@@ -151,7 +151,7 @@ void draw() {
 
   pushMatrix();
   translate(100, 0);
-  Arm2.moveAndDraw(Arm1.anglesFromIK(Arm1.resultMatrix.getData()));
+  Arm2.draw();
   popMatrix();
 
 
@@ -444,21 +444,21 @@ void checkKeyPressed() { //-----------------------------------------------------
     switch(switchProgramVariable) {
     case 0:
       for (int i = 0; i < theta.length; i++) {
-        startTheta[i] = (double)theta[i];
+        startTheta[i] = (double)Arm2.theta[i];
       }
-      switchProgramVariable += Arm1.executeMovement(someTargetMatrix, 1000, startTheta);
+      switchProgramVariable += Arm2.executeMovement(someTargetMatrix, 1000, startTheta);
       break;
     case 1:
       for (int i = 0; i < theta.length; i++) {
-        startTheta[i] = (double)theta[i];
+        startTheta[i] = (double)Arm2.theta[i];
       }
-      switchProgramVariable += Arm1.executeMovement(someTargetMatrix2, 1000, startTheta);
+      switchProgramVariable += Arm2.executeMovement(someTargetMatrix2, 1000, startTheta);
       break;
     case 2:
       for (int i = 0; i < theta.length; i++) {
-        startTheta[i] = (double)theta[i];
+        startTheta[i] = (double)Arm2.theta[i];
       }
-      switchProgramVariable += Arm1.executeMovement(zeroPointMatrix, 1000, startTheta);
+      switchProgramVariable += Arm2.executeMovement(zeroPointMatrix, 1000, startTheta);
       break;
     case 3:
       switchProgramVariable = 0;
