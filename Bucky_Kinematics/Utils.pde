@@ -119,7 +119,7 @@ void goButton(){
       if(goButtonPress()){
         fill(GocircleColor[0],GocircleColor[1]-155,GocircleColor[2]);
         showPopup = true;  
-        buttonText = "Moving Vial";
+        buttonText = "Confirming";
       } 
     }else {
       fill(GocircleColor[0],GocircleColor[1],GocircleColor[2]);

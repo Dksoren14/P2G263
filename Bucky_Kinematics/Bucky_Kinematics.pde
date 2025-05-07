@@ -10,6 +10,9 @@ Println arduinoConsole;//Søren
 ScrollableList portlist;
 ScrollableList baudlist;
 ScrollableList dropdown;
+Button closeButton;
+Button yesButton;
+Button closeButton2;
 PFont font;
 float[] lastSentValue = new float[6]; //Track what values was last sent to the arduino.
 boolean connectButtonStatus = false; //Status of the connect button
@@ -36,6 +39,7 @@ int menuWidth;      //The menu is just some boxes where the color is different a
 int zoom = 800;          //Start zoom / start distande from the view.
 boolean haveRun = false;
 boolean showPopup = false;
+boolean showPopupNonePicked = false;
 
 int buttonGoX = 1500;
 int buttonGoY = 800;
@@ -124,7 +128,7 @@ void setup() {
   dropdown = cp5.addScrollableList("Vial option")
     .setLabel("select vial")
     .setBarHeight(30)
-    .setPosition(1200, 600)
+    .setPosition(1200, 624)
     .setSize(300, 100)
     .setItemHeight(30)
     .setBarHeight(30)
@@ -132,6 +136,26 @@ void setup() {
   dropdown.addItem("Red", 10);
   dropdown.addItem("Green", 20);
   println(dropdown.getValue());
+  closeButton = cp5.addButton("Close")
+     .setPosition(624, 572.5)
+     .setSize(150, 70)
+     .setFont(font)
+     .setLabel("Close")
+     .hide();  // Start hidden
+     
+ 
+   closeButton2 = cp5.addButton("Close2")
+     .setPosition(825, 624)
+     .setSize(150, 70)
+     .setFont(font)
+     .setLabel("Close")
+     .hide();  // Start hidden
+  yesButton = cp5.addButton("Yes")
+     .setPosition(924.5, 572.5)
+     .setSize(150, 70)
+     .setFont(font)
+     .setLabel("Yes")
+     .hide();  // Start hidden
 }
 boolean isMouseOverGoCircle() {
   float d = dist(mouseX, mouseY, buttonGoX, buttonGoY);
@@ -219,6 +243,7 @@ void draw() {
   textSize(24);
   text("Vial picked = "+vialText, 1200, 580);
   drawPopUp();
+  
 }
 
 void drawPopUp() {
@@ -235,11 +260,65 @@ void drawPopUp() {
     textSize(24);
     text("Vial = " + vialText, popupX + 300, popupY + 190);
     textAlign(LEFT);
-    
+    closeButton.show();
+    yesButton.show();
+    drawPopUpNonePicked();
+     
   }
 }
+void drawPopUpNonePicked(){
+  int popupX = 600;
+  int popupY = 300;
+  if (showPopupNonePicked) {
+    fill(225);
+    stroke(0);
+    rect(popupX, popupY, 600, 440);
+    fill(0);
+    textAlign(CENTER);
+    textSize(29);
+    text("No vial have been chosen", popupX + 300, popupY + 120);
+    textSize(24);
+    text("Please pick a vial", popupX + 300, popupY + 190);
+    textAlign(LEFT);
+    yesButton.hide();
+    closeButton.hide();
+   
 
-
+     
+  }
+}
+void Close2(){
+  showPopupNonePicked = false;
+  showPopup = false;
+  closeButton.hide();
+  yesButton.hide();
+  closeButton2.hide();
+  
+}
+void Close(){
+  showPopup = false;
+  closeButton.hide();
+  yesButton.hide();
+  
+}
+void Yes(){
+  //showPopup = false;
+  //yesButton.hide();
+  //closeButton.hide();
+  println(vialText);
+  if(vialText == "none picked"){
+    showPopupNonePicked = true;
+    closeButton2.show();
+    
+  }else{
+    //KØR PROGRAM
+    buttonText = "Moving...";
+    showPopup = false;
+    yesButton.hide();
+    closeButton.hide();
+  }
+  
+}
 void playSliderValues() {
   theta[0] = theta1;
   theta[1] = theta2;
