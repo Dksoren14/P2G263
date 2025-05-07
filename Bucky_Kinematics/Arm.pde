@@ -13,7 +13,7 @@ class Arm {
   double[] pos = new double[6];
   double[] acc = new double[6];
   boolean runningMovement = false;
-  double[] theta = {0, 0, 0, 0, 0, 0};
+  double[] currentPos = {0, 0, 0, 0, 0, 0};
 
   Arm(double[][] MDHT) {
     MDH = MDHT;
@@ -87,8 +87,8 @@ class Arm {
   int executeMovement(double[][] targetMatrix, double targetTime) {
     int temp = 0;
     if (!runningMovement) {
-      for (int i = 0; i < theta.length; i++) {
-        startAngle[i] = theta[i];
+      for (int i = 0; i < currentPos.length; i++) {
+        startAngle[i] = currentPos[i];
       }
       startTime = millis();
       currentTime = millis()-startTime;
@@ -110,8 +110,8 @@ class Arm {
       keyVariableA = false;
       runningMovement = false;
       temp = 1;
-      for (int i = 0; i < theta.length; i++) {
-        theta[i] = pos[i];
+      for (int i = 0; i < currentPos.length; i++) {
+        currentPos[i] = pos[i];
       }
     }
     return temp;
@@ -195,4 +195,10 @@ class Arm {
     double acc = 2*a_2 + 6*a_3*currentTime;
     return acc;
   }
+  
+  void armData(){ //not done
+    String message = "t1" + targetAngle[0] + "1ts1" + speed[0] + "1st2" + targetAngle[2] + "2ts3" + targetAngle[3] + "3st4" + targetAngle[4] + "M5end| M6:" + targetAngle[5] + "M6end| S1" + speed[1] + "\n";
+    
+  }
+  
 }
