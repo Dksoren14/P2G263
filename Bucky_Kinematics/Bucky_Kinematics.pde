@@ -19,6 +19,7 @@ boolean toggleUIBool = false; //Status of the "toggleUI" button.
 boolean infoButtonVariable = true;
 boolean keyVariableA, keyVariableB, keyVariable1, keyVariable2, keyVariable3, keyVariable4, keyVariable5, keyVariable6, keyVariable7, keyVariable8; //Track key A and B
 boolean keyVariableC = true;
+boolean keyVariableF = false;
 
 int posX, posY; //Declaring a kind of center position of the coordinate system. Initialized in setup.
 float panX = 0, panY = 0; //Declaring and making the panning offsets. Startvalue is 0.
@@ -42,7 +43,7 @@ Slider slider1, slider2, slider3, slider4, slider5, slider6;
 float theta1, theta2, theta3, theta4, theta5, theta6; //Theta values
 float[] theta = {0, 0, 0, 0, 0, 0};
 //float[] startTheta;
-
+double[] time = {millis(), 0};
 
 double[][] MDH = { //Alpha, a, d, theta offset
   {0, 0, 122.65, 0},
@@ -121,13 +122,14 @@ void draw() {
     utils.drawResult(Arm1.anglesFromIK(Arm1.resultMatrix.getData()), 800, 120);
     utils.drawResult("Arm1 result matrix with IK angles (T06)", 1000, 100);
     utils.drawResult(Arm2.resultMatrix, 1000, 150);
+    utils.drawResult(Arm2.speed, 900, 450);
+    utils.drawResult(Arm2.pos, 1050, 450);
+    utils.drawResult(Arm2.acc, 1200, 450);
   }
 
   checkKeyPressed();
 
-  utils.drawResult(Arm2.speed, 900, 450);
-  utils.drawResult(Arm2.pos, 1050, 450);
-  utils.drawResult(Arm2.acc, 1200, 450);
+
   //Under this is where the transformations from the rotate pan zoom functionality happens.
   pushMatrix();                                //Look up the reference sheet "processing.org/reference". It is like making a quicksave before making changes.
   translate(posX + panX, posY + panY, -zoom);  //Translate will move the coordinate system in XYZ. See reference sheet.
@@ -397,6 +399,9 @@ void keyPressed() {         //keyPressed is a built-in function that is called o
   if (keyCode==67) {
     keyVariableC = !keyVariableC;
   }
+  if (keyCode==70) {
+    keyVariableF = !keyVariableF;
+  }
   if (keyCode==49) {
     keyVariable1 = true;
   } else {
@@ -440,7 +445,7 @@ void keyPressed() {         //keyPressed is a built-in function that is called o
 }
 
 void checkKeyPressed() { //----------------------------------------------------------------------------------------
-  if (true) { //Movement program
+  if (keyVariableA) { //Movement program
     switch(switchProgramVariable) {
     case 0:
       switchProgramVariable += Arm2.executeMovement(locationMatrix[1], 1000);
@@ -457,6 +462,12 @@ void checkKeyPressed() { //-----------------------------------------------------
   }
 
   if (keyVariableB) {
+    Arm2.executeProgram();
+  }
+  if (keyVariableF) {
+    time[1] = (double)millis()-time[0];
+    time[0] = millis();
+    utils.drawResult(time, 10, 100);
   }
 
   if (keyVariable1) {

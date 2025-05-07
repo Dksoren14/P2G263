@@ -12,6 +12,26 @@ class Arm {
   double[] acc = new double[6];
   boolean executingMovement = false;
   double[] currentPos = {0, 0, 0, 0, 0, 0};
+  double[][][] movementProgram = {{
+      {1000},
+      {0, 0, 1, 270.41},
+      {0, -1, 0, 0},
+      {1, 0, 0, 238.14},
+      {0, 0, 0, 1}
+    }, {
+      {1000},
+      {0, -0.9178, 0.3971, 107},
+      {0, -0.3971, -0.9178, -248},
+      {1, 0, 0, 238},
+      {0, 0, 0, 1}
+    }, {
+      {1000},
+      {0, -0.9178, 0.3971, 107},
+      {0, -0.3971, -0.9178, -248},
+      {1, 0, 0, 150},
+      {0, 0, 0, 1}
+  }};
+  int someNumberForWhatExecute = 0;
 
   Arm(double[][] MDHT) {
     MDH = MDHT;
@@ -75,7 +95,6 @@ class Arm {
     for (int i=1; i<jointArray.length; i++) {
       resultMatrix = resultMatrix.multiply(jointArray[i].realTransformationMatrix);
     }
-
   }
 
   int executeMovement(double[][] targetMatrix, double targetTime) {
@@ -107,6 +126,17 @@ class Arm {
       }
     }
     return temp;
+  }
+
+  void executeProgram() {
+
+    
+    if (someNumberForWhatExecute > movementProgram.length - 1) {
+      someNumberForWhatExecute = 0;
+    }
+    int i = someNumberForWhatExecute;
+    double[][] targetMatrix = {movementProgram[i][1], movementProgram[i][2], movementProgram[i][3], movementProgram[i][4]};
+    someNumberForWhatExecute += executeMovement(targetMatrix, movementProgram[i][0][0]);
   }
 
 
@@ -185,10 +215,8 @@ class Arm {
     double acc = 2*a_2 + 6*a_3*currentTime;
     return acc;
   }
-  
-  void armData(){ //not done
+
+  void armData() { //not done
     String message = "t1" + targetAngle[0] + "1ts1" + speed[0] + "1st2" + targetAngle[2] + "2ts3" + targetAngle[3] + "3st4" + targetAngle[4] + "M5end| M6:" + targetAngle[5] + "M6end| S1" + speed[1] + "\n";
-    
   }
-  
 }
