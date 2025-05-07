@@ -51,7 +51,7 @@ double[][] MDH = { //Alpha, a, d, theta offset
   {90, 0, 115.49*2, 0},
   {-90, 0, 0, 0},
   {90, 0, 0, 0}};
-  
+
 double[][] zeroPointMatrix = {
   {0, 0, 1, 270.41},
   {0, -1, 0, 0},
@@ -71,7 +71,6 @@ double[][] someTargetMatrix2 = {
   {0, 0, 0, 1}};
 
 int switchProgramVariable = 0;
-double[] startTheta = {0, 0, 0, 0, 0, 0};
 
 RealMatrix Matrix1232 = new Array2DRowRealMatrix(new double[][] {{15, 20, 30, 40}, {1, 2, 3.5, 4.1}, {10, 29, 30, 40}, {1, 2, 3.2, 4}});
 RealMatrix Matrix1233 = new Array2DRowRealMatrix(new double[][] {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}});
@@ -127,8 +126,9 @@ void draw() {
 
   checkKeyPressed();
 
-  utils.drawResult(Arm1.speed, 900, 450);
-  utils.drawResult(Arm1.pos, 1100, 450);
+  utils.drawResult(Arm2.speed, 900, 450);
+  utils.drawResult(Arm2.pos, 1050, 450);
+  utils.drawResult(Arm2.acc, 1200, 450);
   //Under this is where the transformations from the rotate pan zoom functionality happens.
   pushMatrix();                                //Look up the reference sheet "processing.org/reference". It is like making a quicksave before making changes.
   translate(posX + panX, posY + panY, -zoom);  //Translate will move the coordinate system in XYZ. See reference sheet.
@@ -440,25 +440,16 @@ void keyPressed() {         //keyPressed is a built-in function that is called o
 }
 
 void checkKeyPressed() { //----------------------------------------------------------------------------------------
-  if (keyVariableA) { //Movement program
+  if (true) { //Movement program
     switch(switchProgramVariable) {
     case 0:
-      for (int i = 0; i < theta.length; i++) {
-        startTheta[i] = (double)Arm2.theta[i];
-      }
-      switchProgramVariable += Arm2.executeMovement(someTargetMatrix, 1000, startTheta);
+      switchProgramVariable += Arm2.executeMovement(someTargetMatrix, 1000);
       break;
     case 1:
-      for (int i = 0; i < theta.length; i++) {
-        startTheta[i] = (double)Arm2.theta[i];
-      }
-      switchProgramVariable += Arm2.executeMovement(someTargetMatrix2, 1000, startTheta);
+      switchProgramVariable += Arm2.executeMovement(someTargetMatrix2, 1000);
       break;
     case 2:
-      for (int i = 0; i < theta.length; i++) {
-        startTheta[i] = (double)Arm2.theta[i];
-      }
-      switchProgramVariable += Arm2.executeMovement(zeroPointMatrix, 1000, startTheta);
+      switchProgramVariable += Arm2.executeMovement(zeroPointMatrix, 1000);
       break;
     case 3:
       switchProgramVariable = 0;

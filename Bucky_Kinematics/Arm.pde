@@ -8,10 +8,12 @@ class Arm {
   double startTime;
   double currentTime;
   double[] targetAngle;
+  double[] startAngle = new double[6];
   double[] speed = new double[6];
-  float[] pos = new float[6];
-  boolean haveRun = false;
-  float[] theta = {0, 0, 0, 0, 0, 0};
+  double[] pos = new double[6];
+  double[] acc = new double[6];
+  boolean runningMovement = false;
+  double[] theta = {0, 0, 0, 0, 0, 0};
 
   Arm(double[][] MDHT) {
     MDH = MDHT;
@@ -82,28 +84,35 @@ class Arm {
     }
   }
 
-  int executeMovement(double[][] targetMatrix, double targetTime, double[] startAngle) {
+  int executeMovement(double[][] targetMatrix, double targetTime) {
     int temp = 0;
-    if (!haveRun) {
+    if (!runningMovement) {
+      for (int i = 0; i < theta.length; i++) {
+        startAngle[i] = theta[i];
+      }
       startTime = millis();
       currentTime = millis()-startTime;
       targetAngle = anglesFromIK(targetMatrix);
-      haveRun = true;
+      runningMovement = true;
     }
 
     if (currentTime < targetTime) {
       currentTime = millis()-startTime;
       for (int i = 0; i < 6; i++) {
         speed[i] = abs((float)getSpeed(targetAngle[i], targetTime, startAngle[i], currentTime));
-        pos[i] = (float)getPos(targetAngle[i], targetTime, startAngle[i], currentTime);
+        pos[i] = getPos(targetAngle[i], targetTime, startAngle[i], currentTime);
+        acc[i] = getAcc(targetAngle[i], targetTime, startAngle[i], currentTime);
       }
-      theta = pos;
+
       sendData();
     }
     if (millis() > startTime+targetTime) {
       keyVariableA = false;
-      haveRun = false;
+      runningMovement = false;
       temp = 1;
+      for (int i = 0; i < theta.length; i++) {
+        theta[i] = pos[i];
+      }
     }
     return temp;
   }
@@ -172,5 +181,18 @@ class Arm {
 
     double pos = a_0 + a_1 * currentTime + a_2*Math.pow(currentTime, 2) + a_3*(Math.pow(currentTime, 3));
     return pos;
+  }
+
+  double getAcc(double endAngle, double targetTimeT, double startAngle, double currentTimeT) {
+    double targetTime = targetTimeT/1000;
+    double currentTime = currentTimeT/1000;
+
+    double a_0 = startAngle;
+    double a_1 = 0;
+    double a_2 = (3/Math.pow(targetTime, 2)*(endAngle - startAngle));
+    double a_3 = (-2/Math.pow(targetTime, 3)*(endAngle - startAngle));
+
+    double acc = 2*a_2 + 6*a_3*currentTime;
+    return acc;
   }
 }
