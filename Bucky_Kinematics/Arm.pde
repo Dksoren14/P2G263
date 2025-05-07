@@ -11,14 +11,9 @@ class Arm {
   double[] pos = new double[6];
   double[] acc = new double[6];
   boolean executingMovement = false;
+  boolean executingProgram = false;
   double[] currentPos = {0, 0, 0, 0, 0, 0};
   double[][][] movementProgram = {{
-      {1000},
-      {0, 0, 1, 270.41},
-      {0, -1, 0, 0},
-      {1, 0, 0, 238.14},
-      {0, 0, 0, 1}
-    }, {
       {1000},
       {0, -0.9178, 0.3971, 107},
       {0, -0.3971, -0.9178, -248},
@@ -29,6 +24,12 @@ class Arm {
       {0, -0.9178, 0.3971, 107},
       {0, -0.3971, -0.9178, -248},
       {1, 0, 0, 150},
+      {0, 0, 0, 1}
+    }, {
+      {1000},
+      {0, 0, 1, 270.41},
+      {0, -1, 0, 0},
+      {1, 0, 0, 238.14},
       {0, 0, 0, 1}
   }};
   int someNumberForWhatExecute = 0;
@@ -118,7 +119,6 @@ class Arm {
       }
     }
     if (millis() > startTime+targetTime) {
-      keyVariableA = false;
       executingMovement = false;
       temp = 1;
       for (int i = 0; i < currentPos.length; i++) {
@@ -128,15 +128,23 @@ class Arm {
     return temp;
   }
 
-  void executeProgram() {
+  int executeProgram() {
+    int temp = 0;
+    if (!executingProgram) {
+      executingProgram = true;
+    }
 
-    
+    if (executingProgram) {
+      int i = someNumberForWhatExecute;
+      double[][] targetMatrix = {movementProgram[i][1], movementProgram[i][2], movementProgram[i][3], movementProgram[i][4]};
+      someNumberForWhatExecute += executeMovement(targetMatrix, movementProgram[i][0][0]);
+    }
     if (someNumberForWhatExecute > movementProgram.length - 1) {
       someNumberForWhatExecute = 0;
+      executingProgram = false;
+      temp = 1;
     }
-    int i = someNumberForWhatExecute;
-    double[][] targetMatrix = {movementProgram[i][1], movementProgram[i][2], movementProgram[i][3], movementProgram[i][4]};
-    someNumberForWhatExecute += executeMovement(targetMatrix, movementProgram[i][0][0]);
+    return temp;
   }
 
 

@@ -53,7 +53,7 @@ double[][] MDH = { //Alpha, a, d, theta offset
   {-90, 0, 0, 0},
   {90, 0, 0, 0}};
 
-double[][][] locationMatrix = {{
+double[][][] movementProgram = {{
     {0, 0, 1, 270.41},
     {0, -1, 0, 0},
     {1, 0, 0, 238.14},
@@ -446,23 +446,26 @@ void keyPressed() {         //keyPressed is a built-in function that is called o
 
 void checkKeyPressed() { //----------------------------------------------------------------------------------------
   if (keyVariableA) { //Movement program
-    switch(switchProgramVariable) {
-    case 0:
-      switchProgramVariable += Arm2.executeMovement(locationMatrix[1], 1000);
-      break;
-    case 1:
-      switchProgramVariable += Arm2.executeMovement(locationMatrix[2], 1000);
-      break;
-    case 2:
-      switchProgramVariable += Arm2.executeMovement(locationMatrix[0], 1000);
-      break;
-    case 3:
-      switchProgramVariable = 0;
+    //switch(switchProgramVariable) {
+    //case 0:
+    //  switchProgramVariable += Arm2.executeMovement(movementProgram[1], 1000);
+    //  break;
+    //case 1:
+    //  switchProgramVariable += Arm2.executeMovement(movementProgram[2], 1000);
+    //  break;
+    //case 2:
+    //  switchProgramVariable += Arm2.executeMovement(movementProgram[0], 1000);
+    //  break;
+    //case 3:
+    //  switchProgramVariable = 0;
+    //}
+    if (Arm2.executeProgram() == 1){
+      keyVariableA = false;
     }
   }
 
   if (keyVariableB) {
-    Arm2.executeProgram();
+    
   }
   if (keyVariableF) {
     time[1] = (double)millis()-time[0];
