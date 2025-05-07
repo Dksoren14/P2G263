@@ -41,19 +41,25 @@ int buttonGoX = 1500;
 int buttonGoY = 800;
 int buttonGoW = 100;
 int buttonGoH = 100;
-int[] GocircleColor = {0,255,0};
+int[] GocircleColor = {0, 255, 0};
 
 int buttonNextX = 1200;
 int buttonNextY = 800;
 int buttonNextW = 100;
 int buttonNextH = 100;
-int[] nextCircleColor = {255,255,0};
+int[] nextCircleColor = {255, 255, 0};
 
 int buttonStopX = 550;
 int buttonStopY = 800;
 int buttonStopW = 100;
 int buttonStopH = 100;
-int[] stopCircleColor = {255,0,0};
+int[] stopCircleColor = {255, 0, 0};
+
+int buttonYesX = 750;
+int buttonYesY = 500;
+int buttonYesEndX = 100;
+int buttonYesEndY = 100;
+int[] yesButtonColor = {200, 200, 200};
 
 float saveThetaValues[][] = new float[4][6];
 
@@ -92,7 +98,8 @@ PShape[] textures = new PShape[7];  //The .obj files of the component models wil
 
 
 void setup() {
-  size(1625, 900, P3D);           //Make the canvas/window. Size 1625x by 900y. P3D means it is a 3D "canvas"
+  size(1625, 900, P3D);
+  //Make the canvas/window. Size 1625x by 900y. P3D means it is a 3D "canvas"
   posX = width/2-325;             //x and y positions of the new orego of the coordinate system in terms of the window.
   posY = height-100;                  //Used in a "translate" function in "draw".
   menuWidth = width-375;
@@ -112,26 +119,19 @@ void setup() {
   //  .setLabel("Info")
   //  .setSize(100, 30)
   //  .setPosition(130, 10);
-    font = createFont("Arial", 15);
-    
-    dropdown = cp5.addScrollableList("Vial option")
+  font = createFont("Arial", 15);
+
+  dropdown = cp5.addScrollableList("Vial option")
     .setLabel("select vial")
     .setBarHeight(30)
-    .setPosition(1100, 600)
-    .setSize(300,100)
+    .setPosition(1200, 600)
+    .setSize(300, 100)
     .setItemHeight(30)
     .setBarHeight(30)
     .setFont(font);
-   dropdown.addItem("Red",10);
-   dropdown.addItem("Green",20);
-   println(dropdown.getValue());
-                
-                
-                
-     
-    
-   
-                
+  dropdown.addItem("Red", 10);
+  dropdown.addItem("Green", 20);
+  println(dropdown.getValue());
 }
 boolean isMouseOverGoCircle() {
   float d = dist(mouseX, mouseY, buttonGoX, buttonGoY);
@@ -145,154 +145,97 @@ boolean isMouseOverStopCircle() {
   float d = dist(mouseX, mouseY, buttonStopX, buttonStopY);
   return d < buttonNextH/2;
 }
-boolean goButtonPress(){
-  if(isMouseOverGoCircle() && leftMousePressed == true){
-    
+
+
+
+boolean goButtonPress() {
+  if (isMouseOverGoCircle() && leftMousePressed == true) {
+
     return true;
-  }
-  else{
+  } else {
     return false;
   }
 }
-boolean nextButtonPress(){
-  if(isMouseOverNextCircle() && leftMousePressed == true){
-    
+boolean nextButtonPress() {
+  if (isMouseOverNextCircle() && leftMousePressed == true) {
+
     return true;
-  }
-  else{
+  } else {
     return false;
   }
 }
-boolean stopButtonPress(){
-  if(isMouseOverStopCircle() && leftMousePressed == true){
-    
+boolean stopButtonPress() {
+  if (isMouseOverStopCircle() && leftMousePressed == true) {
+
     return true;
-  }
-  else{
+  } else {
     return false;
   }
 }
+
 String buttonText = "Waiting..";
-void goButton(){
-  
-  
-    if (isMouseOverGoCircle()) {
-      fill(GocircleColor[0],GocircleColor[1]-100,GocircleColor[2]);
-      if(goButtonPress()){
-        fill(GocircleColor[0],GocircleColor[1]-155,GocircleColor[2]);
-        showPopup = true;  
-        buttonText = "Moving Vial";
-      } 
-    }else {
-      fill(GocircleColor[0],GocircleColor[1],GocircleColor[2]);
-    
-  }
-   
-  ellipse(buttonGoX, buttonGoY, buttonGoW, buttonGoH);
-  fill(0,0,0);textSize(24); text(buttonText, 1310, 805);
-  textSize(24); text("Go", 1485, 805);
-}
-void nextButton(){
 
-  if(isMouseOverNextCircle()){
-    fill(nextCircleColor[0],nextCircleColor[1]-100,nextCircleColor[2]);
-    if(nextButtonPress()){
-      fill(nextCircleColor[0]-155,nextCircleColor[1]-105,nextCircleColor[2]);
-      //if (showPopup) {
-      //  fill(255);
-      //  stroke(0);
-      //  rect(100, 80, 200, 140);
-      //  fill(0);
-      //  text("This is a popup!", 200, 120);
-      //  text("Click to close", 200, 160);
-      //}
-    }
-   }else{
-     fill(nextCircleColor[0],nextCircleColor[1],nextCircleColor[2]);
-   }
-   
-   ellipse(buttonNextX, buttonNextY, buttonNextW, buttonNextH);
-   fill(0,0,0); textSize(24); text("Next", 1175, 805);
-}
-void stopButton(){
 
-  if(isMouseOverStopCircle()){
-    fill(stopCircleColor[0]-100,stopCircleColor[1],stopCircleColor[2]);
-    if(stopButtonPress()){
-    fill(stopCircleColor[0],stopCircleColor[1]+100,stopCircleColor[2]);
-    //if (showPopup) {
-    //  fill(255);
-    //  stroke(0);
-    //  rect(100, 80, 200, 140);
-    //  fill(0);
-    //  text("This is a popup!", 200, 120);
-    //  text("Click to close", 200, 160);
-    //}
-    }
-   }else{
-     fill(stopCircleColor[0],stopCircleColor[1],stopCircleColor[2]);
-   }
-   
-   ellipse(buttonStopX, buttonStopY, buttonStopW, buttonStopH);
-   fill(0,0,0); textSize(24); text("STOP", 523, 805);
-}
-void controlEvent(ControlEvent event){
+
+void controlEvent(ControlEvent event) {
   //vialpick = (int)dropdown.getItem((int)dropdown.getValue()).get("value");
   if (event.isFrom("Vial option")) {
     int value = (int) dropdown.getItem((int)dropdown.getValue()).get("value");
 
     switch (value) {
-      case 10:
-        vialText = "Red";
-        vialPicked = true;
-        break;
-      case 20:
-        vialText = "Green";
-        vialPicked = true;
-        break;
-      default:
-        vialText = "none picked";
-        vialPicked = false;
-        break;
+    case 10:
+      vialText = "Red";
+      vialPicked = true;
+      break;
+    case 20:
+      vialText = "Green";
+      vialPicked = true;
+      break;
+    default:
+      vialText = "none picked";
+      vialPicked = false;
+      break;
     }
   }
-  
 }
 void draw() {
-  
+  hint(DISABLE_OPTIMIZED_STROKE);
   background(200);
   checkKeyPressed();
-  
- //Look up https://processing.org/reference/ for more information about these kind of things.
 
+  //Look up https://processing.org/reference/ for more information about these kind of things.
+
+  fill(240, 240, 240);
+  rect(400, 100, 1200, 800);
   rect(475, 145, 1060, 400, 10);
-  fill(240,240,240); rect(400, 100, 1200, 800);
-  fill(0,100,200); rect(400, 100, 1200, 40);
-  textSize(128); text("Patient information", 475, 280);
-  goButton();
-  nextButton();
-  stopButton();
+  fill(0, 100, 200);
+  rect(400, 100, 1200, 40);
+  textSize(128);
+  text("Patient information", 475, 280);
+  utils.goButton();
+  utils.nextButton();
+  utils.stopButton();
   sendData();
-  textSize(24); text("Vial picked = "+vialText, 1100, 580);
+  textSize(24);
+  text("Vial picked = "+vialText, 1200, 580);
   drawPopUp();
- 
-
-  
-
 }
 
-void drawPopUp(){
+void drawPopUp() {
   int popupX = 550;
   int popupY = 250;
   if (showPopup) {
-    fill(155);
+    fill(225);
     stroke(0);
-    rect(popupX, popupY, 500, 340);
+    rect(popupX, popupY, 600, 440);
     fill(0);
     textAlign(CENTER);
-    textSize(29);text("Have correct vial been chosen?",popupX + 250,popupY + 120);
-    textSize(24);text("Vial = " + vialText,popupX + 250,popupY + 190);
+    textSize(29);
+    text("Have correct vial been chosen?", popupX + 300, popupY + 120);
+    textSize(24);
+    text("Vial = " + vialText, popupX + 300, popupY + 190);
     textAlign(LEFT);
+    
   }
 }
 
@@ -525,7 +468,7 @@ void keyPressed() {         //keyPressed is a built-in function that is called o
   if (keyCode==65) {        //To check what key is pressed, simple "if".
     keyVariableA = !keyVariableA;    //This variable is (at the time of writing this) being used for drawing something. It is therefore made like a flip-flop, to draw it every frame and not just once.
   }
-  
+
   if (keyCode==66) {
     keyVariableB = true;
   } else {
@@ -534,9 +477,9 @@ void keyPressed() {         //keyPressed is a built-in function that is called o
   if (keyCode==67) {
     keyVariableC = !keyVariableC;
   }
-  if (keyCode==68){
+  if (keyCode==68) {
     keyVariableD = true;
-  }else{
+  } else {
     keyVariableD = false;
   }
   if (keyCode==49) {
@@ -584,20 +527,20 @@ void keyPressed() {         //keyPressed is a built-in function that is called o
 void checkKeyPressed() { //----------------------------------------------------------------------------------------
   if (keyVariableA == true) {
     //saveThetaValues(1);
-      background(200); 
-      makeSlidersFunction(width-325, 450, 50);
-      connectionUI(10, 10);
-      infoButton = cp5.addButton("infoButton") //Make button "toggleUI".
-        .setLabel("Info")
-        .setSize(100, 30)
-        .setPosition(130, 10);//Make background color 200. It goes between black 0-255 white. It is also possible to use (R,G,B) as input.
-      directionalLight(126, 126, 126, 0, 0, -1);                        //Make some random ass light. Needed so we can get a perception of the depth of the PShapes.
-      ambientLight(102, 102, 102);                                      //Some light shit.
+    background(200);
+    makeSlidersFunction(width-325, 450, 50);
+    connectionUI(10, 10);
+    infoButton = cp5.addButton("infoButton") //Make button "toggleUI".
+      .setLabel("Info")
+      .setSize(100, 30)
+      .setPosition(130, 10);//Make background color 200. It goes between black 0-255 white. It is also possible to use (R,G,B) as input.
+    directionalLight(126, 126, 126, 0, 0, -1);                        //Make some random ass light. Needed so we can get a perception of the depth of the PShapes.
+    ambientLight(102, 102, 102);                                      //Some light shit.
 
-      fill(200, 200, 255);                                              //Fill kinda sets a global variable that shapes use as color. In this case the next rectangle will be colored (R,G,B) (200, 200, 255).
-      rect(0, 0, width, menuHeight);                                    //Make rectangle at position 0x 0y with a width of "width" and height of menuHeight.
-      rect(menuWidth, menuHeight, width-menuHeight, height-menuHeight);
-      if (infoButtonVariable) {
+    fill(200, 200, 255);                                              //Fill kinda sets a global variable that shapes use as color. In this case the next rectangle will be colored (R,G,B) (200, 200, 255).
+    rect(0, 0, width, menuHeight);                                    //Make rectangle at position 0x 0y with a width of "width" and height of menuHeight.
+    rect(menuWidth, menuHeight, width-menuHeight, height-menuHeight);
+    if (infoButtonVariable) {
       utils.drawResult("Slider angles", 30, 70);
       utils.drawResult(theta, 30, 120); //Draw slider values
       utils.drawResult("Arm1 result matrix with slider angles (T06)", 175, 100);
@@ -606,47 +549,46 @@ void checkKeyPressed() { //-----------------------------------------------------
       utils.drawResult(Arm1.anglesFromIK(Arm1.resultMatrix.getData()), 800, 120);
       utils.drawResult("Arm1 result matrix with IK angles (T06)", 1000, 100);
       utils.drawResult(Arm2.resultMatrix, 1000, 150);
-      }
-      if (keyVariableC) {
-        double[] startTheta = {0, 0, 0, 0, 0, 0};
-        Arm1.executeMovement(someTargetMatrix, 3000, startTheta);
-    
-      }
-      utils.drawResult(speed, 900, 450);
+    }
+    if (keyVariableC) {
+      double[] startTheta = {0, 0, 0, 0, 0, 0};
+      Arm1.executeMovement(someTargetMatrix, 3000, startTheta);
+    }
+    utils.drawResult(speed, 900, 450);
 
-      //Under this is where the transformations from the rotate pan zoom functionality happens.
-      pushMatrix();                                //Look up the reference sheet "processing.org/reference". It is like making a quicksave before making changes.
-      translate(posX + panX, posY + panY, -zoom);  //Translate will move the coordinate system in XYZ. See reference sheet.
-      rotateX(-rotX);                              //Self explanatory.
-      rotateZ(rotY);
-      rectMode(CENTER);
-      noStroke();                    //https://processing.org/reference/
-      fill(255);                    //Fill() sets a global variable that shapes use as color.
-      rect(0, 0, 1000, 1000);      //Ground/talbe/build-area/white-plate/motherfuga
-      rectMode(CORNER);
-      scale(1, -1, 1);
-
+    //Under this is where the transformations from the rotate pan zoom functionality happens.
+    pushMatrix();                                //Look up the reference sheet "processing.org/reference". It is like making a quicksave before making changes.
+    translate(posX + panX, posY + panY, -zoom);  //Translate will move the coordinate system in XYZ. See reference sheet.
+    rotateX(-rotX);                              //Self explanatory.
+    rotateZ(rotY);
+    rectMode(CENTER);
+    noStroke();                    //https://processing.org/reference/
+    fill(255);                    //Fill() sets a global variable that shapes use as color.
+    rect(0, 0, 1000, 1000);      //Ground/talbe/build-area/white-plate/motherfuga
+    rectMode(CORNER);
+    scale(1, -1, 1);
 
 
-      pushMatrix();
-      translate(-300, 0);
-      Arm1.moveAndDraw(theta);
-      popMatrix();
+
+    pushMatrix();
+    translate(-300, 0);
+    Arm1.moveAndDraw(theta);
+    popMatrix();
 
 
-      pushMatrix();
-      translate(100, 0);
-      Arm2.moveAndDraw(Arm1.anglesFromIK(Arm1.resultMatrix.getData()));
-      popMatrix();
+    pushMatrix();
+    translate(100, 0);
+    Arm2.moveAndDraw(Arm1.anglesFromIK(Arm1.resultMatrix.getData()));
+    popMatrix();
 
 
-      popMatrix();
-      if (keyVariableB == true) {
-        //playSavedThetaValues();
-        haveRun = false;
-        }
-      }
-  
+    popMatrix();
+    if (keyVariableB == true) {
+      //playSavedThetaValues();
+      haveRun = false;
+    }
+  }
+
 
   if (keyVariable1 == true) {
     saveThetaValues(0);
