@@ -54,21 +54,24 @@ double[][] MDH = { //Alpha, a, d, theta offset
   {90, 0, 0, 0}};
 
 double[][][] movementProgram = {{
-    {0, 0, 1, 270.41},
-    {0, -1, 0, 0},
-    {1, 0, 0, 238.14},
-    {0, 0, 0, 1}
-  }, {
-    {0, -0.9178, 0.3971, 107},
-    {0, -0.3971, -0.9178, -248},
-    {1, 0, 0, 238},
-    {0, 0, 0, 1}
-  }, {
-    {0, -0.9178, 0.3971, 107},
-    {0, -0.3971, -0.9178, -248},
-    {1, 0, 0, 150},
-    {0, 0, 0, 1}
-}};
+      {1000},
+      {0, -0.9178, 0.3971, 107},
+      {0, -0.3971, -0.9178, -248},
+      {1, 0, 0, 238},
+      {0, 0, 0, 1}
+    }, {
+      {1000},
+      {0, -0.9178, 0.3971, 107},
+      {0, -0.3971, -0.9178, -248},
+      {1, 0, 0, 150},
+      {0, 0, 0, 1}
+    }, {
+      {1000},
+      {0, 0, 1, 270.41},
+      {0, -1, 0, 0},
+      {1, 0, 0, 238.14},
+      {0, 0, 0, 1}
+  }};
 
 int switchProgramVariable = 0;
 
@@ -459,13 +462,14 @@ void checkKeyPressed() { //-----------------------------------------------------
     //case 3:
     //  switchProgramVariable = 0;
     //}
-    if (Arm2.executeProgram() == 1){
+    if (Arm2.executeProgram(movementProgram) == 1){
       keyVariableA = false;
     }
   }
 
   if (keyVariableB) {
-    
+    movementProgram = Arm1.savePointToProgram(movementProgram, 1000);
+    keyVariableB = false;
   }
   if (keyVariableF) {
     time[1] = (double)millis()-time[0];

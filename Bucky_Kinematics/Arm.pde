@@ -13,25 +13,6 @@ class Arm {
   boolean executingMovement = false;
   boolean executingProgram = false;
   double[] currentPos = {0, 0, 0, 0, 0, 0};
-  double[][][] movementProgram = {{
-      {1000},
-      {0, -0.9178, 0.3971, 107},
-      {0, -0.3971, -0.9178, -248},
-      {1, 0, 0, 238},
-      {0, 0, 0, 1}
-    }, {
-      {1000},
-      {0, -0.9178, 0.3971, 107},
-      {0, -0.3971, -0.9178, -248},
-      {1, 0, 0, 150},
-      {0, 0, 0, 1}
-    }, {
-      {1000},
-      {0, 0, 1, 270.41},
-      {0, -1, 0, 0},
-      {1, 0, 0, 238.14},
-      {0, 0, 0, 1}
-  }};
   int someNumberForWhatExecute = 0;
 
   Arm(double[][] MDHT) {
@@ -128,7 +109,7 @@ class Arm {
     return temp;
   }
 
-  int executeProgram() {
+  int executeProgram(double[][][] movementProgram) {
     int temp = 0;
     if (!executingProgram) {
       executingProgram = true;
@@ -147,6 +128,14 @@ class Arm {
     return temp;
   }
 
+  double[][][] savePointToProgram(double[][][] program, int time) {
+    double[][] temp = resultMatrix.getData();
+
+    double[][] targetMatrix = {{time, 0, 0, 0}, temp[0], temp[1], temp[2], temp[3]};
+    
+    program = (double[][][]) append(program, targetMatrix);
+    return program;
+  }
 
   double[] anglesFromIK(double[][] targetMatrix) {
     double[] angle = new double[6];
