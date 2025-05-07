@@ -29,8 +29,6 @@ boolean leftMousePressed = false;  //Used to track which mouse button is being p
 int menuHeight = 50;      //The height the "menu" goes down to. The "menu" is not a object at the moment.
 int menuWidth;      //The menu is just some boxes where the color is different and the "mouseDragged()" function doesn't do anything. Initialized in setup.
 int zoom = 800;          //Start zoom / start distande from the view.
-boolean haveRun = false;
-
 
 
 float saveThetaValues[][] = new float[4][6];
@@ -101,7 +99,7 @@ void draw() {
   rect(0, 0, width, menuHeight);                                    //Make rectangle at position 0x 0y with a width of "width" and height of menuHeight.
   rect(menuWidth, menuHeight, width-menuHeight, height-menuHeight); //Look up https://processing.org/reference/ for more information about these kind of things.
 
-  checkKeyPressed();
+
 
   if (infoButtonVariable) {
     utils.drawResult("Slider angles", 30, 70);
@@ -113,10 +111,9 @@ void draw() {
     utils.drawResult("Arm1 result matrix with IK angles (T06)", 1000, 100);
     utils.drawResult(Arm2.resultMatrix, 1000, 150);
   }
-  if (keyVariableA) {
-    double[] startTheta = {0, 0, 0, 0, 0, 0};
-    Arm1.executeMovement(someTargetMatrix, 1000, startTheta);
-  }
+
+  checkKeyPressed();
+
   utils.drawResult(Arm1.speed, 900, 450);
   utils.drawResult(Arm1.pos, 1100, 450);
   //Under this is where the transformations from the rotate pan zoom functionality happens.
@@ -379,14 +376,10 @@ public void makeSlidersFunction(int x, int y, int space) { //Function that creat
 
 void keyPressed() {         //keyPressed is a built-in function that is called once every time a key is pressed.
   if (keyCode==65) {        //To check what key is pressed, simple "if".
-    keyVariableA = true;    //This variable is (at the time of writing this) being used for drawing something. It is therefore made like a flip-flop, to draw it every frame and not just once.
-  } else {                  //The variable will only be turned "false" if any other button that ASCII 65 (ASCII 65 = A) is pressed.
-    keyVariableA = false;
+    keyVariableA = !keyVariableA;    //This variable is (at the time of writing this) being used for drawing something. It is therefore made like a flip-flop, to draw it every frame and not just once.
   }
   if (keyCode==66) {
-    keyVariableB = true;
-  } else {
-    keyVariableB = false;
+    keyVariableB = !keyVariableB;
   }
   if (keyCode==67) {
     keyVariableC = !keyVariableC;
@@ -434,45 +427,50 @@ void keyPressed() {         //keyPressed is a built-in function that is called o
 }
 
 void checkKeyPressed() { //----------------------------------------------------------------------------------------
-  if (keyVariableA == true) {
-    //saveThetaValues(1);
-  }
-  if (keyVariableB == true) {
-    //playSavedThetaValues();
-    haveRun = false;
+  if (keyVariableA) {
+    double[] startTheta = {0, 0, 0, 0, 0, 0};
+    Arm1.executeMovement(someTargetMatrix, 1000, startTheta);
   }
 
-  if (keyVariable1 == true) {
+  if (keyVariableB) {
+    //playSavedThetaValues();
+  }
+
+  if (keyVariable1) {
     saveThetaValues(0);
     keyVariable1 = false;
   }
-  if (keyVariable2 == true) {
+  if (keyVariable2) {
     saveThetaValues(1);
     keyVariable2 = false;
   }
-  if (keyVariable3 == true) {
+  if (keyVariable3) {
     saveThetaValues(2);
     keyVariable3 = false;
   }
-  if (keyVariable4 == true) {
+  if (keyVariable4) {
     saveThetaValues(3);
     keyVariable4 = false;
   }
 
-  if (keyVariableC == true) {
+  if (keyVariableC) {
     playSliderValues();
+    pushStyle();
+    fill(255, 0, 0);
+    rect(width-50, height-50, 10, 10);
+    popStyle();
   } else {
 
-    if (keyVariable5 == true) {
+    if (keyVariable5) {
       playSavedThetaValues(0);
     }
-    if (keyVariable6 == true) {
+    if (keyVariable6) {
       playSavedThetaValues(1);
     }
-    if (keyVariable7 == true) {
+    if (keyVariable7) {
       playSavedThetaValues(2);
     }
-    if (keyVariable8 == true) {
+    if (keyVariable8) {
       playSavedThetaValues(3);
     }
   }

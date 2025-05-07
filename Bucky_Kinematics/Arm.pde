@@ -10,7 +10,7 @@ class Arm {
   double[] targetAngle;
   double[] speed = new double[6];
   float[] pos = new float[6];
-
+  boolean haveRun = false;
 
   Arm(double[][] MDHT) {
     MDH = MDHT;
@@ -88,9 +88,11 @@ class Arm {
         pos[i] = (float)getPos(targetAngle[i], targetTime, startAngle[i], currentTime);
       }
       theta = pos;
-      //utils.drawResult(123, 800,450);
-      //println("currentTime = " + currentTime);
       sendData();
+    }
+    if (millis() > startTime+targetTime) {
+      keyVariableA = false;
+      haveRun = false;
     }
   }
 
