@@ -19,6 +19,7 @@ boolean toggleUIBool = false; //Status of the "toggleUI" button.
 boolean infoButtonVariable = true;
 boolean keyVariableA, keyVariableB, keyVariable1, keyVariable2, keyVariable3, keyVariable4, keyVariable5, keyVariable6, keyVariable7, keyVariable8; //Track key A and B
 boolean keyVariableC = true;
+boolean keyVariableD = false;
 boolean keyVariableF = false;
 
 int posX, posY; //Declaring a kind of center position of the coordinate system. Initialized in setup.
@@ -54,24 +55,24 @@ double[][] MDH = { //Alpha, a, d, theta offset
   {90, 0, 0, 0}};
 
 double[][][] movementProgram = {{
-      {1000},
-      {0, -0.9178, 0.3971, 107},
-      {0, -0.3971, -0.9178, -248},
-      {1, 0, 0, 238},
-      {0, 0, 0, 1}
-    }, {
-      {1000},
-      {0, -0.9178, 0.3971, 107},
-      {0, -0.3971, -0.9178, -248},
-      {1, 0, 0, 150},
-      {0, 0, 0, 1}
-    }, {
-      {1000},
-      {0, 0, 1, 270.41},
-      {0, -1, 0, 0},
-      {1, 0, 0, 238.14},
-      {0, 0, 0, 1}
-  }};
+    {1000, 0, 0, 0}, //Time, nothing, nothing, nothing
+    {0, -0.9178, 0.3971, 107}, //r, r, r, Px
+    {0, -0.3971, -0.9178, -248}, //r, r, r, Py
+    {1, 0, 0, 238}, //r, r, r, Pz
+    {0, 0, 0, 1}                  //0, 0, 0, 1
+  }, {
+    {1000, 0, 0, 0},
+    {0, -0.9178, 0.3971, 107},
+    {0, -0.3971, -0.9178, -248},
+    {1, 0, 0, 150},
+    {0, 0, 0, 1}
+  }, {
+    {1000, 0, 0, 0},
+    {0, 0, 1, 270.41},
+    {0, -1, 0, 0},
+    {1, 0, 0, 238.14},
+    {0, 0, 0, 1}
+}};
 
 int switchProgramVariable = 0;
 
@@ -402,6 +403,9 @@ void keyPressed() {         //keyPressed is a built-in function that is called o
   if (keyCode==67) {
     keyVariableC = !keyVariableC;
   }
+  if (keyCode==68) {
+    keyVariableD = !keyVariableD;
+  }
   if (keyCode==70) {
     keyVariableF = !keyVariableF;
   }
@@ -462,13 +466,17 @@ void checkKeyPressed() { //-----------------------------------------------------
     //case 3:
     //  switchProgramVariable = 0;
     //}
-    if (Arm2.executeProgram(movementProgram) == 1){
+    if (Arm2.executeProgram(movementProgram) == 1) {
       keyVariableA = false;
     }
   }
 
   if (keyVariableB) {
     movementProgram = Arm1.savePointToProgram(movementProgram, 1000);
+    keyVariableB = false;
+  }
+  if (keyVariableD) {
+    saveProgramToFile(movementProgram);
     keyVariableB = false;
   }
   if (keyVariableF) {
@@ -515,4 +523,47 @@ void checkKeyPressed() { //-----------------------------------------------------
       playSavedThetaValues(3);
     }
   }
+}
+
+
+void saveProgramToFile(double[][][] movementProgram) {
+
+  String[] movementProgramString = new String[movementProgram.length];
+  for (int i = 0; i < movementProgram.length; i++) {
+    String slice = "";
+    for (int j = 0; j < movementProgram[i].length; j++) {
+      String row = "'";
+      for (int k = 0; k < movementProgram[i][j].length; k++) {
+        row = row + nf((float)movementProgram[i][j][k], 0, 5) + "'";
+      }
+      slice = slice + "|" + row;
+    }
+    movementProgramString[i] = slice;
+  }
+
+  saveStrings("movementProgram1", movementProgramString);
+}
+
+double[][][] loadProgramFromFile(String programToLoad) {
+
+  String[] loadedProgramSlice = loadStrings(programToLoad);
+  double[][][] movementProgram = new double[loadedProgramSlice.length][][];
+
+
+
+  for (int i = 0; i < loadedProgramSlice.length; i++) {
+    
+    String[] row = split(loadedProgramSlice[i], "|");
+
+    for (int j = 0; j < row.length; j++) {
+
+      String[] wak = split(row[j], "'");
+
+      for (int k = 0; k < row.length; k++) {
+
+        movementProgram[i][j][k] = Double.parseDouble(wak[k]);
+      }
+    }
+  }
+  return movementProgram;
 }
