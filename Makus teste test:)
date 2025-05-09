@@ -1,0 +1,177 @@
+import controlP5.*;
+import processing.serial.*;
+ControlP5 cp5;
+PFont font;
+ScrollableList dropDown;
+ScrollableList dropdown;
+String vialText = "nonPicked";
+boolean vialPicked = false;
+
+void setup(){
+cp5 = new ControlP5(this);  
+//port = new.Serial(this, "COM??", 9600); // connect to arduino port?
+font = createFont("SansSerif", 17);
+
+
+dropDown = cp5.addScrollableList("Pick_Vial")
+  .setLabel("        Pick Vial")
+  .setPosition(210,560)
+  .setSize(180,150)
+  .setBarHeight(60)
+  .setColorBackground(color(255, 255, 255))
+  //.setColorForeground(color(150,150,150))
+  .setFont(font)
+  .setColorLabel(0)
+  .setColorValue(0)
+  .setItemHeight(30)
+  .setOpen(false)
+  .close();
+  dropDown.addItem("Red", 10);
+  dropDown.addItem("Green", 20);
+
+    
+ /* 
+cp5.addButton("Pick_Vial")
+  .setLabel("Pick Vial")
+  .setPosition(210,560)
+  .setSize(180,55)
+  .setFont(font)
+  .setColorBackground(color(255, 255, 255))
+  .setColorForeground(color(150,150,150))
+  .setColorLabel(color(0,0,0))
+  ;
+
+cp5.addButton("Beg_program")
+  .setLabel("Begin Program")
+  .setPosition(510,560)
+  .setSize(180,55)
+  .setFont(font)
+  .setColorBackground(color(255, 255, 255))
+  .setColorForeground(color(150,150,150))
+  .setColorLabel(color(0,0,0))
+  ;
+
+cp5.addButton("Con_program")
+  .setLabel("continue program")
+  .setPosition(810,560)
+  .setSize(180,55)
+  .setFont(font)
+  .setColorBackground(color(255, 255, 255))
+  .setColorForeground(color(150,150,150))
+  .setColorLabel(color(0,0,0))
+  ;
+
+*/
+
+
+size(1200,750);
+noStroke();
+PImage img;
+
+// Blå border
+fill(27,22,79);
+rect(0,0,1200,750);
+
+// hvid frame
+fill(255,255,255);
+rect(20, 20, 1160, 710, 20, 20, 20, 20);
+
+//sunken border 
+fill(27, 22, 79);
+rect(350, 20, 500, 40, 0, 0, 0, 0);
+rect(375, 0, 450, 85, 0, 0, 20, 20);
+  //ydre hvid kanter
+fill(255, 255, 255);
+rect(350, 20, 25, 40, 0, 20, 0, 0);
+rect(825, 20, 25, 40, 20, 0, 0, 0);
+
+// Titel
+textAlign(CENTER);
+fill(255, 255, 255);
+textSize(30);
+text("Controlpanel of B.U.C.K.Y", width/2, 55);
+
+// AAU logo
+img = loadImage("AAU logo.png");
+image(img, 65, 35, 250, 50);
+
+// knapper 
+fill(27,22,79);
+rect(200, 550, 200, 75, 20, 20, 20, 20);
+rect(500, 550, 200, 75, 20, 20, 20, 20);
+rect(800, 550, 200, 75, 20, 20, 20, 20);
+// hvid outline
+fill(255,255,255);
+
+rect(205, 555, 190, 65, 15, 15, 15, 15); //"Pick vial"
+
+rect(505, 555, 190, 65, 15, 15, 15, 15); //"Begin program"
+
+rect(805, 555, 190, 65, 15, 15, 15, 15); //"Continue progran"
+  //Button tekst
+textAlign(CENTER);
+fill(27,22,79);
+textSize(20);
+//text("Pick vial", 300 , 592);
+text("Begin progran", 600 , 592);
+text("Continue program", 900 , 592);
+}
+
+
+
+void controlEvent(ControlEvent event) {  //tjekker hvilken vial der valgt:)
+//vialpick = (int)dropdown.getItem((int)dropdown.getValue()).get("value");
+  if (event.isFrom("Pick_Vial")) {
+    int value = (int) dropdown.getItem((int)dropdown.getValue()).get("value");
+println("hello");
+    switch (value) {
+    case 10:
+      vialText = "Red";
+      vialPicked = true;
+      break;
+    case 20:
+      vialText = "Green";
+      vialPicked = true;
+      break;
+    default:
+      vialText = "none picked";
+      vialPicked = false;
+      break;
+    }
+  }
+}
+
+
+
+
+
+
+
+void draw()   {
+  hint(DISABLE_OPTIMIZED_STROKE);
+  text("Chosen vial:   " + vialText, width/2, 150);
+  //println((int) dropDown.getItem((int)dropDown.getValue()).get("value"));
+  /*
+  if (mouseX>205 && mouseX<395 && mouseY>555 && mouseY<620){
+  
+  fill(200,200,200);
+  rect(205, 555, 190, 65, 15, 15, 15, 15); 
+  
+  fill(27,22,79);
+  textSize(20);
+  text("Pick vial", 300 , 592);
+  }
+  else {
+  fill(255,255,255);
+  rect(205, 555, 190, 65, 15, 15, 15, 15); //"Pick vial"
+  fill(27,22,79);
+  textSize(20);
+  text("Pick vial", 300 , 592);
+  
+  }*/
+}
+
+
+
+
+ 
