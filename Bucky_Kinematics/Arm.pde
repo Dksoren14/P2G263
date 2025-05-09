@@ -80,7 +80,7 @@ class Arm {
   }
 
   int executeMovement(double[][] targetMatrix, double targetTime) {
-    int temp = 0;
+    int a = 0;
     if (!executingMovement) {
       for (int i = 0; i < currentPos.length; i++) {
         startAngle[i] = currentPos[i];
@@ -101,12 +101,12 @@ class Arm {
     }
     if (millis() > startTime+targetTime) {
       executingMovement = false;
-      temp = 1;
+      a = 1;
       for (int i = 0; i < currentPos.length; i++) {
         currentPos[i] = pos[i];
       }
     }
-    return temp;
+    return a;
   }
 
   int executeProgram(double[][][] movementProgram) {
@@ -128,12 +128,18 @@ class Arm {
     return temp;
   }
 
-  double[][][] savePointToProgram(double[][][] program, int time) {
+  double[][][] savePointToProgram(double[][][] program, int time, int pointNumber) {
     double[][] temp = resultMatrix.getData();
-
     double[][] targetMatrix = {{time, 0, 0, 0}, temp[0], temp[1], temp[2], temp[3]};
-    
-    program = (double[][][]) append(program, targetMatrix);
+    if (time == 0) {
+      time = 1000;
+    }
+
+    if (pointNumber <= program.length-1 && pointNumber >= 0) {
+      program[pointNumber] = targetMatrix;
+    } else {
+      program = (double[][][])append(program, targetMatrix);
+    }
     return program;
   }
 

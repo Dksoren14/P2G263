@@ -14,17 +14,20 @@ boolean connectButtonStatus = false; //Status of the connect button
 String selectedport; //Søren
 int selectedbaudrate; //Søren
 
-Button connectionButton, toggleConnectionUIButton, infoButton, saveProgramLocationButton, leftArrowButton, rightArrowButton;
+Button connectionButton, toggleConnectionUIButton, infoButton, saveProgramPointButton, leftArrowButton, rightArrowButton, addPointButton, saveProgramButton, editProgramLocationButton, playProgramButton, toggleSaveLoadUIButton;
+Textfield programSelectionTextField, timeTextField;
 boolean toggleUIBool = false; //Status of the "toggleUI" button.
-boolean infoButtonVariable = true;
+boolean toggleSaveLoadUIBool = true;
+boolean infoButtonVariable = false;
 boolean keyVariableA, keyVariableB, keyVariable1, keyVariable2, keyVariable3, keyVariable4, keyVariable5, keyVariable6, keyVariable7, keyVariable8; //Track key A and B
 boolean keyVariableC = true;
 boolean keyVariableD = false;
 boolean keyVariableE = false;
 boolean keyVariableF = false;
 int tempVariableForF = 0;
-String globalTextVariable = "";
+//String globalTextVariable = "";
 int movementNumber = 0;
+int addingPoint = 0;
 
 int posX, posY; //Declaring a kind of center position of the coordinate system. Initialized in setup.
 float panX = 0, panY = 0; //Declaring and making the panning offsets. Startvalue is 0.
@@ -106,11 +109,12 @@ void setup() {
 
   makeSlidersFunction(width-325, 450, 50);
   connectionUI(10, 10);
-  saveLoadUI(400, 400);
+  saveLoadUI(width-325, 70);
   infoButton = cp5.addButton("infoButton") //Make button "toggleUI".
     .setLabel("Info")
     .setSize(100, 30)
     .setPosition(130, 10);
+  
 }
 
 void draw() {
@@ -168,7 +172,9 @@ void draw() {
 
 
   popMatrix();
-  drawSaveLoadUI(400, 400);
+  if (toggleSaveLoadUIBool) {
+    drawSaveLoadUI(width-325, 70);
+  }
   sendData();
 }
 
@@ -483,7 +489,7 @@ void checkKeyPressed() { //-----------------------------------------------------
   }
 
   if (keyVariableB) {
-    movementProgram = Arm1.savePointToProgram(movementProgram, 1000);
+    //movementProgram = Arm1.savePointToProgram(movementProgram, 1000);
     keyVariableB = false;
   }
   if (keyVariableD) {
@@ -541,16 +547,36 @@ void checkKeyPressed() { //-----------------------------------------------------
   }
 }
 
+void toggleSaveLoadUI() { //Will toggle the UI. Runs when "toggleUI" button is pressed.
+
+  toggleSaveLoadUIBool = !toggleSaveLoadUIBool;
+  //showConnectionUI(toggleUIBool);
+  saveProgramPointButton.setVisible(toggleSaveLoadUIBool);
+  leftArrowButton.setVisible(toggleSaveLoadUIBool);
+  rightArrowButton.setVisible(toggleSaveLoadUIBool);
+  programSelectionTextField.setVisible(toggleSaveLoadUIBool);
+  playProgramButton.setVisible(toggleSaveLoadUIBool);
+  addPointButton.setVisible(toggleSaveLoadUIBool);
+  saveProgramButton.setVisible(toggleSaveLoadUIBool);
+  editProgramLocationButton.setVisible(toggleSaveLoadUIBool);
+  timeTextField.setVisible(toggleSaveLoadUIBool);
+}
+
 void drawSaveLoadUI(int x, int y) {
   fill(0);
-  text(movementNumber, x + 5, y + 60);
+  textSize(30);
+  text("Point " + (movementNumber + addingPoint), x + 5, y + 70);
 }
 
 void saveLoadUI(int x, int y) {
-  saveProgramLocationButton = cp5.addButton("saveProgramLocationButtonFunction")
+  toggleSaveLoadUIButton = cp5.addButton("toggleSaveLoadUI") //Make button "toggleUI".
+    .setLabel("Save/Load")
+    .setSize(100, 30)
+    .setPosition(240, 10);
+  saveProgramPointButton = cp5.addButton("saveProgramPointButtonFunction")
     .setLabel("Save Point")
     .setSize(60, 30)
-    .setPosition(x + 70, y + 90);
+    .setPosition(x, y + 130);
   leftArrowButton = cp5.addButton("leftArrowButtonFunction")
     .setLabel("<---")
     .setSize(60, 30)
@@ -559,38 +585,98 @@ void saveLoadUI(int x, int y) {
     .setLabel("--->")
     .setSize(60, 30)
     .setPosition(x + 140, y + 90);
-  cp5.addTextfield("programSelectionTextFieldFunction")
+  programSelectionTextField = cp5.addTextfield("programSelectionTextFieldFunction")
     .setLabel("")
     .setPosition(x, y)
     .setSize(200, 30)
     .setFocus(true)
-    .setColor(color(255, 0, 0))
-    .setAutoClear(false);
+    .setColor(color(255))
+    .setAutoClear(false)
+    .setText("untitled program");
+  editProgramLocationButton = cp5.addButton("editProgramLocationButtonFunction")
+    .setLabel("Edit Point")
+    .setSize(60, 30)
+    .setPosition(x + 70, y + 130);
+  saveProgramButton = cp5.addButton("saveProgramButtonFunction")
+    .setLabel("Save Program")
+    .setSize(60, 30)
+    .setPosition(x + 140, y + 40);
+  addPointButton = cp5.addButton("addPointButtonFunction")
+    .setLabel("Add Point")
+    .setSize(60, 30)
+    .setPosition(x + 140, y + 130);
+  timeTextField = cp5.addTextfield("timeTextFieldFunction")
+    .setLabel("")
+    .setPosition(x, y+170)
+    .setSize(60, 30)
+    .setFocus(true)
+    .setColor(color(255))
+    .setAutoClear(false)
+    .setText("1234");
+  playProgramButton = cp5.addButton("playProgramButtonFunction")
+    .setLabel("Play")
+    .setSize(60, 30)
+    .setPosition(x + 70, y + 90);
 }
 
 void leftArrowButtonFunction() {
+  keyVariableC = false;
+  addingPoint = 0;
   movementNumber -= 1;
-  movementNumber = constrain(movementNumber, 0, movementProgram.length);
-  double[][] temp = {movementProgram[movementNumber][1], movementProgram[movementNumber][2], movementProgram[movementNumber][3], movementProgram[movementNumber][4]};
-  Arm1.executeMovement(temp, 0);
+  movementNumber = constrain(movementNumber, 1, movementProgram.length);
+  double[][] temp = {movementProgram[movementNumber-1][1], movementProgram[movementNumber-1][2], movementProgram[movementNumber-1][3], movementProgram[movementNumber-1][4]};
+  //Arm1.executeMovement(temp, 1);
+  double[] temp2 = Arm1.anglesFromIK(temp);
+  for (int i = 0; i < temp2.length; i++) {
+    theta[i] = (float)temp2[i];
+  }
 }
 void rightArrowButtonFunction() {
+  keyVariableC = false;
+  addingPoint = 0;
   movementNumber += 1;
-  movementNumber = constrain(movementNumber, 0, movementProgram.length+1);
-  if (movementNumber <= movementProgram.length){
-    double[][] temp = {movementProgram[movementNumber][1], movementProgram[movementNumber][2], movementProgram[movementNumber][3], movementProgram[movementNumber][4]};
+  movementNumber = constrain(movementNumber, 1, movementProgram.length);
+  if (movementNumber <= movementProgram.length) {
+    double[][] temp = {movementProgram[movementNumber-1][1], movementProgram[movementNumber-1][2], movementProgram[movementNumber-1][3], movementProgram[movementNumber-1][4]};
     double[] temp2 = Arm1.anglesFromIK(temp);
-    for (int i = 0; i < temp2.length; i++){
-    theta[i] = (float)temp2[i];
+    for (int i = 0; i < temp2.length; i++) {
+      theta[i] = (float)temp2[i];
     }
   }
 }
-void saveProgramLocationButtonFunction() {
-  saveProgramToFile(movementProgram, globalTextVariable);
+void saveProgramPointButtonFunction() {
+  int temp;
+  if (cp5.get(Textfield.class, "timeTextFieldFunction").getText().isEmpty()) {
+    temp = 1234;
+  } else {
+    temp = Integer.parseInt(cp5.get(Textfield.class, "timeTextFieldFunction").getText());
+  }
+  movementProgram = Arm1.savePointToProgram(movementProgram, temp, movementNumber-1+addingPoint);
+  addingPoint = 0;
+  rightArrowButtonFunction();
 }
-void programSelectionTextFieldFunction(String text) {
-  globalTextVariable = text;
+void editProgramLocationButtonFunction() {
+  addingPoint = 0;
+  keyVariableC = true;
 }
+void addPointButtonFunction() {
+  movementNumber = movementProgram.length;
+  addingPoint = 1;
+  keyVariableC = true;
+}
+void playProgramButtonFunction() {
+  keyVariableA = true;
+}
+void saveProgramButtonFunction() {
+  String temp;
+  if (cp5.get(Textfield.class, "timeTextFieldFunction").getText().isEmpty()) {
+    temp = "untitled program";
+  } else {
+    temp = cp5.get(Textfield.class, "programSelectionTextFieldFunction").getText();
+  }
+  saveProgramToFile(movementProgram, temp);
+}
+
 
 void saveProgramToFile(double[][][] movementProgram, String programName) {
 
