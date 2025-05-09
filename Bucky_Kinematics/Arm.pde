@@ -12,8 +12,8 @@ class Arm {
   double[] acc = new double[6];
   boolean executingMovement = false;
   boolean executingProgram = false;
-  double[] currentPos = {0, 0, 0, 0, 0, 0};
-  int someNumberForWhatExecute = 0;
+  double[] currentPos = {0, 0, 0, 0, 0, 0}; //Tracks the current position
+  int trackMovement = 0; //Tracks what movement the program is currentrly executing.
 
   Arm(double[][] MDHT) {
     MDH = MDHT;
@@ -116,12 +116,12 @@ class Arm {
     }
 
     if (executingProgram) {
-      int i = someNumberForWhatExecute;
+      int i = trackMovement;
       double[][] targetMatrix = {movementProgram[i][1], movementProgram[i][2], movementProgram[i][3], movementProgram[i][4]};
-      someNumberForWhatExecute += executeMovement(targetMatrix, movementProgram[i][0][0]);
+      trackMovement += executeMovement(targetMatrix, movementProgram[i][0][0]);
     }
-    if (someNumberForWhatExecute > movementProgram.length - 1) {
-      someNumberForWhatExecute = 0;
+    if (trackMovement > movementProgram.length - 1) {
+      trackMovement = 0;
       executingProgram = false;
       temp = 1;
     }

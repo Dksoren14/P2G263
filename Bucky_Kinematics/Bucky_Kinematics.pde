@@ -14,13 +14,17 @@ boolean connectButtonStatus = false; //Status of the connect button
 String selectedport; //Søren
 int selectedbaudrate; //Søren
 
-Button connectionButton, toggleConnectionUIButton, infoButton;
+Button connectionButton, toggleConnectionUIButton, infoButton, saveProgramLocationButton, leftArrowButton, rightArrowButton;
 boolean toggleUIBool = false; //Status of the "toggleUI" button.
 boolean infoButtonVariable = true;
 boolean keyVariableA, keyVariableB, keyVariable1, keyVariable2, keyVariable3, keyVariable4, keyVariable5, keyVariable6, keyVariable7, keyVariable8; //Track key A and B
 boolean keyVariableC = true;
 boolean keyVariableD = false;
+boolean keyVariableE = false;
 boolean keyVariableF = false;
+int tempVariableForF = 0;
+String globalTextVariable = "";
+int movementNumber = 0;
 
 int posX, posY; //Declaring a kind of center position of the coordinate system. Initialized in setup.
 float panX = 0, panY = 0; //Declaring and making the panning offsets. Startvalue is 0.
@@ -74,6 +78,8 @@ double[][][] movementProgram = {{
     {0, 0, 0, 1}
 }};
 
+double[][][] movementProgram1232;
+
 int switchProgramVariable = 0;
 
 RealMatrix Matrix1232 = new Array2DRowRealMatrix(new double[][] {{15, 20, 30, 40}, {1, 2, 3.5, 4.1}, {10, 29, 30, 40}, {1, 2, 3.2, 4}});
@@ -100,6 +106,7 @@ void setup() {
 
   makeSlidersFunction(width-325, 450, 50);
   connectionUI(10, 10);
+  saveLoadUI(400, 400);
   infoButton = cp5.addButton("infoButton") //Make button "toggleUI".
     .setLabel("Info")
     .setSize(100, 30)
@@ -161,7 +168,7 @@ void draw() {
 
 
   popMatrix();
-
+  drawSaveLoadUI(400, 400);
   sendData();
 }
 
@@ -406,8 +413,12 @@ void keyPressed() {         //keyPressed is a built-in function that is called o
   if (keyCode==68) {
     keyVariableD = !keyVariableD;
   }
+  if (keyCode==69) {
+    keyVariableE = !keyVariableE;
+  }
   if (keyCode==70) {
-    keyVariableF = !keyVariableF;
+    keyVariableF = true;
+    tempVariableForF += 1;
   }
   if (keyCode==49) {
     keyVariable1 = true;
@@ -476,13 +487,18 @@ void checkKeyPressed() { //-----------------------------------------------------
     keyVariableB = false;
   }
   if (keyVariableD) {
-    saveProgramToFile(movementProgram);
-    keyVariableB = false;
+    saveProgramToFile(movementProgram, "movementProgram1");
+    keyVariableD = false;
+  }
+  if (keyVariableE) {
+    movementProgram1232 = loadProgramFromFile("movementProgram1");
+    keyVariableE = false;
   }
   if (keyVariableF) {
-    time[1] = (double)millis()-time[0];
-    time[0] = millis();
-    utils.drawResult(time, 10, 100);
+    utils.drawResult(movementProgram1232[tempVariableForF], 10, 400);
+    //time[1] = (double)millis()-time[0];
+    //time[0] = millis();
+    //utils.drawResult(time, 10, 100);
   }
 
   if (keyVariable1) {
@@ -525,23 +541,78 @@ void checkKeyPressed() { //-----------------------------------------------------
   }
 }
 
+void drawSaveLoadUI(int x, int y) {
+  fill(0);
+  text(movementNumber, x + 5, y + 60);
+}
 
-void saveProgramToFile(double[][][] movementProgram) {
+void saveLoadUI(int x, int y) {
+  saveProgramLocationButton = cp5.addButton("saveProgramLocationButtonFunction")
+    .setLabel("Save Point")
+    .setSize(60, 30)
+    .setPosition(x + 70, y + 90);
+  leftArrowButton = cp5.addButton("leftArrowButtonFunction")
+    .setLabel("<---")
+    .setSize(60, 30)
+    .setPosition(x, y + 90);
+  rightArrowButton = cp5.addButton("rightArrowButtonFunction")
+    .setLabel("--->")
+    .setSize(60, 30)
+    .setPosition(x + 140, y + 90);
+  cp5.addTextfield("programSelectionTextFieldFunction")
+    .setLabel("")
+    .setPosition(x, y)
+    .setSize(200, 30)
+    .setFocus(true)
+    .setColor(color(255, 0, 0))
+    .setAutoClear(false);
+}
+
+void leftArrowButtonFunction() {
+  movementNumber -= 1;
+  movementNumber = constrain(movementNumber, 0, movementProgram.length);
+  double[][] temp = {movementProgram[movementNumber][1], movementProgram[movementNumber][2], movementProgram[movementNumber][3], movementProgram[movementNumber][4]};
+  Arm1.executeMovement(temp, 0);
+}
+void rightArrowButtonFunction() {
+  movementNumber += 1;
+  movementNumber = constrain(movementNumber, 0, movementProgram.length+1);
+  if (movementNumber <= movementProgram.length){
+    double[][] temp = {movementProgram[movementNumber][1], movementProgram[movementNumber][2], movementProgram[movementNumber][3], movementProgram[movementNumber][4]};
+    double[] temp2 = Arm1.anglesFromIK(temp);
+    for (int i = 0; i < temp2.length; i++){
+    theta[i] = (float)temp2[i];
+    }
+  }
+}
+void saveProgramLocationButtonFunction() {
+  saveProgramToFile(movementProgram, globalTextVariable);
+}
+void programSelectionTextFieldFunction(String text) {
+  globalTextVariable = text;
+}
+
+void saveProgramToFile(double[][][] movementProgram, String programName) {
 
   String[] movementProgramString = new String[movementProgram.length];
   for (int i = 0; i < movementProgram.length; i++) {
     String slice = "";
     for (int j = 0; j < movementProgram[i].length; j++) {
-      String row = "'";
+      String row = "";
       for (int k = 0; k < movementProgram[i][j].length; k++) {
-        row = row + nf((float)movementProgram[i][j][k], 0, 5) + "'";
+        row = row + Double.toString(movementProgram[i][j][k]);
+        if (k < movementProgram[i][j].length-1) {
+          row = row + "'";
+        }
       }
-      slice = slice + "|" + row;
+      slice = slice + row;
+      if (j < movementProgram[i].length-1) {
+        slice = slice + "|";
+      }
     }
     movementProgramString[i] = slice;
   }
-
-  saveStrings("movementProgram1", movementProgramString);
+  saveStrings(programName, movementProgramString);
 }
 
 double[][][] loadProgramFromFile(String programToLoad) {
@@ -549,18 +620,13 @@ double[][][] loadProgramFromFile(String programToLoad) {
   String[] loadedProgramSlice = loadStrings(programToLoad);
   double[][][] movementProgram = new double[loadedProgramSlice.length][][];
 
-
-
   for (int i = 0; i < loadedProgramSlice.length; i++) {
-    
     String[] row = split(loadedProgramSlice[i], "|");
-
+    movementProgram[i] = new double[row.length][];
     for (int j = 0; j < row.length; j++) {
-
       String[] wak = split(row[j], "'");
-
-      for (int k = 0; k < row.length; k++) {
-
+      movementProgram[i][j] = new double[wak.length];
+      for (int k = 0; k < wak.length; k++) {
         movementProgram[i][j][k] = Double.parseDouble(wak[k]);
       }
     }
