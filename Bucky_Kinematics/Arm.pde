@@ -62,6 +62,9 @@ class Arm {
   }
 
   void draw() {
+    if (textures[0] != null) {
+      shape(textures[0]);
+    }
     for (int i = 0; i < jointArray.length; i++) {
       jointArray[i].updateTransformationMatrix(Math.toRadians(pos[i]));
       utils.applyRealMatrix(jointArray[i].realTransformationMatrix);

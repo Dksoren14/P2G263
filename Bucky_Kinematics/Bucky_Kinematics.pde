@@ -98,9 +98,13 @@ void setup() {
   posY = height-100;                  //Used in a "translate" function in "draw".
   menuWidth = width-375;
 
-  //textures[0] = loadShape("obj_files/Base.obj");
-  //textures[1] = loadShape("obj_files/Link1.obj");
-  //textures[2] = loadShape("obj_files/Link2.obj");
+  textures[0] = loadShape("obj_files/Base.obj");
+  textures[1] = loadShape("obj_files/Link1.obj");
+  textures[2] = loadShape("obj_files/Link2.obj");
+  textures[3] = loadShape("obj_files/Link3.obj");
+  textures[4] = loadShape("obj_files/Link4.obj");
+  textures[5] = loadShape("obj_files/Link5.obj");
+  
 
   cp5 = new ControlP5(this);
   Arm1 = new Arm(MDH, textures);
