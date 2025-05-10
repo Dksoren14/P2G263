@@ -1,0 +1,307 @@
+import controlP5.*;
+import processing.serial.*;
+ControlP5 cp5;
+PFont font;
+ScrollableList dropDown;
+ScrollableList dropdown;
+String vialText = "nonselected";
+boolean vialPicked = false;
+PImage img;
+String holaTest = "";
+boolean pressedBegin = false;
+boolean pressedYes = false;
+int[] cancelColor = {255, 200, 200};
+int[] yesColor = {200, 255, 200};
+int[] okColor = {114, 157, 198};
+float lastClick = 0;
+float debounceDelay = 100;
+
+
+
+
+
+void setup(){
+noStroke();
+size(1200,750);
+
+  cp5 = new ControlP5(this);  
+//port = new.Serial(this, "COM??", 9600); // connect to arduino port?
+font = createFont("SansSerif", 17);
+
+
+dropDown = cp5.addScrollableList("Vial option")
+  .setLabel("        Pick Vial")
+  .setPosition(210,560)
+  .setSize(180,150)
+  .setBarHeight(60)
+  .setColorBackground(color(255, 255, 255))
+  //.setColorForeground(color(150,150,150))
+  .setFont(font)
+  .setColorLabel(0)
+  .setColorValue(0)
+  .setItemHeight(30)
+  .setOpen(false)
+  .close();
+  dropDown.addItem("           Red", 10);
+  dropDown.addItem("          Green", 20);
+
+}
+// _______________________________________ SLUT SETUP
+
+
+
+void controlEvent(ControlEvent event) {  //tjekker hvilken vial der valgt:)
+//vialpick = (int)dropdown.getItem((int)dropdown.getValue()).get("value");
+  println("hello");
+  if (event.isFrom("Vial option")) {
+    int value = (int) dropDown.getItem((int)dropDown.getValue()).get("value");
+    switch (value) {
+    case 10:
+      vialText = "Red";
+      vialPicked = true;
+      break;
+    case 20:
+      vialText = "Green";
+      vialPicked = true;
+      break;
+    default:
+      vialText = "none picked";
+      vialPicked = false;
+      break;
+    }
+  }
+}
+
+
+
+//__________________________________________________________________________________________________________________________________________________________________popUP1
+
+void popUp1(){
+  //creating popup window when pressed "Begin program"
+  if(pressedBegin){
+    fill(220,220, 220);
+    rect(300, 200, 600, 150 , 15, 15, 15, 15); 
+    fill(0, 0, 0);
+    textAlign(LEFT);
+    text("Have you chosen the correct vial?", 320, 235);
+    text("you have chosen the " + vialText + " vial", 320, 270);
+    stroke(3);
+    fill(200,255, 200); // green box
+    rect(800, 290, 80, 40 , 15, 15, 15, 15); // green box - "Yes"
+    fill(cancelColor[0], cancelColor[1], cancelColor[2]); // red box
+    rect(650, 290, 130, 40 , 15, 15, 15, 15); // red box - "Cancel"
+    noStroke();
+    fill(0, 0,  0);
+    textAlign(CENTER);
+    text("Yes", 840 , 315);
+    text("Cancel", 715 , 315);
+    cancelButton();
+    yesButton();
+    popUp2();
+  } 
+}
+
+//__________________________________________________________________________________________________________________________________________________________________popUP2
+
+void popUp2(){
+  //creating popup window when pressed "Begin program"
+    if(pressedYes){
+      fill(220,220, 220);
+      rect(300, 200, 600, 150 , 15, 15, 15, 15); 
+      fill(0, 0, 0);
+      textAlign(LEFT);
+      text("No vial type has been selected", 320, 235);
+      fill(okColor[0], okColor[1], okColor[2]); // OK box
+      rect(800, 290, 80, 40 , 15, 15, 15, 15); // blue box - "ok"
+      fill(255, 255,  255);
+      textAlign(CENTER);
+      text("Ok", 840 , 315);
+      okButton();
+  }
+}
+
+//__________________________________________________________________________________________________________________________________________________________________okButton
+
+void okButton(){
+// darker WHEN HOVERING OVER "ok" & removing window when pressing "ok".
+  if (mouseX>800 && mouseX<880 && mouseY>290 && mouseY<330){
+  fill(okColor[0]-50, okColor[1]-50, okColor[2]-50);
+  rect(800, 290, 80, 40 , 15, 15, 15, 15); 
+  fill(255, 255, 255);
+  text("Ok", 840 , 315);
+    
+    float currentTime = millis();
+    if(mouseX>800 && mouseX<880 && mouseY>290 && mouseY<330 && mouseButton == LEFT && (currentTime-lastClick)>debounceDelay){
+ 
+       lastClick = currentTime;
+       pressedBegin = false;
+       pressedYes = false;    
+    }
+  }
+  
+  else {
+  fill(okColor[0], okColor[1], okColor[2]); // OK box
+      rect(800, 290, 80, 40 , 15, 15, 15, 15); // blue box - "ok"
+      fill(255, 255,  255);
+      textAlign(CENTER);
+      text("Ok", 840 , 315);
+  }
+}
+
+//__________________________________________________________________________________________________________________________________________________________cancelButton
+
+void cancelButton(){
+   // darker WHEN HOVERING OVER "Cancel" & removing window when pressing "Cancel".
+  if (mouseX>650 && mouseX<780 && mouseY>290 && mouseY<330){
+  stroke(3);
+  fill(cancelColor[0]-50, cancelColor[1]-50, cancelColor[2]-50);
+  rect(650, 290, 130, 40 , 15, 15, 15, 15); 
+  fill(27,22,79);
+  textSize(20);
+  text("Cancel", 715 , 315);
+  noStroke();
+    if(mouseX>650 && mouseX<780 && mouseY>290 && mouseY<330 && mouseButton == LEFT){
+      pressedBegin = false;
+    }
+  }
+  else {
+  fill(255,255,255);
+  rect(205, 555, 190, 65, 15, 15, 15, 15); //"Pick vial"
+  fill(27,22,79);
+  textSize(20);
+  text("Begin program", 600 , 592);
+  }
+}
+
+//__________________________________________________________________________________________________________________________________________________BeginProgramButton
+
+void beginProgramButton(){
+   // GREY WHEN HOVERING OVER "BEGIN PROGRAM" & opens window when pressing "begin program"
+  if (mouseX>505 && mouseX<695 && mouseY>555 && mouseY<620){
+  
+  fill(200,200,200);
+  rect(505, 555, 190, 65, 15, 15, 15, 15); 
+  
+  fill(27,22,79);
+  textSize(20);
+  text("Begin program", 600 , 592);
+  
+    if(mouseX>505 && mouseX<695 && mouseY>555 && mouseY<620 && mouseButton == LEFT){
+    
+      pressedBegin = true;   
+    }
+  }
+  else {
+  fill(255,255,255);
+  rect(205, 555, 190, 65, 15, 15, 15, 15); //"Pick vial"
+  fill(27,22,79);
+  textSize(20);
+  text("Begin program", 600 , 592);
+  }
+}
+
+//_________________________________________________________________________________________________________________________________________yesButton
+
+void yesButton(){
+   // Darker WHEN HOVERING OVER "yes" & opens window when pressing "yes"
+  if (mouseX>800 && mouseX<880 && mouseY>290 && mouseY<330){
+  stroke(3);
+  fill(yesColor[0]-50, yesColor[1]-50, yesColor[2]-50);
+  rect(800, 290, 80, 40 , 15, 15, 15, 15);
+  fill(0,0,0);
+  text("Yes", 840 , 315);
+  noStroke();
+  float currentTime = millis();
+    
+    if(mouseX>800 && mouseX<880 && mouseY>290 && mouseY<330 && mouseButton == LEFT && vialPicked == false && (currentTime-lastClick)>debounceDelay){
+     
+        lastClick = currentTime;
+        pressedYes = true;
+   
+    }
+  }
+  
+  else {
+  fill(255,255,255);
+  rect(205, 555, 190, 65, 15, 15, 15, 15); //"Pick vial"
+  fill(27,22,79);
+  textSize(20);
+  text("Begin program", 600 , 592);
+  }
+}
+
+
+//____________________________________________________________DRAW
+
+void draw()   {
+  hint(DISABLE_OPTIMIZED_STROKE);
+  background(200);
+  
+  // Blå border
+fill(27,22,79);
+rect(0,0,1200,750);
+
+// hvid frame
+fill(255,255,255);
+rect(20, 20, 1160, 710, 20, 20, 20, 20);
+
+//sunken border 
+fill(27, 22, 79);
+rect(350, 20, 500, 40, 0, 0, 0, 0);
+rect(375, 0, 450, 85, 0, 0, 20, 20);
+  //ydre hvid kanter
+fill(255, 255, 255);
+rect(350, 20, 25, 40, 0, 20, 0, 0);
+rect(825, 20, 25, 40, 20, 0, 0, 0);
+
+// Titel
+textAlign(CENTER);
+fill(255, 255, 255);
+textSize(30);
+text("Controlpanel of B.U.C.K.Y", width/2, 55);
+
+// AAU logo
+img = loadImage("AAU logo.png");
+image(img, 65, 35, 250, 50);
+
+// knapper 
+fill(27,22,79);
+rect(200, 550, 200, 75, 20, 20, 20, 20);
+rect(500, 550, 200, 75, 20, 20, 20, 20);
+rect(800, 550, 200, 75, 20, 20, 20, 20);
+// hvid outline
+fill(255,255,255);
+
+rect(205, 555, 190, 65, 15, 15, 15, 15); //"Pick vial"
+
+rect(505, 555, 190, 65, 15, 15, 15, 15); //"Begin program"
+
+rect(805, 555, 190, 65, 15, 15, 15, 15); //"Continue progran"
+  //Button tekst
+textAlign(CENTER);
+fill(27,22,79);
+textSize(20);
+//text("Pick vial", 300 , 592);
+text("Begin program", 600 , 592);
+text("Continue program", 900 , 592);
+  
+  
+// CHOSEN VIAL TEXT
+text("Chosen vial:   " + vialText, width/2, 150);
+  //println((int) dropDown.getItem((int)dropDown.getValue()).get("value"));
+  
+
+  
+beginProgramButton();
+popUp1();
+//text(holaTest, 800 , 200);
+  
+ 
+ 
+  
+}
+
+
+
+
+ 
