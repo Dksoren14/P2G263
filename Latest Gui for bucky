@@ -10,11 +10,15 @@ PImage img;
 String holaTest = "";
 boolean pressedBegin = false;
 boolean pressedYes = false;
+
 int[] cancelColor = {255, 200, 200};
 int[] yesColor = {200, 255, 200};
 int[] okColor = {114, 157, 198};
 float lastClick = 0;
-float debounceDelay = 100;
+float debounceDelay = 200;
+float currentTime = 0;
+boolean rightMousePressed = false; //Used to track which mouse button is the one being pressed.
+boolean leftMousePressed = false;
 
 
 
@@ -97,14 +101,34 @@ void popUp1(){
     text("Cancel", 715 , 315);
     cancelButton();
     yesButton();
-    popUp2();
+    
+    
   } 
 }
+void mouseReleased() {                      //Runs once when mouse is released.
+   if (mouseButton == RIGHT) { //Determine what mouse button is pressed.
+    rightMousePressed = false;
+  }
+  if (mouseButton == LEFT) {
+    leftMousePressed = false;
+  }
+}
+void mousePressed() { //mousePressed is a built-in function that is called once every time a mouse button is pressed.
+
+  if (mouseButton == RIGHT) { //Determine what mouse button is pressed.
+    rightMousePressed = true;
+  }
+  if (mouseButton == LEFT) {
+    leftMousePressed = true;
+  }
+}
+
 
 //__________________________________________________________________________________________________________________________________________________________________popUP2
 
 void popUp2(){
   //creating popup window when pressed "Begin program"
+
     if(pressedYes){
       fill(220,220, 220);
       rect(300, 200, 600, 150 , 15, 15, 15, 15); 
@@ -116,36 +140,55 @@ void popUp2(){
       fill(255, 255,  255);
       textAlign(CENTER);
       text("Ok", 840 , 315);
+
       okButton();
+      
+      
   }
 }
 
 //__________________________________________________________________________________________________________________________________________________________________okButton
 
 void okButton(){
-// darker WHEN HOVERING OVER "ok" & removing window when pressing "ok".
-  if (mouseX>800 && mouseX<880 && mouseY>290 && mouseY<330){
-  fill(okColor[0]-50, okColor[1]-50, okColor[2]-50);
-  rect(800, 290, 80, 40 , 15, 15, 15, 15); 
-  fill(255, 255, 255);
-  text("Ok", 840 , 315);
+  // darker WHEN HOVERING OVER "ok" & removing window when pressing "ok".
+    println("top of ok button " +(currentTime - lastClick));
+    println("current time " + currentTime);
+    println("last Click " + lastClick);
     
-    float currentTime = millis();
-    if(mouseX>800 && mouseX<880 && mouseY>290 && mouseY<330 && mouseButton == LEFT && (currentTime-lastClick)>debounceDelay){
- 
-       lastClick = currentTime;
-       pressedBegin = false;
-       pressedYes = false;    
-    }
-  }
-  
-  else {
-  fill(okColor[0], okColor[1], okColor[2]); // OK box
-      rect(800, 290, 80, 40 , 15, 15, 15, 15); // blue box - "ok"
-      fill(255, 255,  255);
-      textAlign(CENTER);
+    if (mouseX>800 && mouseX<880 && mouseY>290 && mouseY<330){
+      fill(okColor[0]-50, okColor[1]-50, okColor[2]-50);
+      rect(800, 290, 80, 40 , 15, 15, 15, 15); 
+      fill(255, 255, 255);
       text("Ok", 840 , 315);
-  }
+
+      
+     
+      //lastClick = currentTime;
+      
+    }
+    
+    else {
+    fill(okColor[0], okColor[1], okColor[2]); // OK box
+        rect(800, 290, 80, 40 , 15, 15, 15, 15); // blue box - "ok"
+        fill(255, 255,  255);
+        textAlign(CENTER);
+        text("Ok", 840 , 315);
+    }
+     println(currentTime-lastClick);
+     
+    if (mouseX > 800 && mouseX < 880 && mouseY > 290 && mouseY < 330 && leftMousePressed && (currentTime - lastClick) > debounceDelay) {
+
+    // Process click
+      pressedBegin = false;
+      pressedYes = false;
+      
+      // Update lastClick to prevent repeated triggering
+      lastClick = currentTime;
+    }
+      
+      println("in ok button " + (currentTime - lastClick));
+      
+      
 }
 
 //__________________________________________________________________________________________________________________________________________________________cancelButton
@@ -204,30 +247,46 @@ void beginProgramButton(){
 
 void yesButton(){
    // Darker WHEN HOVERING OVER "yes" & opens window when pressing "yes"
+
   if (mouseX>800 && mouseX<880 && mouseY>290 && mouseY<330){
-  stroke(3);
-  fill(yesColor[0]-50, yesColor[1]-50, yesColor[2]-50);
-  rect(800, 290, 80, 40 , 15, 15, 15, 15);
-  fill(0,0,0);
-  text("Yes", 840 , 315);
-  noStroke();
-  float currentTime = millis();
-    
-    if(mouseX>800 && mouseX<880 && mouseY>290 && mouseY<330 && mouseButton == LEFT && vialPicked == false && (currentTime-lastClick)>debounceDelay){
+    stroke(3);
+    fill(yesColor[0]-50, yesColor[1]-50, yesColor[2]-50);
+    rect(800, 290, 80, 40 , 15, 15, 15, 15);
+    fill(0,0,0);
+    text("Yes", 840 , 315);
+    noStroke();
      
-        lastClick = currentTime;
-        pressedYes = true;
-   
+      
+      //if(mouseX>800 && mouseX<880 && mouseY>290 && mouseY<330 && leftMousePressed == true && vialPicked == false && (currentTime-lastClick)>debounceDelay){
+          
+          
+      //    lastClick = currentTime;
+  
+      //    
+         
+      //}
+        if (mouseX > 800 && mouseX < 880 && mouseY > 290 && mouseY < 330 && leftMousePressed && (currentTime - lastClick) > debounceDelay) {
+
+      pressedYes = true;
+      
+      // Update lastClick to prevent repeated triggering
+      lastClick = currentTime;
     }
+    
   }
   
   else {
-  fill(255,255,255);
-  rect(205, 555, 190, 65, 15, 15, 15, 15); //"Pick vial"
-  fill(27,22,79);
-  textSize(20);
-  text("Begin program", 600 , 592);
+    fill(255,255,255);
+    rect(205, 555, 190, 65, 15, 15, 15, 15); //"Pick vial"
+    fill(27,22,79);
+    textSize(20);
+    text("Begin program", 600 , 592);
   }
+  //if(mouseX>800 && mouseX<880 && mouseY>290 && mouseY<330 && leftMousePressed == true){
+  //    pressedYes = true;
+      
+  //  }
+  
 }
 
 
@@ -236,7 +295,7 @@ void yesButton(){
 void draw()   {
   hint(DISABLE_OPTIMIZED_STROKE);
   background(200);
-  
+  currentTime = millis();
   // Blå border
 fill(27,22,79);
 rect(0,0,1200,750);
@@ -261,8 +320,8 @@ textSize(30);
 text("Controlpanel of B.U.C.K.Y", width/2, 55);
 
 // AAU logo
-img = loadImage("AAU logo.png");
-image(img, 65, 35, 250, 50);
+//img = loadImage("AAU logo.png");
+//image(img, 65, 35, 250, 50);
 
 // knapper 
 fill(27,22,79);
@@ -293,8 +352,15 @@ text("Chosen vial:   " + vialText, width/2, 150);
 
   
 beginProgramButton();
-popUp1();
+
+if (pressedBegin && !pressedYes) {
+  popUp1();
+} else if (pressedYes) {
+  popUp2();
+}
+
 //text(holaTest, 800 , 200);
+
   
  
  
