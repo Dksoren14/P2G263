@@ -47,7 +47,9 @@ class Joint {
     pushMatrix();
     rotateX(radians(90));
     if (texture != null) {
+      scale(1, 1, -1);
       shape(texture);
+      scale(1, 1, -1);
     }
     popMatrix();
   }

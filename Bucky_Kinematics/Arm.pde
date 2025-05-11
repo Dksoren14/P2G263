@@ -39,7 +39,9 @@ class Arm {
 
   void draw(float[] a) {
     if (textures[0] != null) {
+      scale(1, -1, 1);
       shape(textures[0]);
+      scale(1, -1, 1);
     }
     for (int i = 0; i < jointArray.length; i++) {
       jointArray[i].updateTransformationMatrix(Math.toRadians(a[i]));
@@ -51,7 +53,9 @@ class Arm {
 
   void draw(double[] a) {
     if (textures[0] != null) {
+      scale(1, -1, 1);
       shape(textures[0]);
+      scale(1, -1, 1);
     }
     for (int i = 0; i < jointArray.length; i++) {
       jointArray[i].updateTransformationMatrix(Math.toRadians(a[i]));
@@ -63,7 +67,9 @@ class Arm {
 
   void draw() {
     if (textures[0] != null) {
+      scale(1, -1, 1);
       shape(textures[0]);
+      scale(1, -1, 1);
     }
     for (int i = 0; i < jointArray.length; i++) {
       jointArray[i].updateTransformationMatrix(Math.toRadians(pos[i]));

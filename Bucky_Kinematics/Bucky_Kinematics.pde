@@ -3,7 +3,6 @@ import org.apache.commons.math3.linear.*;
 import org.apache.commons.math3.geometry.euclidean.threed.*;
 import processing.serial.*;
 
-
 Serial serial;  //used to communicate with the arduino. dunno how. sourse: Søren.
 Textarea receivedArea; //sourse: Søren to explain. Think it is a CP5 thing.
 Println arduinoConsole;//Søren
@@ -104,7 +103,7 @@ void setup() {
   textures[3] = loadShape("obj_files/Link3.obj");
   textures[4] = loadShape("obj_files/Link4.obj");
   textures[5] = loadShape("obj_files/Link5.obj");
-  
+
 
   cp5 = new ControlP5(this);
   Arm1 = new Arm(MDH, textures);
@@ -118,10 +117,10 @@ void setup() {
     .setLabel("Info")
     .setSize(100, 30)
     .setPosition(130, 10);
-  
 }
 
 void draw() {
+
   background(200);                                                  //Make background color 200. It goes between black 0-255 white. It is also possible to use (R,G,B) as input.
   directionalLight(126, 126, 126, 0, 0, -1);                        //Make some random ass light. Needed so we can get a perception of the depth of the PShapes.
   ambientLight(102, 102, 102);                                      //Some light shit.
@@ -149,18 +148,21 @@ void draw() {
   checkKeyPressed();
 
 
+
   //Under this is where the transformations from the rotate pan zoom functionality happens.
-  pushMatrix();                                //Look up the reference sheet "processing.org/reference". It is like making a quicksave before making changes.
-  translate(posX + panX, posY + panY, -zoom);  //Translate will move the coordinate system in XYZ. See reference sheet.
-  rotateX(-rotX);                              //Self explanatory.
+  pushMatrix();
+  translate(posX + panX, posY + panY, -zoom);
+  rotateX(-rotX);
   rotateZ(rotY);
+
+  clip(0, menuHeight, menuWidth, height);
+
   rectMode(CENTER);
-  noStroke();                    //https://processing.org/reference/
-  fill(255);                    //Fill() sets a global variable that shapes use as color.
-  rect(0, 0, 1000, 1000);      //Ground/talbe/build-area/white-plate/motherfuga
+  noStroke();
+  fill(255);
+  rect(0, 0, 1000, 1000);
   rectMode(CORNER);
   scale(1, -1, 1);
-
 
 
   pushMatrix();
@@ -173,9 +175,11 @@ void draw() {
   translate(100, 0);
   Arm2.draw();
   popMatrix();
-
+  noClip();
 
   popMatrix();
+
+
   if (toggleSaveLoadUIBool) {
     drawSaveLoadUI(width-325, 70);
   }
