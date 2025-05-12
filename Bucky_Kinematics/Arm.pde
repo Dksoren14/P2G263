@@ -46,7 +46,7 @@ class Arm {
     for (int i = 0; i < jointArray.length; i++) {
       jointArray[i].updateTransformationMatrix(Math.toRadians(a[i]));
       utils.applyRealMatrix(jointArray[i].realTransformationMatrix);
-      jointArray[i].display();
+      jointArray[i].draw();
     }
     calculateFinalMatrix();
   }
@@ -60,7 +60,7 @@ class Arm {
     for (int i = 0; i < jointArray.length; i++) {
       jointArray[i].updateTransformationMatrix(Math.toRadians(a[i]));
       utils.applyRealMatrix(jointArray[i].realTransformationMatrix);
-      jointArray[i].display();
+      jointArray[i].draw();
     }
     calculateFinalMatrix();
   }
@@ -74,7 +74,7 @@ class Arm {
     for (int i = 0; i < jointArray.length; i++) {
       jointArray[i].updateTransformationMatrix(Math.toRadians(pos[i]));
       utils.applyRealMatrix(jointArray[i].realTransformationMatrix);
-      jointArray[i].display();
+      jointArray[i].draw();
     }
     calculateFinalMatrix();
   }

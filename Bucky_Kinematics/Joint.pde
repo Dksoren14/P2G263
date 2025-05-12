@@ -33,7 +33,7 @@ class Joint {
     realTransformationMatrix = new Array2DRowRealMatrix(matrix);
   }
 
-  void display() {
+  void draw() {
     //utils.applyRealMatrix(realTransformationMatrix);
     pushStyle();
     stroke(255, 0, 0);

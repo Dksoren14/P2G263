@@ -13,7 +13,7 @@ boolean connectButtonStatus = false; //Status of the connect button
 String selectedport; //Søren
 int selectedbaudrate; //Søren
 
-Button connectionButton, toggleConnectionUIButton, infoButton, saveProgramPointButton, leftArrowButton, rightArrowButton, addPointButton, saveProgramButton, editProgramLocationButton, playProgramButton, toggleSaveLoadUIButton;
+Button connectionButton, toggleConnectionUIButton, infoButton, saveProgramPointButton, leftArrowButton, rightArrowButton, addPointButton, saveProgramButton, editProgramLocationButton, playProgramButton, toggleSaveLoadUIButton, loadProgramButton;
 Textfield programSelectionTextField, timeTextField;
 boolean toggleUIBool = false; //Status of the "toggleUI" button.
 boolean toggleSaveLoadUIBool = true;
@@ -27,6 +27,7 @@ int tempVariableForF = 0;
 //String globalTextVariable = "";
 int movementNumber = 0;
 int addingPoint = 0;
+String currentProgram = "untitled program";
 
 int posX, posY; //Declaring a kind of center position of the coordinate system. Initialized in setup.
 float panX = 0, panY = 0; //Declaring and making the panning offsets. Startvalue is 0.
@@ -36,7 +37,7 @@ boolean rightMousePressed = false; //Used to track which mouse button is the one
 boolean leftMousePressed = false;  //Used to track which mouse button is being pressed.
 int menuHeight = 50;      //The height the "menu" goes down to. The "menu" is not a object at the moment.
 int menuWidth;      //The menu is just some boxes where the color is different and the "mouseDragged()" function doesn't do anything. Initialized in setup.
-int zoom = 800;          //Start zoom / start distande from the view.
+int zoom = 400;          //Start zoom / start distande from the view.
 
 
 float saveThetaValues[][] = new float[4][6];
@@ -93,8 +94,8 @@ PShape[] textures = new PShape[7];  //The .obj files of the component models wil
 
 void setup() {
   size(1625, 900, P3D);           //Make the canvas/window. Size 1625x by 900y. P3D means it is a 3D "canvas"
-  posX = width/2-325;             //x and y positions of the new orego of the coordinate system in terms of the window.
-  posY = height-100;                  //Used in a "translate" function in "draw".
+  posX = (width-325)/2;             //x and y positions of the new orego of the coordinate system in terms of the window.
+  posY = height-250;                  //Used in a "translate" function in "draw".
   menuWidth = width-375;
 
   textures[0] = loadShape("obj_files/Base.obj");
@@ -571,9 +572,17 @@ void toggleSaveLoadUI() { //Will toggle the UI. Runs when "toggleUI" button is p
 }
 
 void drawSaveLoadUI(int x, int y) {
+  pushStyle();
   fill(0);
+  textSize(24);
+  text("Current Program: ", x + 5, y);
+  text(currentProgram, x + 5, y + 30);
+  y = y + 80;
   textSize(30);
   text("Point " + (movementNumber + addingPoint), x + 5, y + 70);
+  textSize(24);
+  text("Time: ", x + 5, y+193);
+  popStyle();
 }
 
 void saveLoadUI(int x, int y) {
@@ -581,18 +590,7 @@ void saveLoadUI(int x, int y) {
     .setLabel("Save/Load")
     .setSize(100, 30)
     .setPosition(240, 10);
-  saveProgramPointButton = cp5.addButton("saveProgramPointButtonFunction")
-    .setLabel("Save Point")
-    .setSize(60, 30)
-    .setPosition(x, y + 130);
-  leftArrowButton = cp5.addButton("leftArrowButtonFunction")
-    .setLabel("<---")
-    .setSize(60, 30)
-    .setPosition(x, y + 90);
-  rightArrowButton = cp5.addButton("rightArrowButtonFunction")
-    .setLabel("--->")
-    .setSize(60, 30)
-    .setPosition(x + 140, y + 90);
+  y = y + 40;
   programSelectionTextField = cp5.addTextfield("programSelectionTextFieldFunction")
     .setLabel("")
     .setPosition(x, y)
@@ -601,30 +599,47 @@ void saveLoadUI(int x, int y) {
     .setColor(color(255))
     .setAutoClear(false)
     .setText("untitled program");
-  editProgramLocationButton = cp5.addButton("editProgramLocationButtonFunction")
-    .setLabel("Edit Point")
-    .setSize(60, 30)
-    .setPosition(x + 70, y + 130);
   saveProgramButton = cp5.addButton("saveProgramButtonFunction")
     .setLabel("Save Program")
     .setSize(60, 30)
     .setPosition(x + 140, y + 40);
+  loadProgramButton = cp5.addButton("loadProgramButtonFunction")
+    .setLabel("Load Program")
+    .setSize(60, 30)
+    .setPosition(x, y + 40);
+  y = y + 40;
+  leftArrowButton = cp5.addButton("leftArrowButtonFunction")
+    .setLabel("<---")
+    .setSize(60, 30)
+    .setPosition(x, y + 90);
+  playProgramButton = cp5.addButton("playProgramButtonFunction")
+    .setLabel("Play")
+    .setSize(60, 30)
+    .setPosition(x + 70, y + 90);
+  rightArrowButton = cp5.addButton("rightArrowButtonFunction")
+    .setLabel("--->")
+    .setSize(60, 30)
+    .setPosition(x + 140, y + 90);
   addPointButton = cp5.addButton("addPointButtonFunction")
     .setLabel("Add Point")
     .setSize(60, 30)
     .setPosition(x + 140, y + 130);
+  editProgramLocationButton = cp5.addButton("editProgramLocationButtonFunction")
+    .setLabel("Edit Point")
+    .setSize(60, 30)
+    .setPosition(x + 70, y + 130);
+  saveProgramPointButton = cp5.addButton("saveProgramPointButtonFunction")
+    .setLabel("Save Point")
+    .setSize(60, 30)
+    .setPosition(x, y + 130);
   timeTextField = cp5.addTextfield("timeTextFieldFunction")
     .setLabel("")
-    .setPosition(x, y+170)
+    .setPosition(x+70, y+170)
     .setSize(60, 30)
     .setFocus(true)
     .setColor(color(255))
     .setAutoClear(false)
     .setText("1234");
-  playProgramButton = cp5.addButton("playProgramButtonFunction")
-    .setLabel("Play")
-    .setSize(60, 30)
-    .setPosition(x + 70, y + 90);
 }
 
 void leftArrowButtonFunction() {
@@ -679,12 +694,23 @@ void saveProgramButtonFunction() {
   String temp;
   if (cp5.get(Textfield.class, "timeTextFieldFunction").getText().isEmpty()) {
     temp = "untitled program";
+    //programSelectionTextField.setText("untitled program");
   } else {
     temp = cp5.get(Textfield.class, "programSelectionTextFieldFunction").getText();
   }
+  currentProgram = temp;
   saveProgramToFile(movementProgram, temp);
 }
-
+void loadProgramButtonFunction() {
+  String temp;
+  if (cp5.get(Textfield.class, "timeTextFieldFunction").getText().isEmpty()) {
+    temp = "untitled program";
+  } else {
+    temp = cp5.get(Textfield.class, "programSelectionTextFieldFunction").getText();
+  }
+  currentProgram = temp;
+  movementProgram = loadProgramFromFile(temp);
+}
 
 void saveProgramToFile(double[][][] movementProgram, String programName) {
 
