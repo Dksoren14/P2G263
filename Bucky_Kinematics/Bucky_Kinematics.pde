@@ -118,6 +118,7 @@ void setup() {
     .setLabel("Info")
     .setSize(100, 30)
     .setPosition(130, 10);
+  frameRate(60);
 }
 
 void draw() {
@@ -184,8 +185,10 @@ void draw() {
   if (toggleSaveLoadUIBool) {
     drawSaveLoadUI(width-325, 70);
   }
-  //sendData();
-  Arm2.armData();
+  
+  Arm2.sendData();
+  //Arm2.armData();
+  //utils.drawResult(Arm2.armData(), 50, 500);
 }
 
 
@@ -510,10 +513,9 @@ void checkKeyPressed() { //-----------------------------------------------------
     keyVariableE = false;
   }
   if (keyVariableF) {
-    utils.drawResult(movementProgram1232[tempVariableForF], 10, 400);
-    //time[1] = (double)millis()-time[0];
-    //time[0] = millis();
-    //utils.drawResult(time, 10, 100);
+    time[1] = (double)millis()-time[0];
+    time[0] = millis();
+    utils.drawResult(time, 10, 100);
   }
 
   if (keyVariable1) {
