@@ -184,7 +184,8 @@ void draw() {
   if (toggleSaveLoadUIBool) {
     drawSaveLoadUI(width-325, 70);
   }
-  sendData();
+  //sendData();
+  Arm2.armData();
 }
 
 
@@ -268,7 +269,6 @@ void mouseWheel(MouseEvent event) {         //mouseWheel is the same as mousePre
 void toggleConnectionUI() { //Will toggle the UI. Runs when "toggleUI" button is pressed.
 
   toggleUIBool = !toggleUIBool;
-  //showConnectionUI(toggleUIBool);
   connectionButton.setVisible(toggleUIBool);
   portlist.setVisible(toggleUIBool);
   baudlist.setVisible(toggleUIBool);
@@ -278,97 +278,97 @@ void toggleConnectionUI() { //Will toggle the UI. Runs when "toggleUI" button is
 
 
 public void sendData() { //Sends some data to arduino. Søren write more comments.
-  //try {
-  //  if (theta[0] != lastSentValue[0] || theta[1] != lastSentValue[1] || theta[2] != lastSentValue[2] || theta[3] != lastSentValue[3] || theta[4] != lastSentValue[4] || theta[5] != lastSentValue[5]) {
-  //    String message = "M1:" + theta[0] + "M1end| M2:" + theta[1] + "M2end| M3:" + theta[2] + "M3end| M4:" + theta[3] + "M4end| M5:" + theta[4] + "M5end| M6:" + theta[5] + "M6end| S1" + speed[1] "\n";
-  //    serial.write(message);
-  //    for (int i = 0; i < theta.length; i++) {
-  //      lastSentValue[i] = theta[i];
-  //    }
-  //  }
-  //  String data = serial.readStringUntil('\n');
-  //  if (data != null) {
-  //    data = data.trim();
-  //    receivedArea.setText("Arduino: " + data);
-  //    println("Arduino: " + data);
-  //  }
-  //}
-  //catch (Exception e) {
-  //  println("Error opening serial port: " + e.getMessage());
-  //}
+  try {
+    if (theta[0] != lastSentValue[0] || theta[1] != lastSentValue[1] || theta[2] != lastSentValue[2] || theta[3] != lastSentValue[3] || theta[4] != lastSentValue[4] || theta[5] != lastSentValue[5]) {
+      String message = "M1:" + theta[0] + "M1end| M2:" + theta[1] + "M2end| M3:" + theta[2] + "M3end| M4:" + theta[3] + "M4end| M5:" + theta[4] + "M5end| M6:" + theta[5] + "\n";
+      serial.write(message);
+      for (int i = 0; i < theta.length; i++) {
+        lastSentValue[i] = theta[i];
+      }
+    }
+    String data = serial.readStringUntil('\n');
+    if (data != null) {
+      data = data.trim();
+      receivedArea.setText("Arduino: " + data);
+      println("Arduino: " + data);
+    }
+  }
+  catch (Exception e) {
+    println("Error opening serial port: " + e.getMessage());
+  }
 }
 
-//public void readData() {
-//}
+public void readData() {
+}
 
-//void baudratelistFunction(int index) {
-//  String baudstring;
-//  baudstring = baudlist.getItem(index).get("name").toString();
-//  selectedbaudrate = Integer.parseInt(baudstring);
-//  println("Selected", selectedbaudrate);
-//}
-//void comportlistFunction(int index) {
-//  selectedport = portlist.getItem(index).get("name").toString();
-//  println("Selected", selectedport);
-//}
-//void connectButtonFunction() {
-//  if (!connectButtonStatus) {
-//    serial = new Serial(this, selectedport, selectedbaudrate);
-//    connectionButton.setLabel("Disconnect");
-//    connectButtonStatus = true;
-//    println("Connected", selectedport, "at", selectedbaudrate);
-//  } else {
-//    serial.stop();
-//    connectionButton.setLabel("Connect");
-//    connectButtonStatus = false;
-//    println("Disconnected from", selectedport);
-//  }
-//}
+void baudratelistFunction(int index) {
+  String baudstring;
+  baudstring = baudlist.getItem(index).get("name").toString();
+  selectedbaudrate = Integer.parseInt(baudstring);
+  println("Selected", selectedbaudrate);
+}
+void comportlistFunction(int index) {
+  selectedport = portlist.getItem(index).get("name").toString();
+  println("Selected", selectedport);
+}
+void connectButtonFunction() {
+  if (!connectButtonStatus) {
+    serial = new Serial(this, selectedport, selectedbaudrate);
+    connectionButton.setLabel("Disconnect");
+    connectButtonStatus = true;
+    println("Connected", selectedport, "at", selectedbaudrate);
+  } else {
+    serial.stop();
+    connectionButton.setLabel("Connect");
+    connectButtonStatus = false;
+    println("Disconnected from", selectedport);
+  }
+}
 
 
 void connectionUI(int x, int y) { //Function that creates the connection UI
-  //toggleConnectionUIButton = cp5.addButton("toggleConnectionUI") //Make button "toggleUI".
-  //  .setLabel("Connection UI")
-  //  .setSize(100, 30)
-  //  .setPosition(x, y);
-  //y=y+50;
-  //connectionButton = cp5.addButton("connectButtonFunction")
-  //  .setLabel("Connect")
-  //  .setSize(70, 30)
-  //  .setPosition(x, y);
+  toggleConnectionUIButton = cp5.addButton("toggleConnectionUI") //Make button "toggleUI".
+    .setLabel("Connection UI")
+    .setSize(100, 30)
+    .setPosition(x, y);
+  y=y+50;
+  connectionButton = cp5.addButton("connectButtonFunction")
+    .setLabel("Connect")
+    .setSize(70, 30)
+    .setPosition(x, y);
 
-  //portlist = cp5.addScrollableList("comportlistFunction")
-  //  .setLabel("select port")
-  //  .setBarHeight(30)
-  //  .setPosition(x+100, y)
-  //  .setItemHeight(25);
+  portlist = cp5.addScrollableList("comportlistFunction")
+    .setLabel("select port")
+    .setBarHeight(30)
+    .setPosition(x+100, y)
+    .setItemHeight(25);
 
-  //baudlist = cp5.addScrollableList("baudratelistFunction")
-  //  .setLabel("select baudrate")
-  //  .setBarHeight(30)
-  //  .setPosition(x+220, y)
-  //  .setItemHeight(24);
+  baudlist = cp5.addScrollableList("baudratelistFunction")
+    .setLabel("select baudrate")
+    .setBarHeight(30)
+    .setPosition(x+220, y)
+    .setItemHeight(24);
 
-  //baudlist.addItem("9600", 9600);
-  //baudlist.addItem("19200", 19200);
-  //baudlist.addItem("38400", 38400);
-  //baudlist.addItem("57600", 57600);
+  baudlist.addItem("9600", 9600);
+  baudlist.addItem("19200", 19200);
+  baudlist.addItem("38400", 38400);
+  baudlist.addItem("57600", 57600);
 
-  //receivedArea = cp5.addTextarea("receivedData")
-  //  .setSize(360, 140)
-  //  .setPosition(x, y+250)
-  //  .setColorBackground(80);
-  //arduinoConsole = cp5.addConsole(receivedArea);
+  receivedArea = cp5.addTextarea("receivedData")
+    .setSize(360, 140)
+    .setPosition(x, y+250)
+    .setColorBackground(80);
+  arduinoConsole = cp5.addConsole(receivedArea);
 
-  //String[] availableports = Serial.list(); //   <-------------------- Søren explain plz
-  //for (int i = 0; i < availableports.length; i++) {
-  //  portlist.addItem(availableports[i], availableports[i]);
-  //}
+  String[] availableports = Serial.list(); //   <-------------------- Søren explain plz
+  for (int i = 0; i < availableports.length; i++) {
+    portlist.addItem(availableports[i], availableports[i]);
+  }
 
-  //connectionButton.setVisible(false);
-  //portlist.setVisible(false);
-  //baudlist.setVisible(false);
-  //receivedArea.setVisible(false);
+  connectionButton.setVisible(false);
+  portlist.setVisible(false);
+  baudlist.setVisible(false);
+  receivedArea.setVisible(false);
 }
 
 void infoButton() {
