@@ -29,7 +29,7 @@ const uint8_t DXL_ID6 = 6;  // Set your Dynamixel servo ID
 
 const uint8_t DXL_ID1b = 1;  // Set your Dynamixel servo ID
 
-float speedA = 20;
+float speedA = 1;
 
 
 const float DXL_PROTOCOL_VERSION = 2.0;  // Use 2.0 for newer servos
@@ -247,8 +247,6 @@ void loop() {
     Serial.print(speed[2],4);
     Serial.print(speed[4],4);
     Serial.print(speed[5],4);
-  speedA += 1;
-
   }
   //test3DOF();
   //delay(10000);
