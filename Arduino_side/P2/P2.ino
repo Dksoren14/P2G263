@@ -202,7 +202,7 @@ void parseMessage(String msg) {
 }
 
 float convertSpeed(float speed) {
-  float convertedspeed = speed / (6 * 0, 229);
+  float convertedspeed = speed / (6 * 0.229);
 
   if (convertedspeed < 100) {
     return convertedspeed;
