@@ -8,7 +8,7 @@ Textarea receivedArea; //sourse: Søren to explain. Think it is a CP5 thing.
 Println arduinoConsole;//Søren
 ScrollableList portlist;
 ScrollableList baudlist;
-float[] lastSentValue = new float[6]; //Track what values was last sent to the arduino.
+float[] lastSentValue = new float[12]; //Track what values was last sent to the arduino.
 boolean connectButtonStatus = false; //Status of the connect button
 String selectedport; //Søren
 int selectedbaudrate; //Søren
