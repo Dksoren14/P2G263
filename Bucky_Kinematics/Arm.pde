@@ -12,7 +12,7 @@ class Arm {
   double[] acc = new double[6];
   boolean executingMovement = false;
   boolean executingProgram = false;
-  double[] currentPos = {0, 0, 0, 0, 0, 0}; //Tracks the current position
+  double[] currentPos = {0, 0, 0, 0, 0, 0}; //Tracks the current start position
   int trackMovement = 0; //Tracks what movement the program is currentrly executing.
   double lasMillis = 0;
   boolean someBoolValue = true;
@@ -234,7 +234,7 @@ class Arm {
     try {
       if ((float)pos[0] != lastSentValue[0] || (float)pos[1] != lastSentValue[1] || (float)pos[2] != lastSentValue[2] || (float)pos[3] != lastSentValue[3] || (float)pos[4] != lastSentValue[4] || (float)pos[5] != lastSentValue[5] && someBoolValue) {
         //String message = "M1:" + (float)pos[0] + "M1end| M2:" + (float)pos[1] + "M2end| M3:" + (float)pos[2] + "M3end| M4:" + (float)pos[3] + "M4end| M5:" + (float)pos[4] + "M5end| M6:" + (float)pos[5] + "\n";
-        String message = "M1" + nf((float)pos[0], 0, 2) + "1MM2:" + nf((float)pos[1], 0, 2) + "2MM3" + nf((float)pos[2], 0, 2) + "3MM4" + nf((float)pos[3], 0, 2) + "4MM5" + nf((float)pos[4], 0, 2) + "5MM6" + nf((float)pos[5], 0, 2) + "6MS1" + nf((float)speed[0], 0, 2) + "1SS2" + nf((float)speed[1], 0, 2) + "2SS3" + nf((float)speed[2], 0, 2) + "3SS4" + nf((float)speed[3], 0, 2) + "4SS5" + nf((float)speed[4], 0, 2) + "5SS6" + nf((float)speed[5], 0, 2) + "\n";
+        String message = "M1" + nf((float)currentPos[0], 0, 2) + "1MM2:" + nf((float)currentPos[1], 0, 2) + "2MM3" + nf((float)currentPos[2], 0, 2) + "3MM4" + nf((float)currentPos[3], 0, 2) + "4MM5" + nf((float)currentPos[4], 0, 2) + "5MM6" + nf((float)currentPos[5], 0, 2) + "6MS1" + nf((float)speed[0], 0, 2) + "1SS2" + nf((float)speed[1], 0, 2) + "2SS3" + nf((float)speed[2], 0, 2) + "3SS4" + nf((float)speed[3], 0, 2) + "4SS5" + nf((float)speed[4], 0, 2) + "5SS6" + nf((float)speed[5], 0, 2) + "\n";
         utils.drawResult(message, 10, 400);
 
         //if (millis() > lasMillis + 100) {
