@@ -16,8 +16,8 @@ class Arm {
   int trackMovement = 0; //Tracks what movement the program is currentrly executing.
   double lasMillis = 0;
   boolean someBoolValue = true;
-  String[] messageArrayOut = {"a","b","c","d"};
-  String[] messageArrayIn = {"a","b","c","d"};
+  String[] messageArrayOut = {"a", "b", "c", "d"};
+  String[] messageArrayIn = {"a", "b", "c", "d"};
   int dataNumber = 0;
   double[] lastSendTime;
 
@@ -139,7 +139,6 @@ class Arm {
       trackMovement = 0;
       executingProgram = false;
       temp = 1;
-      
     }
     return temp;
   }
@@ -239,14 +238,14 @@ class Arm {
     try {
       if ((float)targetAngle[0] != lastSentValue[0] || (float)targetAngle[1] != lastSentValue[1] || (float)targetAngle[2] != lastSentValue[2] || (float)targetAngle[3] != lastSentValue[3] || (float)targetAngle[4] != lastSentValue[4] || (float)targetAngle[5] != lastSentValue[5] || (float)speed[0] != lastSentValue[6] || (float)speed[1] != lastSentValue[7] || (float)speed[2] != lastSentValue[8] || (float)speed[3] != lastSentValue[9] || (float)speed[4] != lastSentValue[10] || (float)speed[5] != lastSentValue[11] && someBoolValue) {
         //String message = "M1:" + (float)pos[0] + "M1end| M2:" + (float)pos[1] + "M2end| M3:" + (float)pos[2] + "M3end| M4:" + (float)pos[3] + "M4end| M5:" + (float)pos[4] + "M5end| M6:" + (float)pos[5] + "\n";
-        String message = "M1" + nf((float)targetAngle[0], 0, 2) + "1MM2:" + nf((float)targetAngle[1], 0, 2) + "2MM3" + nf((float)targetAngle[2], 0, 2) + "3MM4" + nf((float)targetAngle[3], 0, 2) + "4MM5" + nf((float)targetAngle[4], 0, 2) + "5MM6" + nf((float)targetAngle[5], 0, 2) + "6MS1" + nf((float)speed[0], 0, 2) + "1SS2" + nf((float)speed[1], 0, 2) + "2SS3" + nf((float)speed[2], 0, 2) + "3SS4" + nf((float)speed[3], 0, 2) + "4SS5" + nf((float)speed[4], 0, 2) + "5SS6" + nf((float)speed[5], 0, 2) + "\n";
+        String message = "M1" + nf((float)targetAngle[0], 0, 2) + "1MM2:" + nf((float)targetAngle[1], 0, 2) + "2MM3" + nf((float)targetAngle[2], 0, 2) + "3MM4" + nf((float)targetAngle[3], 0, 2) + "4MM5" + nf((float)targetAngle[4], 0, 2) + "5MM6" + nf((float)targetAngle[5], 0, 2) + "6MM7" + nf((float)speed[0], 0, 2) + "7MM8" + nf((float)speed[1], 0, 2) + "8MM9" + nf((float)speed[2], 0, 2) + "9MM10" + nf((float)speed[3], 0, 2) + "10MM11" + nf((float)speed[4], 0, 2) + "11MM12" + nf((float)speed[5], 0, 2) + "\n";
         utils.drawResult(message, 10, 400);
-        //if (millis() > lasMillis + 100) {
-          lastSendTime[dataNumber] = millis();
-        message = dataNumber + "t" + lastSendTime + message;
+        
+        //lastSendTime[dataNumber] = millis();
+        //message = dataNumber + "t" + lastSendTime + message;
         serial.write(message);
         messageArrayOut = append(messageArrayOut, message);
-        dataNumber += 1;
+        //dataNumber += 1;
         for (int i = 0; i < theta.length; i++) {
           lastSentValue[i] = (float)pos[i];
         }
@@ -254,13 +253,12 @@ class Arm {
       String data = serial.readStringUntil('\n');
       if (data != null) {
         data = data.trim();
-        data = "t" + millis() + "d" + data;
+        //data = "t" + millis() + "d" + data;
         receivedArea.setText("Arduino: " + data);
-        //println("Arduino: " + data);
+        
         messageArrayIn = append(messageArrayIn, data);
       }
-      //lasMillis = millis();
-      //}
+      
       //someBoolValue = !someBoolValue;
     }
     catch (Exception e) {
