@@ -16,6 +16,8 @@ class Arm {
   int trackMovement = 0; //Tracks what movement the program is currentrly executing.
   double lasMillis = 0;
   boolean someBoolValue = true;
+  String[] messageArrayOut = {"a","b","c","d"};
+  String[] messageArrayIn = {"a","b","c","d"};
 
   Arm(double[][] MDHT) {
     MDH = MDHT;
@@ -135,6 +137,8 @@ class Arm {
       trackMovement = 0;
       executingProgram = false;
       temp = 1;
+      saveStrings("dataOut", messageArrayOut);
+      saveStrings("dataIn", messageArrayIn);
     }
     return temp;
   }
@@ -236,7 +240,7 @@ class Arm {
         //String message = "M1:" + (float)pos[0] + "M1end| M2:" + (float)pos[1] + "M2end| M3:" + (float)pos[2] + "M3end| M4:" + (float)pos[3] + "M4end| M5:" + (float)pos[4] + "M5end| M6:" + (float)pos[5] + "\n";
         String message = "M1" + nf((float)targetAngle[0], 0, 2) + "1MM2:" + nf((float)targetAngle[1], 0, 2) + "2MM3" + nf((float)targetAngle[2], 0, 2) + "3MM4" + nf((float)targetAngle[3], 0, 2) + "4MM5" + nf((float)targetAngle[4], 0, 2) + "5MM6" + nf((float)targetAngle[5], 0, 2) + "6MS1" + nf((float)speed[0], 0, 2) + "1SS2" + nf((float)speed[1], 0, 2) + "2SS3" + nf((float)speed[2], 0, 2) + "3SS4" + nf((float)speed[3], 0, 2) + "4SS5" + nf((float)speed[4], 0, 2) + "5SS6" + nf((float)speed[5], 0, 2) + "\n";
         utils.drawResult(message, 10, 400);
-
+        messageArrayOut = append(messageArrayOut, message);
         //if (millis() > lasMillis + 100) {
         serial.write(message);
         for (int i = 0; i < theta.length; i++) {
@@ -247,7 +251,8 @@ class Arm {
       if (data != null) {
         data = data.trim();
         receivedArea.setText("Arduino: " + data);
-        println("Arduino: " + data);
+        //println("Arduino: " + data);
+        messageArrayIn = append(messageArrayIn, data);
       }
       //lasMillis = millis();
       //}
@@ -259,24 +264,24 @@ class Arm {
     //return message;
   }
 
-  public void armData() { //Sends some data to arduino. Søren write more comments.
-    try {
-      if (theta[0] != lastSentValue[0] || theta[1] != lastSentValue[1] || theta[2] != lastSentValue[2] || theta[3] != lastSentValue[3] || theta[4] != lastSentValue[4] || theta[5] != lastSentValue[5]) {
-        String message = "M1:" + theta[0] + "M1end| M2:" + theta[1] + "M2end| M3:" + theta[2] + "M3end| M4:" + theta[3] + "M4end| M5:" + theta[4] + "M5end| M6:" + theta[5] + "\n";
-        serial.write(message);
-        for (int i = 0; i < theta.length; i++) {
-          lastSentValue[i] = theta[i];
-        }
-      }
-      String data = serial.readStringUntil('\n');
-      if (data != null) {
-        data = data.trim();
-        receivedArea.setText("Arduino: " + data);
-        println("Arduino: " + data);
-      }
-    }
-    catch (Exception e) {
-      println("Error opening serial port: " + e.getMessage());
-    }
-  }
+  //public void armData() { //Sends some data to arduino. Søren write more comments.
+  //  try {
+  //    if (theta[0] != lastSentValue[0] || theta[1] != lastSentValue[1] || theta[2] != lastSentValue[2] || theta[3] != lastSentValue[3] || theta[4] != lastSentValue[4] || theta[5] != lastSentValue[5]) {
+  //      String message = "M1:" + theta[0] + "M1end| M2:" + theta[1] + "M2end| M3:" + theta[2] + "M3end| M4:" + theta[3] + "M4end| M5:" + theta[4] + "M5end| M6:" + theta[5] + "\n";
+  //      serial.write(message);
+  //      for (int i = 0; i < theta.length; i++) {
+  //        lastSentValue[i] = theta[i];
+  //      }
+  //    }
+  //    String data = serial.readStringUntil('\n');
+  //    if (data != null) {
+  //      data = data.trim();
+  //      receivedArea.setText("Arduino: " + data);
+  //      println("Arduino: " + data);
+  //    }
+  //  }
+  //  catch (Exception e) {
+  //    println("Error opening serial port: " + e.getMessage());
+  //  }
+  //}
 }
