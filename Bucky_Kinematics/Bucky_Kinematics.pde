@@ -185,7 +185,7 @@ void draw() {
   if (toggleSaveLoadUIBool) {
     drawSaveLoadUI(width-325, 70);
   }
-  
+
   Arm2.sendData();
   //Arm2.armData();
   //utils.drawResult(Arm2.armData(), 50, 500);
@@ -503,6 +503,8 @@ void checkKeyPressed() { //-----------------------------------------------------
 
   if (keyVariableB) {
     //movementProgram = Arm1.savePointToProgram(movementProgram, 1000);
+    saveStrings("dataOut", Arm2.messageArrayOut);
+    saveStrings("dataIn", Arm2.messageArrayIn);
     keyVariableB = false;
   }
   if (keyVariableD) {
