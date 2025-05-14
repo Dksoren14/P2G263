@@ -11,22 +11,36 @@ SoftwareSerial soft_serial1(23, 24);  // DYNAMIXELShield UART RX/TX
 #define DEBUG_SERIAL soft_serial
 #define DEBUG_SERIAL1 soft_serial1
 
+
 float value1, value2, value3;  // Global variables for storing inputs
 bool stringComplete = false;
-float theta[6];
+float theta[5];
+float speed[5];
 String inputString = "";
 //const int DXL_DIR_PIN = 2;    // Direction control pin for RS-485
 const int DXL_DIR_PIN1 = 22;  // Direction control pin for RS-485
+bool measureStart = false;
+bool haverun = true;
+bool getonce = false;
+bool getonceT = false;
+int targetTime = 3000;
+bool executingMovement = false;
+double startTime = 0;
+bool motionActive = true;
+double lastMillis = millis();
 
+double start[5];
 
 const uint8_t DXL_ID1 = 1;  // Set your Dynamixel servo ID
 const uint8_t DXL_ID2 = 2;  // Set your Dynamixel servo ID
 const uint8_t DXL_ID4 = 4;  // Set your Dynamixel servo ID
 const uint8_t DXL_ID3 = 3;  // Set your Dynamixel servo ID
+const uint8_t DXL_ID5 = 5;  // Set your Dynamixel servo ID
+const uint8_t DXL_ID6 = 6;  // Set your Dynamixel servo ID
 
 const uint8_t DXL_ID1b = 1;  // Set your Dynamixel servo ID
 
-
+float speedA = 1;
 
 
 const float DXL_PROTOCOL_VERSION = 2.0;  // Use 2.0 for newer servos
@@ -65,6 +79,8 @@ void setup() {
   dxl.ping(DXL_ID2);
   dxl.ping(DXL_ID4);
   dxl.ping(DXL_ID3);
+  dxl.ping(DXL_ID5);
+  dxl.ping(DXL_ID6);
   dxl1.ping(DXL_ID1b);
 
   //dxl1.ping(DXL_ID1b);
@@ -88,18 +104,27 @@ void setup() {
   dxl.setOperatingMode(DXL_ID3, OP_POSITION);
   dxl.torqueOn(DXL_ID3);
 
-  dxl1.torqueOff(DXL_ID1b);
-  dxl1.setOperatingMode(DXL_ID1b, OP_POSITION);
-  dxl1.torqueOn(DXL_ID1b);
+  dxl.torqueOff(DXL_ID5);
+  dxl.setOperatingMode(DXL_ID3, OP_POSITION);
+  dxl.torqueOn(DXL_ID3);
+
+  dxl.torqueOff(DXL_ID6);
+  dxl.setOperatingMode(DXL_ID3, OP_POSITION);
+  dxl.torqueOn(DXL_ID3);
+
 
   //dxl1.torqueOff(DXL_ID1b);
   //dxl1.setOperatingMode(DXL_ID1b, OP_POSITION);
   //dxl1.torqueOn(DXL_ID1b);
   // Limit the maximum velocity in Position Control Mode. Use 0 for Max speed
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1, 50);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, 50);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID4, 50);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID3, 50);
+  
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1, 100);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, 100);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID4, 100);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID3, 100);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID5, 0);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID6, 0);
+
   dxl1.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1b, 50);
 
   //readUserInputs();
@@ -157,18 +182,29 @@ void test3DOF() {
 
 void parseMessage(String msg) {
   for (int i = 0; i < 6; i++) {
-    String motorTag = "M" + String(i + 1) + ":";
-    String endTag = "M" + String(i + 1) + "end";
-
+    String motorTag = "M" + String(i + 1);
+    String endTag = String(i + 1) + "M";
     int startIndex = msg.indexOf(motorTag);
     int endIndex = msg.indexOf(endTag);
 
-    if (startIndex != -1 && endIndex != -1) {
+    if (startIndex != -1 && endIndex != -1 && endIndex > startIndex) {
       String valueStr = msg.substring(startIndex + motorTag.length(), endIndex);
       float temp = valueStr.toFloat();
       theta[i] = convertAngle(temp, i + 1);
     } else {
-      theta[i] = 0;  // Default or error handling
+      theta[i] = 0;  // Error fallback
+    }
+  }
+
+}
+
+float convertSpeed(float speed) {
+  float convertedspeed = speed / (6 * 0.229);
+
+  if (convertedspeed < 100) {
+    return convertedspeed;
+  } else {
+    while (1) {
     }
   }
 }
@@ -182,27 +218,80 @@ float convertAngle(float angle, int id) {
 }
 
 void loop() {
-  //dxl.setGoalPosition(DXL_ID3, 180, UNIT_DEGREE);
 
-  /*dxl1.setGoalPosition(DXL_ID1b, 2000);
-  dxl.setGoalPosition(DXL_ID1, 2000);
-  delay(2000);
-  dxl.setGoalPosition(1, 500);
-  delay(2000);*/
-  if (stringComplete) {
+  static double currentSpeed = 0;
+  //if (stringComplete) {
+  //  parseMessage(inputString);
+  //  inputString = "";
+  //  stringComplete = false;
+  //  //for(int i = 0; i <= 5; i++){
+  //  //  double howdi = calcSpeed(start[i], theta[i], 3);
+  //  //  Serial.println(howdi);
+  //  //}
+//
+  //  //dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1, speed[0]+speedA);
+  //  //dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, speed[1]+speedA);
+  //  //dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID4, speed[3]+speedA);
+  //  //dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID3, speed[2]+speedA);
+  //  //dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID5, speed[4]+speedA);
+  //  //dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID6, speed[5]+speedA);
+////
+  //  //dxl.setGoalPosition(DXL_ID1, theta[0], UNIT_DEGREE);
+  //  //dxl.setGoalPosition(DXL_ID2, theta[1], UNIT_DEGREE);
+  //  //dxl.setGoalPosition(DXL_ID3, theta[3], UNIT_DEGREE);
+  //  //dxl.setGoalPosition(DXL_ID4, theta[2] - 90, UNIT_DEGREE);
+  //  //dxl.setGoalPosition(DXL_ID5, theta[4], UNIT_DEGREE);
+  //  //dxl.setGoalPosition(DXL_ID6, theta[5], UNIT_DEGREE);
+//
+  //  // Just for testing: print out the extracted theta values
+  //  
+  //}
+   while(!getonce){
+       start[0] = dxl.getPresentPosition(DXL_ID1);
+       start[1] = dxl.getPresentPosition(DXL_ID2);
+       start[2] = dxl.getPresentPosition(DXL_ID4);
+       start[3] = dxl.getPresentPosition(DXL_ID3);
+       start[4] = dxl.getPresentPosition(DXL_ID5);
+       start[5] = dxl.getPresentPosition(DXL_ID6);
+
+       getonce = true;
+    }
+  
+  if (stringComplete){
+    haverun = false;
     parseMessage(inputString);
+    delay(10);
     inputString = "";
+    motionActive = false;
     stringComplete = false;
-    dxl.setGoalPosition(DXL_ID1, theta[0], UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID2, theta[1], UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID4, theta[2], UNIT_DEGREE);
-    // Just for testing: print out the extracted theta values
-    Serial.print("Theta ");
-    Serial.print(0);
-    Serial.print(": ");
-    Serial.println(theta[0]);
+  } 
+  if (!motionActive){
+    while(getonceT){
+      startTime = millis();
+      getonceT = true;
+    }
+    
+    
+    speed[0] = calcSpeed(start[0], theta[0], 300, startTime);
+    
+    if(speed[0]>0){
+      Serial.println(speed[0]);
+    }
+    
+    
   }
+  
 
+ 
+    
+   
+
+  
+    
+    //Serial.println(speed[0]);
+
+
+ 
   //test3DOF();
   //delay(10000);
   /*
@@ -249,3 +338,20 @@ void serialEvent() {
     }
   }
 }
+double calcSpeed(double start, double thetaEnd, double targetTimeT, double startTime) {
+
+  double currentTime = (millis()- startTime)/100; 
+
+  double targetTime = targetTimeT / 100;
+  
+
+  double a_0 = start;
+  double a_1 = 0;
+  double a_2 = (3 / pow(targetTime, 2)) * (thetaEnd - start);
+  double a_3 = (-2 / pow(targetTime, 3)) * (thetaEnd - start);
+
+  double speed = a_1 + 2 * a_2 * currentTime + 3 * a_3 * pow(currentTime, 2);
+  
+  return speed;
+}
+
