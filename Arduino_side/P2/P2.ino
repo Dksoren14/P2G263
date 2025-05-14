@@ -14,7 +14,7 @@ SoftwareSerial soft_serial1(23, 24);  // DYNAMIXELShield UART RX/TX
 float value1, value2, value3;  // Global variables for storing inputs
 bool stringComplete = false;
 float theta[6];
-float speed[6];
+int32_t speed[6];
 String inputString = "";
 //const int DXL_DIR_PIN = 2;    // Direction control pin for RS-485
 const int DXL_DIR_PIN1 = 22;  // Direction control pin for RS-485
@@ -27,9 +27,12 @@ const uint8_t DXL_ID3 = 3;  // Set your Dynamixel servo ID
 const uint8_t DXL_ID5 = 5;  // Set your Dynamixel servo ID
 const uint8_t DXL_ID6 = 6;  // Set your Dynamixel servo ID
 
+uint8_t DXL_IDs[6] = {1, 2, 4, 3, 5, 6};
+
+
 const uint8_t DXL_ID1b = 1;  // Set your Dynamixel servo ID
 
-float speedA = 1;
+int32_t speedA = 1;
 
 
 const float DXL_PROTOCOL_VERSION = 2.0;  // Use 2.0 for newer servos
@@ -201,11 +204,11 @@ void parseMessage(String msg) {
   }
 }
 
-float convertSpeed(float speed) {
+int32_t convertSpeed(float speed) {
   float convertedspeed = speed / (6 * 0.229);
 
   if (convertedspeed < 100) {
-    return convertedspeed;
+    return (int32_t)convertedspeed;
   } else {
     while (1) {
     }
@@ -226,12 +229,20 @@ void loop() {
     inputString = "";
     stringComplete = false;
 
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1, speed[0]+speedA);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, speed[1]+speedA);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID4, speed[3]+speedA);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID3, speed[2]+speedA);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID5, speed[4]+speedA);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID6, speed[5]+speedA);
+
+    /*int32_t vel_items[6][2];  // {id, value}
+    for (int i = 0; i < 6; i++) {
+      vel_items[i][0] = DXL_IDs[i];
+      vel_items[i][1] = convertSpeed(speed[i] + speedA);
+    }
+    dxl.syncWrite(PROFILE_VELOCITY, vel_items, 6);*/
+
+    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1, speed[0]+speedA,0);
+    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, speed[1]+speedA,0);
+    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID4, speed[3]+speedA,0);
+    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID3, speed[2]+speedA,0);
+    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID5, speed[4]+speedA,0);
+    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID6, speed[5]+speedA,0);
 
     dxl.setGoalPosition(DXL_ID1, theta[0], UNIT_DEGREE);
     dxl.setGoalPosition(DXL_ID2, theta[1], UNIT_DEGREE);
