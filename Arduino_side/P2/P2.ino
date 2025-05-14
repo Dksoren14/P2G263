@@ -53,10 +53,6 @@ void setup() {
   DEBUG_SERIAL.begin(57600);
   while (!DEBUG_SERIAL)
     ;
-  //DEBUG_SERIAL1.begin(57600);
-  //while (!DEBUG_SERIAL1)
-  //  ;
-  // Set Port baudrate to 57600bps. This has to match with DYNAMIXEL baudrate.
 
   Serial.begin(57600);
   dxl.begin(57600);
@@ -122,48 +118,9 @@ void setup() {
   //readUserInputs();
   dxl1.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1b, 100);
 }
-void readUserInputs() {
-  value1 = readFloat("Enter value 1:");
-  Serial.print("Value 1 stored: ");
-  Serial.println(value1);
-
-  value2 = readFloat("Enter value 2:");
-  Serial.print("Value 2 stored: ");
-  Serial.println(value2);
-
-  value3 = readFloat("Enter value 3:");
-  Serial.print("Value 3 stored: ");
-  Serial.println(value3);
-
-  Serial.println("All values have been recorded.");
-}
 
 // Helper function to read a float from the Serial Monitor after printing a prompt.
 // This function waits until the user enters a full line (ends with '\n' or '\r').
-float readFloat(const char* prompt) {
-  Serial.println(prompt);
-  String inputString = "";
-  char c;
-
-  // Wait until valid input is received
-  while (true) {
-    // Check if data is available on Serial
-    if (Serial.available()) {
-      c = Serial.read();
-
-      // Check for end-of-line markers
-      if (c == '\n' || c == '\r') {
-        if (inputString.length() > 0) {  // Ensure the line isn't empty
-          break;
-        }
-      } else {
-        inputString += c;
-      }
-    }
-  }
-
-  return inputString.toFloat();
-}
 
 void test3DOF() {
   dxl.setGoalPosition(DXL_ID1, value1, UNIT_DEGREE);
@@ -229,14 +186,6 @@ void loop() {
     inputString = "";
     stringComplete = false;
 
-
-    /*int32_t vel_items[6][2];  // {id, value}
-    for (int i = 0; i < 6; i++) {
-      vel_items[i][0] = DXL_IDs[i];
-      vel_items[i][1] = convertSpeed(speed[i] + speedA);
-    }
-    dxl.syncWrite(PROFILE_VELOCITY, vel_items, 6);*/
-
     dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1, speed[0]+speedA,0);
     dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, speed[1]+speedA,0);
     dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID4, speed[3]+speedA,0);
@@ -259,41 +208,6 @@ void loop() {
     Serial.print(speed[4],4);
     Serial.print(speed[5],4);
   }
-  //test3DOF();
-  //delay(10000);
-  /*
-  // Read and print the servo's current position
-  dxl.setGoalPosition(DXL_ID1, 2046);
-  dxl.setGoalPosition(DXL_ID2, 2046);
-  dxl.setGoalPosition(DXL_ID4, 3000);
-  dxl.setGoalPosition(DXL_ID3, 3000);
-  //dxl1.setGoalPosition(DXL_ID1b, 3000);
-
-  int pos = dxl.getPresentPosition(DXL_ID1);
-  DEBUG_SERIAL.print("Servo Position: ");
-  DEBUG_SERIAL.println(pos);
-  
-
-  delay(5000);
-  dxl.setGoalPosition(DXL_ID1, 1000);
-  dxl.setGoalPosition(DXL_ID2, 1546);
-  dxl.setGoalPosition(DXL_ID4, 1546);
-  dxl.setGoalPosition(DXL_ID3, 2000);
- // dxl1.setGoalPosition(DXL_ID1b, 1000);
-   pos = dxl.getPresentPosition(DXL_ID1);
-  DEBUG_SERIAL.print("Servo Position: ");
-  DEBUG_SERIAL.println(pos);
-  delay(5000);
-  dxl.setGoalPosition(DXL_ID1, 2546);
-  dxl.setGoalPosition(DXL_ID2, 2546);
-  dxl.setGoalPosition(DXL_ID4, 1023);
-  dxl.setGoalPosition(DXL_ID3, 1000);
- // dxl1.setGoalPosition(DXL_ID1b, 2000);
-  pos = dxl.getPresentPosition(DXL_ID1);
-
-  DEBUG_SERIAL.print("Servo Position: ");
-  DEBUG_SERIAL.println(pos);
-  delay(5000);*/
 }
 
 void serialEvent() {
