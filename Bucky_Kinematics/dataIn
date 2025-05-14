@@ -2,599 +2,1035 @@ a
 b
 c
 d
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-0,13
-0,00
-0,00
-0,12
-0,00
-114.00
-0.00
-225.00
-0.00
-180.00
-0.00
-121.00
-0.00
-180.00
-0.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-0,88
-114.00
-0.00
-225.00
-5.00
-180.00
-5.00
-121.00
-5.00
-180.00
-5.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-1,71
-0,01
-0,01
-2,22
-0,00
-114.00
-1.00
-225.00
-0.00
-180.00
-0.00
-121.00
-2.00
-180.00
-0.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-3,25
-114.00
-3.00
-225.00
-5.00
-180.00
-5.00
-121.00
-5.00
-180.00
-5.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-4,00
-0,01
-0,01
-4,27
-0,00
-114.00
-4.00
-225.00
-0.00
-180.00
-0.00
-121.00
-4.00
-180.00
-0.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-5,49
-114.00
-5.00
-225.00
-5.00
-180.00
-5.00
-121.00
-5.00
-180.00
-5.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-6,29
-0,02
-0,02
-6,21
-0,01
-114.00
-6.00
-225.00
-0.00
-180.00
-0.00
-121.00
-6.00
-180.00
-0.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-7,68
-114.00
-7.00
-225.00
-5.00
-180.00
-5.00
-121.00
-5.00
-180.00
-5.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-8,41
-0,02
-0,03
-8,08
-0,01
-114.00
-8.00
-225.00
-0.00
-180.00
-0.00
-121.00
-8.00
-180.00
-0.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-9,74
-114.00
-9.00
-225.00
-5.00
-180.00
-5.00
-121.00
-5.00
-180.00
-5.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-10,447:0,152MM3-0,193MM4-59,424MM50,075MM659,426MM711,10
-0,03
-0,03
-9,89
-0,01
-114.00
-10.00
-225.00
-0.00
-180.00
-0.00
-121.00
-9.00
-180.00
-0.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-11,75
-0,03
-0,04
-11,07
-0,01
-114.00
-11.00
-225.00
-0.00
-180.00
-0.00
-121.00
-11.00
-180.00
-0.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-114.00
-5.00
-225.00
-5.00
-180.00
-5.00
-121.00
-5.00
-180.00
-5.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-13,747,661MM2:0,152MM3-0,193MM4-59,424MM50,075MM659,426MM714,35
-0,03
-0,04
-12,79
-0,01
-114.00
-13.00
-225.00
-0.00
-180.00
-0.00
-121.00
-12.00
-180.00
-0.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-14,98
-0,04
-0,04
-13,91
-0,02
-114.00
-14.00
-225.00
-0.00
-180.00
-0.00
-121.00
-13.00
-180.00
-0.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-114.00
-5.00
-225.00
-5.00
-180.00
-5.00
-121.00
-5.00
-180.00
-5.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-16,787,661MM2:0,152MM3-0,193MM4-59,424MM50,075MM659,426MM717,34
-0,04
-0,05
-15,46
-0,02
-114.00
-16.00
-225.00
-0.00
-180.00
-0.00
-121.00
-15.00
-180.00
-0.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-17,92
-0,04
-0,05
-16,51
-0,02
-114.00
-17.00
-225.00
-0.00
-180.00
-0.00
-121.00
-16.00
-180.00
-0.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-114.00
-5.00
-225.00
-5.00
-180.00
-5.00
-121.00
-5.00
-180.00
-5.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-19,567,661MM2:0,152MM3-0,193MM4-59,424MM50,075MM659,426MM720,10
-0,05
-0,06
-17,92
-0,02
-114.00
-19.00
-225.00
-0.00
-180.00
-0.00
-121.00
-17.00
-180.00
-0.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-20,60
-0,05
-0,06
-18,85
-0,02
-114.00
-20.00
-225.00
-0.00
-180.00
-0.00
-121.00
-18.00
-180.00
-0.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-114.00
-5.00
-225.00
-5.00
-180.00
-5.00
-121.00
-5.00
-180.00
-5.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-22,097,661MM2:0,152MM3-0,193MM4-59,424MM50,075MM659,426MM722,63
-0,05
-0,06
-20,17
-0,02
-114.00
-22.00
-225.00
-0.00
-180.00
-0.00
-121.00
-20.00
-180.00
-0.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-23,05
-0,05
-0,07
-20,94
-0,02
-114.00
-23.00
-225.00
-0.00
-180.00
-0.00
-121.00
-20.00
-180.00
-0.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-114.00
-5.00
-225.00
-5.00
-180.00
-5.00
-121.00
-5.00
-180.00
-5.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-24,397,661MM2:0,152MM3-0,193MM4-59,424MM50,075MM659,426MM724,82
-0,06
-0,07
-22,12
-0,03
-114.00
-24.00
-225.00
-0.00
-180.00
-0.00
-121.00
-22.00
-180.00
-0.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-25,22
-0,06
-0,07
-22,85
-0,03
-114.00
-25.00
-225.00
-0.00
-180.00
-0.00
-121.00
-22.00
-180.00
-0.00
-239.00
-5.00
--66,66
-:0,15
--0,19
--59,42
-0,07
-59,42
-114.00
-5.00
-225.00
-5.00
-180.00
-5.00
-121.00
-5.00
-180.00
-5.00
-239.00
-5.00
--66,66
-:0,15
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+Cannot load from double array because "this.targetAngle" is null
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

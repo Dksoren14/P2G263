@@ -248,41 +248,7 @@ void loop() {
     Serial.print(speed[4],4);
     Serial.print(speed[5],4);
   }
-  //test3DOF();
-  //delay(10000);
-  /*
-  // Read and print the servo's current position
-  dxl.setGoalPosition(DXL_ID1, 2046);
-  dxl.setGoalPosition(DXL_ID2, 2046);
-  dxl.setGoalPosition(DXL_ID4, 3000);
-  dxl.setGoalPosition(DXL_ID3, 3000);
-  //dxl1.setGoalPosition(DXL_ID1b, 3000);
 
-  int pos = dxl.getPresentPosition(DXL_ID1);
-  DEBUG_SERIAL.print("Servo Position: ");
-  DEBUG_SERIAL.println(pos);
-  
-
-  delay(5000);
-  dxl.setGoalPosition(DXL_ID1, 1000);
-  dxl.setGoalPosition(DXL_ID2, 1546);
-  dxl.setGoalPosition(DXL_ID4, 1546);
-  dxl.setGoalPosition(DXL_ID3, 2000);
- // dxl1.setGoalPosition(DXL_ID1b, 1000);
-   pos = dxl.getPresentPosition(DXL_ID1);
-  DEBUG_SERIAL.print("Servo Position: ");
-  DEBUG_SERIAL.println(pos);
-  delay(5000);
-  dxl.setGoalPosition(DXL_ID1, 2546);
-  dxl.setGoalPosition(DXL_ID2, 2546);
-  dxl.setGoalPosition(DXL_ID4, 1023);
-  dxl.setGoalPosition(DXL_ID3, 1000);
- // dxl1.setGoalPosition(DXL_ID1b, 2000);
-  pos = dxl.getPresentPosition(DXL_ID1);
-
-  DEBUG_SERIAL.print("Servo Position: ");
-  DEBUG_SERIAL.println(pos);
-  delay(5000);*/
 }
 
 void serialEvent() {

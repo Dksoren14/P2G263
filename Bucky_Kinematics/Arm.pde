@@ -239,31 +239,63 @@ class Arm {
       if ((float)targetAngle[0] != lastSentValue[0] || (float)targetAngle[1] != lastSentValue[1] || (float)targetAngle[2] != lastSentValue[2] || (float)targetAngle[3] != lastSentValue[3] || (float)targetAngle[4] != lastSentValue[4] || (float)targetAngle[5] != lastSentValue[5] || (float)speed[0] != lastSentValue[6] || (float)speed[1] != lastSentValue[7] || (float)speed[2] != lastSentValue[8] || (float)speed[3] != lastSentValue[9] || (float)speed[4] != lastSentValue[10] || (float)speed[5] != lastSentValue[11] && someBoolValue) {
         //String message = "M1:" + (float)pos[0] + "M1end| M2:" + (float)pos[1] + "M2end| M3:" + (float)pos[2] + "M3end| M4:" + (float)pos[3] + "M4end| M5:" + (float)pos[4] + "M5end| M6:" + (float)pos[5] + "\n";
         //String message = "M1" + nf((float)targetAngle[0], 0, 2) + "1MM2" + nf((float)targetAngle[1], 0, 2) + "2MM3" + nf((float)targetAngle[2], 0, 2) + "3MM4" + nf((float)targetAngle[3], 0, 2) + "4MM5" + nf((float)targetAngle[4], 0, 2) + "5MM6" + nf((float)targetAngle[5], 0, 2) + "6MM7" + nf((float)speed[0], 0, 2) + "7MM8" + nf((float)speed[1], 0, 2) + "8MM9" + nf((float)speed[2], 0, 2) + "9MM10" + nf((float)speed[3], 0, 2) + "10MM11" + nf((float)speed[4], 0, 2) + "11MM12" + nf((float)speed[5], 0, 2) + "\n";
-        String message = "M1" + Float.toString((float)targetAngle[0]) + "1MM2" + Float.toString((float)targetAngle[1]) + "2MM3" + Float.toString((float)targetAngle[2]) + "3MM4" + Float.toString((float)targetAngle[3]) + "4MM5" + Float.toString((float)targetAngle[4]) + "5MM6" + Float.toString((float)targetAngle[5]) + "6MS1" + Float.toString((float)speed[0]) + "1SS2" + Float.toString((float)speed[1]) + "2SS3" + Float.toString((float)speed[2]) + "3SS4" + Float.toString((float)speed[3]) + "4SS5" + Float.toString((float)speed[4]) + "5SS6" + Float.toString((float)speed[5]) + "6S\n";
+
+        String message = "" ; // "M1" + Float.toString((float)targetAngle[0]) + "1MM2" + Float.toString((float)targetAngle[1]) + "2MM3" + Float.toString((float)targetAngle[2]) + "3MM4" + Float.toString((float)targetAngle[3]) + "4MM5" + Float.toString((float)targetAngle[4]) + "5MM6" + Float.toString((float)targetAngle[5]) + "6MS1" + Float.toString((float)speed[0]) + "1SS2" + Float.toString((float)speed[1]) + "2SS3" + Float.toString((float)speed[2]) + "3SS4" + Float.toString((float)speed[3]) + "4SS5" + Float.toString((float)speed[4]) + "5SS6" + Float.toString((float)speed[5]) + "6S\n";
+
+        for (int i = 0; i < 6; i++) {
+          String angle_value = Integer.toString(round(((float) targetAngle[i]+180)*10));
+          message = message+angle_value;
+          message = message + ",";
+          //serial.write(angle_value);
+          //serial.write(',');
+          //lastSentValue[i] = (float)pos[i];
+        }
+        for (int i = 0; i < 6; i++) {
+          String speed_value = Integer.toString(round(((float) speed[i]+180)*10));
+          message = message + speed_value; //serial.write(speed_value);
+          if (i<5) message = message + ","; //serial.write(',');
+          //lastSentValue[i] = (float)pos[i];
+        }
+        message = message + "\n"; // .write('\n');
+
         utils.drawResult(message, 10, 400);
-        
+
         //lastSendTime[dataNumber] = millis();
         //message = dataNumber + "t" + lastSendTime + message;
+
         serial.write(message);
         messageArrayOut = append(messageArrayOut, message);
         //dataNumber += 1;
-        for (int i = 0; i < theta.length; i++) {
-          lastSentValue[i] = (float)pos[i];
+        for (int i = 0; i < lastSentValue.length; i++) {
+          if (i < 6) {
+            lastSentValue[i] = (float)targetAngle[i];
+          } else {
+            lastSentValue[i] = (float)speed[i];
+          }
         }
       }
-      String data = serial.readStringUntil('\n');
+
+      String data = " ";
+      while (serial.available()>0) {
+        data = data + serial.readString(); //StringUntil('\n');
+      }
+      //String data = " ";
+      utils.drawResult(data, 10, 500);
+
       if (data != null) {
         data = data.trim();
         //data = "t" + millis() + "d" + data;
         receivedArea.setText("Arduino: " + data);
-        
+
         messageArrayIn = append(messageArrayIn, data);
       }
-      
+
       //someBoolValue = !someBoolValue;
     }
     catch (Exception e) {
-      println("Error opening serial port: " + e.getMessage());
+      messageArrayIn = append(messageArrayIn, e.getMessage());
+
+      println("Serial port error: " + e.getMessage());
     }
     //return message;
   }
