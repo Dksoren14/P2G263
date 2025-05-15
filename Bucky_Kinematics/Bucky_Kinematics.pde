@@ -569,6 +569,7 @@ void checkKeyPressed() { //-----------------------------------------------------
     if (Arm2.executeProgram(movementProgram) == 1) {
       keyVariableA = false;
     }
+    Arm2.sendData();
     time[1] = (double)millis()-time[0];
     time[0] = millis();
     utils.drawResult(time[1], 10, 700);
@@ -766,25 +767,26 @@ void addPointButtonFunction() {
   keyVariableC = true;
 }
 void playProgramButtonFunction() {
-  if (fastThread == null || !fastThread.isAlive()) {
-    runFastLoop = true;
+  //if (fastThread == null || !fastThread.isAlive()) {
+  //  runFastLoop = true;
 
-    fastThread = new Thread(new Runnable() {
-      public void run() {
-        while (runFastLoop) {
-          if (Arm2.executeProgram(movementProgram) == 1) {
-            runFastLoop = false;
-          }
+  //  fastThread = new Thread(new Runnable() {
+  //    public void run() {
+  //      while (runFastLoop) {
+  //        if (Arm2.executeProgram(movementProgram) == 1) {
+  //          runFastLoop = false;
+  //        }
           
-          time[3] = (double)millis()-time[2];
-          time[2] = millis();
-          Arm2.sendData();
-        }
-      }
-    }
-    );
-    fastThread.start();
-  }
+  //        time[3] = (double)millis()-time[2];
+  //        time[2] = millis();
+  //        Arm2.sendData();
+  //      }
+  //    }
+  //  }
+  //  );
+  //  fastThread.start();
+  //}
+  keyVariableA = true;
 }
 void saveProgramButtonFunction() {
   String temp;

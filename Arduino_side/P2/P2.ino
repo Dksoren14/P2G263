@@ -35,6 +35,7 @@ float start[5];
 
 uint16_t data[12];
 float correct_data[12];
+float last_correct_data[12];
 
 const uint8_t DXL_ID1 = 1;  // Set your Dynamixel servo ID
 const uint8_t DXL_ID2 = 2;  // Set your Dynamixel servo ID
@@ -55,7 +56,7 @@ const float DXL_PROTOCOL_VERSION = 2.0;  // Use 2.0 for newer servos
 
 // Initialize the Dynamixel2Arduino library
 DynamixelShield dxl(DXL_SERIAL, 2);
-DynamixelShield dxl1(DXL_SERIAL1, DXL_DIR_PIN1);
+//DynamixelShield dxl1(DXL_SERIAL1, DXL_DIR_PIN1);
 
 
 // Use namespace for control table items
@@ -63,20 +64,20 @@ using namespace ControlTableItem;
 
 void setup() {
   // put your setup code here, to run once:
-  inputString.reserve(300);  // Reserve memory for efficiency
+  //inputString.reserve(300);  // Reserve memory for efficiency
 
   // Use UART port of DYNAMIXEL Shield to debug.
   DEBUG_SERIAL.begin(57600);
   while (!DEBUG_SERIAL)
     ;
 
-  Serial.begin(57600);
+  Serial.begin(115200);
   dxl.begin(57600);
-  dxl1.begin(9600);
+  //dxl1.begin(9600);
   //dxl1.begin(9600);
   // Set Port Protocol Version. This has to match with DYNAMIXEL protocol version.
   dxl.setPortProtocolVersion(DXL_PROTOCOL_VERSION);
-  dxl1.setPortProtocolVersion(DXL_PROTOCOL_VERSION);
+  //dxl1.setPortProtocolVersion(DXL_PROTOCOL_VERSION);
   //dxl1.setPortProtocolVersion(DXL_PROTOCOL_VERSION);
   // Get DYNAMIXEL information
   dxl.ping(DXL_ID1);
@@ -85,7 +86,7 @@ void setup() {
   dxl.ping(DXL_ID3);
   dxl.ping(DXL_ID5);
   dxl.ping(DXL_ID6);
-  dxl1.ping(DXL_ID1b);
+  //dxl1.ping(DXL_ID1b);
 
   //dxl1.ping(DXL_ID1b);
 
@@ -134,32 +135,7 @@ void test3DOF() {
 void parseMessage(String msg) {
 
   // Split the string by commas
-  int idx = 0;
-  int start = 0;
 
-  for (int i = 0; i <= inputString.length(); i++) {
-    if (inputString[i] == ',' || inputString[i] == '\n' || i == inputString.length()) {
-      String part = inputString.substring(start, i);
-      part.trim();                          // remove spaces
-      if (part.length() > 0 && idx < 12) {  // Only count if it's not empty
-        data[idx] = part.toInt();
-        idx++;
-      }
-      start = i + 1;
-    }
-  }
-
-  if (idx == 12) {
-    String send_this = "";
-    for (int i = 0; i < 12; i++) {
-      correct_data[i] = float(data[i]) / 10.0;
-      send_this += String(correct_data[i], 1);
-      if (i < 11) send_this += ",";
-    }
-    Serial.println(send_this);
-  } else {
-    Serial.println("ERROR: Expected 12 values, got " + String(idx));
-  }
   /*for (int i = 0; i < 6; i++) {
     String motorTag = "M" + String(i + 1);
     String endTag = String(i + 1) + "M";
@@ -202,16 +178,60 @@ void loop() {
     dxl.setGoalPosition(DXL_ID6, 90, UNIT_DEGREE);*/
   if (stringComplete) {
     stringComplete = false;
-    parseMessage(inputString);
+    int idx = 0;
+    int start = 0;
 
-    if(correct_data[i] != )
+    for (int i = 0; i <= inputString.length(); i++) {
+      if (inputString[i] == ',' || inputString[i] == '\n' || i == inputString.length()) {
+        String part = inputString.substring(start, i);
+        part.trim();                          // remove spaces
+        if (part.length() > 0 && idx < 12) {  // Only count if it's not empty
+          data[idx] = part.toInt();
+          idx++;
+        }
+        start = i + 1;
+      }
+    }
+
+    if (idx == 12) {
+      String send_this = "";
+      for (int i = 0; i < 12; i++) {
+        correct_data[i] = float(data[i]) / 10.0;
+        send_this += String(correct_data[i], 1);
+        if (i < 11) send_this += ",";
+      }
+      Serial.println(send_this);
+    } else {
+      Serial.println("ERROR: Expected 12 values, got " + String(idx));
+    }
+    inputString = "";
+
+
+    // Clear for next message
+  }
+  if (correct_data[0] != last_correct_data[0]) {
     dxl.setGoalPosition(DXL_ID1, correct_data[0], UNIT_DEGREE);
+    last_correct_data[0] = correct_data[0];
+  }
+  if (correct_data[1] != last_correct_data[1]) {
     dxl.setGoalPosition(DXL_ID2, correct_data[1] + 45, UNIT_DEGREE);
+    last_correct_data[1] = correct_data[1];
+  }
+  if (correct_data[2] != last_correct_data[2]) {
     dxl.setGoalPosition(DXL_ID3, correct_data[3], UNIT_DEGREE);
+    last_correct_data[2] = correct_data[2];
+  }
+  if (correct_data[3] != last_correct_data[3]) {
     dxl.setGoalPosition(DXL_ID4, correct_data[2] - 90, UNIT_DEGREE);
+    last_correct_data[3] = correct_data[3];
+  }
+  if (correct_data[4] != last_correct_data[4]) {
     dxl.setGoalPosition(DXL_ID5, correct_data[4], UNIT_DEGREE);
+    last_correct_data[4] = correct_data[4];
+  }
+  if (correct_data[5] != last_correct_data[5]) {
     dxl.setGoalPosition(DXL_ID6, correct_data[5], UNIT_DEGREE);
-    inputString = "";  // Clear for next message
+    last_correct_data[5] = correct_data[5];
   }
 }
 
@@ -250,9 +270,7 @@ float convertAngle(float angle, int id) {
       theta[i] = 0;  // Error fallback
     }
   }
-
-
-
+*/
 
 void serialEvent() {
   while (Serial.available()) {
