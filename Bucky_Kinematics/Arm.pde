@@ -267,12 +267,6 @@ class Arm {
         }
       }
 
-      //String data = serial.readStringUntil(10);
-      //if (data != null) {
-      //  receivedArea.setText("Arduino: " + data);
-
-      //  messageArrayIn = append(messageArrayIn, data);
-      //}
       String data = "";
       while (serial.available() > 0) {
         data = serial.readStringUntil(10);
@@ -292,49 +286,13 @@ class Arm {
         }
       }
 
-      //String data = " ";
-      //while (serial.available()>0) {
-      //  data = data + serial.readString(); //StringUntil('\n');
-      //}
-      ////String data = " ";
-      //utils.drawResult(data, 10, 600);
-
-      //if (data != null) {
-      //  data = data.trim();
-      //  //data = "t" + millis() + "d" + data;
-      //  receivedArea.setText("Arduino: " + data);
-
-      //  messageArrayIn = append(messageArrayIn, data);
-      //}
-
-      //someBoolValue = !someBoolValue;
     }
     catch (Exception e) {
       //messageArrayIn = append(messageArrayIn, e.getMessage());
 
       println("Serial port error: " + e.getMessage());
     }
-    //return message;
+    
   }
 
-  //public void armData() { //Sends some data to arduino. Søren write more comments.
-  //  try {
-  //    if (theta[0] != lastSentValue[0] || theta[1] != lastSentValue[1] || theta[2] != lastSentValue[2] || theta[3] != lastSentValue[3] || theta[4] != lastSentValue[4] || theta[5] != lastSentValue[5]) {
-  //      String message = "M1:" + theta[0] + "M1end| M2:" + theta[1] + "M2end| M3:" + theta[2] + "M3end| M4:" + theta[3] + "M4end| M5:" + theta[4] + "M5end| M6:" + theta[5] + "\n";
-  //      serial.write(message);
-  //      for (int i = 0; i < theta.length; i++) {
-  //        lastSentValue[i] = theta[i];
-  //      }
-  //    }
-  //    String data = serial.readStringUntil('\n');
-  //    if (data != null) {
-  //      data = data.trim();
-  //      receivedArea.setText("Arduino: " + data);
-  //      println("Arduino: " + data);
-  //    }
-  //  }
-  //  catch (Exception e) {
-  //    println("Error opening serial port: " + e.getMessage());
-  //  }
-  //}
 }

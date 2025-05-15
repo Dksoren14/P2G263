@@ -553,19 +553,6 @@ void keyPressed() {         //keyPressed is a built-in function that is called o
 
 void checkKeyPressed() { //----------------------------------------------------------------------------------------
   if (keyVariableA) { //Movement program
-    //switch(switchProgramVariable) {
-    //case 0:
-    //  switchProgramVariable += Arm2.executeMovement(movementProgram[1], 1000);
-    //  break;
-    //case 1:
-    //  switchProgramVariable += Arm2.executeMovement(movementProgram[2], 1000);
-    //  break;
-    //case 2:
-    //  switchProgramVariable += Arm2.executeMovement(movementProgram[0], 1000);
-    //  break;
-    //case 3:
-    //  switchProgramVariable = 0;
-    //}
     if (Arm2.executeProgram(movementProgram) == 1) {
       keyVariableA = false;
     }
