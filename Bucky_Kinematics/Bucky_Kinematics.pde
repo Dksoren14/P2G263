@@ -65,22 +65,16 @@ double[][] MDH = { //Alpha, a, d, theta offset
   {90, 0, 0, 0}};
 
 double[][][] movementProgram = {{
-    {1000, 0, 0, 0}, //Time, nothing, nothing, nothing
-    {0, -0.9178, 0.3971, 107}, //r, r, r, Px
-    {0, -0.3971, -0.9178, -248}, //r, r, r, Py
-    {1, 0, 0, 238}, //r, r, r, Pz
-    {0, 0, 0, 1}                  //0, 0, 0, 1
+    {2000, 0, 0, 0}, //Time, nothing, nothing, nothing
+    {-0.8336, 0.5135, 0.2038, 61.43}, //r, r, r, Px
+    {0.326, -0.755, -0.5689, -111.75}, //r, r, r, Py
+    {0.4459, -0.4078, 0.7968, 322.42}, //r, r, r, Pz
+    {0, 0, 0, 1}//0, 0, 0, 1
   }, {
-    {1000, 0, 0, 0},
-    {0, -0.9178, 0.3971, 107},
-    {0, -0.3971, -0.9178, -248},
-    {1, 0, 0, 150},
-    {0, 0, 0, 1}
-  }, {
-    {1000, 0, 0, 0},
-    {0, 0, 1, 270.41},
+    {2000, 0, 0, 0},
+    {-0.2181, 0, 0.9759, 192.43},
     {0, -1, 0, 0},
-    {1, 0, 0, 238.14},
+    {0.9759, 0, 0.2181, 238.14},
     {0, 0, 0, 1}
 }};
 
@@ -145,8 +139,8 @@ void draw() {
     utils.drawResult(Arm1.anglesFromIK(Arm1.resultMatrix.getData()), 800, 120);
     utils.drawResult("Arm1 result matrix with IK angles (T06)", 1000, 100);
     utils.drawResult(Arm2.resultMatrix, 1000, 150);
-    utils.drawResult(Arm2.speed, 900, 450);
-    utils.drawResult(Arm2.pos, 1050, 450);
+    utils.drawResult(Arm2.pos, 900, 450);
+    utils.drawResult(Arm2.speed, 1050, 450);
     utils.drawResult(Arm2.acc, 1200, 450);
   }
 
@@ -763,7 +757,7 @@ void playProgramButtonFunction() {
   //        if (Arm2.executeProgram(movementProgram) == 1) {
   //          runFastLoop = false;
   //        }
-          
+
   //        time[3] = (double)millis()-time[2];
   //        time[2] = millis();
   //        Arm2.sendData();

@@ -200,14 +200,6 @@ int32_t convertSpeed(float speed) {
   }
 }
 
-float convertAngle(float angle, int id) {
-  float servoAngle = angle + 180;
-  if (id == 2) {
-    servoAngle += 45;
-  }
-  return servoAngle;
-}
-
 void serialEvent() {
   while (Serial.available()) {
     char inChar = (char)Serial.read();

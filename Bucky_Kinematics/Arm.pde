@@ -195,19 +195,6 @@ class Arm {
     return angleDegrees;
   }
 
-  double getSpeed(double endAngle, double targetTimeT, double startAngle, double currentTimeT) {
-    double targetTime = targetTimeT/1000;
-    double currentTime = currentTimeT/1000;
-
-    double a_0 = startAngle;
-    double a_1 = 0;
-    double a_2 = (3/Math.pow(targetTime, 2)*(endAngle - startAngle));
-    double a_3 = (-2/Math.pow(targetTime, 3)*(endAngle - startAngle));
-
-    double speed = a_1 + 2*a_2*currentTime + 3*a_3*(Math.pow(currentTime, 2));
-    return speed;
-  }
-
   double getPos(double endAngle, double targetTimeT, double startAngle, double currentTimeT) {
     double targetTime = targetTimeT/1000;
     double currentTime = currentTimeT/1000;
@@ -217,11 +204,22 @@ class Arm {
     double a_2 = (3/Math.pow(targetTime, 2)*(endAngle - startAngle));
     double a_3 = (-2/Math.pow(targetTime, 3)*(endAngle - startAngle));
 
-    //double pos = a_0 + a_1 * currentTime + a_2*Math.pow(currentTime, 2) + a_3*(Math.pow(currentTime, 3));
-    double pos = (endAngle - startAngle)/targetTimeT;
+    double pos = a_0 + a_1 * currentTime + a_2*Math.pow(currentTime, 2) + a_3*(Math.pow(currentTime, 3));
     return pos;
   }
+  double getSpeed(double endAngle, double targetTimeT, double startAngle, double currentTimeT) {
+    double targetTime = targetTimeT/1000;
+    double currentTime = currentTimeT/1000;
 
+    double a_0 = startAngle;
+    double a_1 = 0;
+    double a_2 = (3/Math.pow(targetTime, 2)*(endAngle - startAngle));
+    double a_3 = (-2/Math.pow(targetTime, 3)*(endAngle - startAngle));
+
+    //double speed = a_1 + 2*a_2*currentTime + 3*a_3*(Math.pow(currentTime, 2));
+    double speed = (endAngle - startAngle)/targetTime;
+    return speed;
+  }
   double getAcc(double endAngle, double targetTimeT, double startAngle, double currentTimeT) {
     double targetTime = targetTimeT/1000;
     double currentTime = currentTimeT/1000;
@@ -237,7 +235,7 @@ class Arm {
 
   public void sendData() {
     try {
-      if ((float)targetAngle[0] != lastSentValue[0] || (float)targetAngle[1] != lastSentValue[1] || (float)targetAngle[2] != lastSentValue[2] || (float)targetAngle[3] != lastSentValue[3] || (float)targetAngle[4] != lastSentValue[4] || (float)targetAngle[5] != lastSentValue[5] || (float)speed[0] != lastSentValue[6] || (float)speed[1] != lastSentValue[7] || (float)speed[2] != lastSentValue[8] || (float)speed[3] != lastSentValue[9] || (float)speed[4] != lastSentValue[10] || (float)speed[5] != lastSentValue[11] && someBoolValue) {
+      if ((float)targetAngle[0] != lastSentValue[0] || (float)targetAngle[1] != lastSentValue[1] || (float)targetAngle[2] != lastSentValue[2] || (float)targetAngle[3] != lastSentValue[3] || (float)targetAngle[4] != lastSentValue[4] || (float)targetAngle[5] != lastSentValue[5] || (float)speed[0] != lastSentValue[6] || (float)speed[1] != lastSentValue[7] || (float)speed[2] != lastSentValue[8] || (float)speed[3] != lastSentValue[9] || (float)speed[4] != lastSentValue[10] || (float)speed[5] != lastSentValue[11] && someBoolValue || true) {
         String message = "" ; // "M1" + Float.toString((float)targetAngle[0]) + "1MM2" + Float.toString((float)targetAngle[1]) + "2MM3" + Float.toString((float)targetAngle[2]) + "3MM4" + Float.toString((float)targetAngle[3]) + "4MM5" + Float.toString((float)targetAngle[4]) + "5MM6" + Float.toString((float)targetAngle[5]) + "6MS1" + Float.toString((float)speed[0]) + "1SS2" + Float.toString((float)speed[1]) + "2SS3" + Float.toString((float)speed[2]) + "3SS4" + Float.toString((float)speed[3]) + "4SS5" + Float.toString((float)speed[4]) + "5SS6" + Float.toString((float)speed[5]) + "6S\n";
 
         for (int i = 0; i < 6; i++) {
@@ -246,7 +244,7 @@ class Arm {
           message = message + ",";
         }
         for (int i = 0; i < 6; i++) {
-          String speed_value = Integer.toString(round(((float) speed[i]+180)*10));
+          String speed_value = Integer.toString(round(((float) speed[i])*10));
           message = message + speed_value;
           if (i<5) message = message + ",";
         }
@@ -286,14 +284,11 @@ class Arm {
           //utils.drawResult(data1, 10, 700);
         }
       }
-
     }
     catch (Exception e) {
       //messageArrayIn = append(messageArrayIn, e.getMessage());
 
       println("Serial port error: " + e.getMessage());
     }
-    
   }
-
 }
