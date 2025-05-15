@@ -217,7 +217,8 @@ class Arm {
     double a_2 = (3/Math.pow(targetTime, 2)*(endAngle - startAngle));
     double a_3 = (-2/Math.pow(targetTime, 3)*(endAngle - startAngle));
 
-    double pos = a_0 + a_1 * currentTime + a_2*Math.pow(currentTime, 2) + a_3*(Math.pow(currentTime, 3));
+    //double pos = a_0 + a_1 * currentTime + a_2*Math.pow(currentTime, 2) + a_3*(Math.pow(currentTime, 3));
+    double pos = (endAngle - startAngle)/targetTimeT;
     return pos;
   }
 
