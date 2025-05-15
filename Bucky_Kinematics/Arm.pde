@@ -250,7 +250,7 @@ class Arm {
           if (i<5) message = message + ",";
         }
 
-        utils.drawResult(message, 10, 500);
+        //utils.drawResult(message, 10, 500);
 
         serial.write(message);
         serial.write(10);
@@ -279,7 +279,7 @@ class Arm {
         if (data != null) {
           receivedArea.setText("Arduino: " + data);
           messageArrayIn = append(messageArrayIn, data);
-          utils.drawResult(data, 10, 600);
+          //utils.drawResult(data, 10, 600);
         }
       }
       String data1 = "";
@@ -288,7 +288,7 @@ class Arm {
         if (data1 != null) {
           receivedArea1.setText("Arduino1: " + data1);
           messageArrayIn = append(messageArrayIn, data1);
-          utils.drawResult(data1, 10, 700);
+          //utils.drawResult(data1, 10, 700);
         }
       }
 
@@ -297,7 +297,7 @@ class Arm {
       //  data = data + serial.readString(); //StringUntil('\n');
       //}
       ////String data = " ";
-      utils.drawResult(data, 10, 600);
+      //utils.drawResult(data, 10, 600);
 
       //if (data != null) {
       //  data = data.trim();

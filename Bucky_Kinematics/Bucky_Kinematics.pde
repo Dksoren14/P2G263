@@ -189,9 +189,7 @@ void draw() {
     drawSaveLoadUI(width-325, 70);
   }
   utils.drawResult(time[3], 10, 750);
-  Arm2.sendData();
-  //Arm2.armData();
-  //utils.drawResult(Arm2.armData(), 50, 500);
+  //Arm2.sendData();
 }
 
 
@@ -780,6 +778,7 @@ void playProgramButtonFunction() {
           
           time[3] = (double)millis()-time[2];
           time[2] = millis();
+          Arm2.sendData();
         }
       }
     }
