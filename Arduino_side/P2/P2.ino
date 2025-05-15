@@ -14,11 +14,27 @@ SoftwareSerial soft_serial1(23, 24);  // DYNAMIXELShield UART RX/TX
 float value1, value2, value3;  // Global variables for storing inputs
 bool stringComplete = false;
 float theta[6];
-float speed[6];
+int32_t speed[6];
 String inputString = "";
 //const int DXL_DIR_PIN = 2;    // Direction control pin for RS-485
 const int DXL_DIR_PIN1 = 22;  // Direction control pin for RS-485
 
+
+bool measureStart = false;
+bool haverun = true;
+bool getonce = false;
+bool getonceT = false;
+int targetTime = 3000;
+float executingMovement = false;
+double startTime = 0;
+bool motionActive = true;
+float lastMillis = millis();
+
+float start[5];
+
+
+uint16_t data[12];
+float correct_data[12];
 
 const uint8_t DXL_ID1 = 1;  // Set your Dynamixel servo ID
 const uint8_t DXL_ID2 = 2;  // Set your Dynamixel servo ID
@@ -27,9 +43,12 @@ const uint8_t DXL_ID3 = 3;  // Set your Dynamixel servo ID
 const uint8_t DXL_ID5 = 5;  // Set your Dynamixel servo ID
 const uint8_t DXL_ID6 = 6;  // Set your Dynamixel servo ID
 
+uint8_t DXL_IDs[6] = { 1, 2, 4, 3, 5, 6 };
+
+
 const uint8_t DXL_ID1b = 1;  // Set your Dynamixel servo ID
 
-float speedA = 1;
+int32_t speedA = 1;
 
 
 const float DXL_PROTOCOL_VERSION = 2.0;  // Use 2.0 for newer servos
@@ -50,10 +69,6 @@ void setup() {
   DEBUG_SERIAL.begin(57600);
   while (!DEBUG_SERIAL)
     ;
-  //DEBUG_SERIAL1.begin(57600);
-  //while (!DEBUG_SERIAL1)
-  //  ;
-  // Set Port baudrate to 57600bps. This has to match with DYNAMIXEL baudrate.
 
   Serial.begin(57600);
   dxl.begin(57600);
@@ -94,72 +109,19 @@ void setup() {
   dxl.torqueOn(DXL_ID3);
 
   dxl.torqueOff(DXL_ID5);
-  dxl.setOperatingMode(DXL_ID3, OP_POSITION);
-  dxl.torqueOn(DXL_ID3);
+  dxl.setOperatingMode(DXL_ID5, OP_POSITION);
+  dxl.torqueOn(DXL_ID5);
 
   dxl.torqueOff(DXL_ID6);
-  dxl.setOperatingMode(DXL_ID3, OP_POSITION);
-  dxl.torqueOn(DXL_ID3);
+  dxl.setOperatingMode(DXL_ID6, OP_POSITION);
+  dxl.torqueOn(DXL_ID6);
 
-
-  //dxl1.torqueOff(DXL_ID1b);
-  //dxl1.setOperatingMode(DXL_ID1b, OP_POSITION);
-  //dxl1.torqueOn(DXL_ID1b);
-  // Limit the maximum velocity in Position Control Mode. Use 0 for Max speed
-  
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1, 100);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, 100);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID4, 100);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID3, 100);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID5, 0);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID6, 0);
-
-  dxl1.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1b, 50);
-
-  //readUserInputs();
-  dxl1.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1b, 100);
-}
-void readUserInputs() {
-  value1 = readFloat("Enter value 1:");
-  Serial.print("Value 1 stored: ");
-  Serial.println(value1);
-
-  value2 = readFloat("Enter value 2:");
-  Serial.print("Value 2 stored: ");
-  Serial.println(value2);
-
-  value3 = readFloat("Enter value 3:");
-  Serial.print("Value 3 stored: ");
-  Serial.println(value3);
-
-  Serial.println("All values have been recorded.");
-}
-
-// Helper function to read a float from the Serial Monitor after printing a prompt.
-// This function waits until the user enters a full line (ends with '\n' or '\r').
-float readFloat(const char* prompt) {
-  Serial.println(prompt);
-  String inputString = "";
-  char c;
-
-  // Wait until valid input is received
-  while (true) {
-    // Check if data is available on Serial
-    if (Serial.available()) {
-      c = Serial.read();
-
-      // Check for end-of-line markers
-      if (c == '\n' || c == '\r') {
-        if (inputString.length() > 0) {  // Ensure the line isn't empty
-          break;
-        }
-      } else {
-        inputString += c;
-      }
-    }
-  }
-
-  return inputString.toFloat();
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1, 50);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, 50);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID4, 50);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID3, 50);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID5, 50);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID6, 50);
 }
 
 void test3DOF() {
@@ -170,7 +132,35 @@ void test3DOF() {
 
 
 void parseMessage(String msg) {
-  for (int i = 0; i < 6; i++) {
+
+  // Split the string by commas
+  int idx = 0;
+  int start = 0;
+
+  for (int i = 0; i <= inputString.length(); i++) {
+    if (inputString[i] == ',' || inputString[i] == '\n' || i == inputString.length()) {
+      String part = inputString.substring(start, i);
+      part.trim();                          // remove spaces
+      if (part.length() > 0 && idx < 12) {  // Only count if it's not empty
+        data[idx] = part.toInt();
+        idx++;
+      }
+      start = i + 1;
+    }
+  }
+
+  if (idx == 12) {
+    String send_this = "";
+    for (int i = 0; i < 12; i++) {
+      correct_data[i] = float(data[i]) / 10.0;
+      send_this += String(correct_data[i], 1);
+      if (i < 11) send_this += ",";
+    }
+    Serial.println(send_this);
+  } else {
+    Serial.println("ERROR: Expected 12 values, got " + String(idx));
+  }
+  /*for (int i = 0; i < 6; i++) {
     String motorTag = "M" + String(i + 1);
     String endTag = String(i + 1) + "M";
     int startIndex = msg.indexOf(motorTag);
@@ -194,18 +184,43 @@ void parseMessage(String msg) {
     if (startIndex != -1 && endIndex != -1 && endIndex > startIndex) {
       String valueStr = msg.substring(startIndex + speedTag.length(), endIndex);
       float temp = valueStr.toFloat();
-      speed[i] = convertSpeed(temp);
+      //speed[i] = convertSpeed(temp);
     } else {
-      speed[i] = 0;  // Error fallback
+      //speed[i] = 0;  // Error fallback
     }
+  }*/
+}
+
+
+void loop() {
+
+  /* dxl.setGoalPosition(DXL_ID1, 90, UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID2, 180, UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID3, 90, UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID4, 270 - 90, UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID5, 120, UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID6, 90, UNIT_DEGREE);*/
+  if (stringComplete) {
+    stringComplete = false;
+    parseMessage(inputString);
+
+    if(correct_data[i] != )
+    dxl.setGoalPosition(DXL_ID1, correct_data[0], UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID2, correct_data[1] + 45, UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID3, correct_data[3], UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID4, correct_data[2] - 90, UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID5, correct_data[4], UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID6, correct_data[5], UNIT_DEGREE);
+    inputString = "";  // Clear for next message
   }
 }
 
-float convertSpeed(float speed) {
+
+int32_t convertSpeed(float speed) {
   float convertedspeed = speed / (6 * 0.229);
 
   if (convertedspeed < 100) {
-    return convertedspeed;
+    return (int32_t)convertedspeed;
   } else {
     while (1) {
     }
@@ -220,36 +235,24 @@ float convertAngle(float angle, int id) {
   return servoAngle;
 }
 
-void loop() {
-  if (stringComplete) {
-    parseMessage(inputString);
-    inputString = "";
-    stringComplete = false;
+/*void parseMessage(String msg) {
+  for (int i = 0; i < 6; i++) {
+    String motorTag = "M" + String(i + 1);
+    String endTag = String(i + 1) + "M";
+    int startIndex = msg.indexOf(motorTag);
+    int endIndex = msg.indexOf(endTag);
 
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1, speed[0]+speedA);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, speed[1]+speedA);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID4, speed[3]+speedA);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID3, speed[2]+speedA);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID5, speed[4]+speedA);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID6, speed[5]+speedA);
-
-    dxl.setGoalPosition(DXL_ID1, theta[0], UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID2, theta[1], UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID3, theta[3], UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID4, theta[2] - 90, UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID5, theta[4], UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID6, theta[5], UNIT_DEGREE);
-
-    // Just for testing: print out the extracted theta values
-    Serial.print(speed[0],4);
-    Serial.print(speed[1],4);
-    Serial.print(speed[3],4);
-    Serial.print(speed[2],4);
-    Serial.print(speed[4],4);
-    Serial.print(speed[5],4);
+    if (startIndex != -1 && endIndex != -1 && endIndex > startIndex) {
+      String valueStr = msg.substring(startIndex + motorTag.length(), endIndex);
+      float temp = valueStr.toFloat();
+      theta[i] = convertAngle(temp, i + 1);
+    } else {
+      theta[i] = 0;  // Error fallback
+    }
   }
 
-}
+
+
 
 void serialEvent() {
   while (Serial.available()) {
