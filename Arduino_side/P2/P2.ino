@@ -63,9 +63,7 @@ DynamixelShield dxl(DXL_SERIAL, 2);
 using namespace ControlTableItem;
 
 void setup() {
-  // put your setup code here, to run once:
-  //inputString.reserve(300);  // Reserve memory for efficiency
-
+ 
   // Use UART port of DYNAMIXEL Shield to debug.
   DEBUG_SERIAL.begin(57600);
   while (!DEBUG_SERIAL)
@@ -73,22 +71,16 @@ void setup() {
 
   Serial.begin(115200);
   dxl.begin(57600);
-  //dxl1.begin(9600);
-  //dxl1.begin(9600);
-  // Set Port Protocol Version. This has to match with DYNAMIXEL protocol version.
+
   dxl.setPortProtocolVersion(DXL_PROTOCOL_VERSION);
-  //dxl1.setPortProtocolVersion(DXL_PROTOCOL_VERSION);
-  //dxl1.setPortProtocolVersion(DXL_PROTOCOL_VERSION);
-  // Get DYNAMIXEL information
+
   dxl.ping(DXL_ID1);
   dxl.ping(DXL_ID2);
   dxl.ping(DXL_ID4);
   dxl.ping(DXL_ID3);
   dxl.ping(DXL_ID5);
   dxl.ping(DXL_ID6);
-  //dxl1.ping(DXL_ID1b);
-
-  //dxl1.ping(DXL_ID1b);
+  
 
   DEBUG_SERIAL.println("first board initialized and pinged successfully!");
   DEBUG_SERIAL1.println("Second board initialized and pinged successfully!");
@@ -123,59 +115,17 @@ void setup() {
   dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID3, 50);
   dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID5, 50);
   dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID6, 50);
-}
-
-void test3DOF() {
-  dxl.setGoalPosition(DXL_ID1, value1, UNIT_DEGREE);
-  dxl.setGoalPosition(DXL_ID2, value2, UNIT_DEGREE);
-  dxl.setGoalPosition(DXL_ID4, value3, UNIT_DEGREE);
-}
-
-
-void parseMessage(String msg) {
-
-  // Split the string by commas
-
-  /*for (int i = 0; i < 6; i++) {
-    String motorTag = "M" + String(i + 1);
-    String endTag = String(i + 1) + "M";
-    int startIndex = msg.indexOf(motorTag);
-    int endIndex = msg.indexOf(endTag);
-
-    if (startIndex != -1 && endIndex != -1 && endIndex > startIndex) {
-      String valueStr = msg.substring(startIndex + motorTag.length(), endIndex);
-      float temp = valueStr.toFloat();
-      theta[i] = convertAngle(temp, i + 1);
-    } else {
-      theta[i] = 0;  // Error fallback
-    }
-  }
-
-  for (int i = 0; i < 6; i++) {
-    String speedTag = "S" + String(i + 1);
-    String endTag = String(i + 1) + "S";
-    int startIndex = msg.indexOf(speedTag);
-    int endIndex = msg.indexOf(endTag);
-
-    if (startIndex != -1 && endIndex != -1 && endIndex > startIndex) {
-      String valueStr = msg.substring(startIndex + speedTag.length(), endIndex);
-      float temp = valueStr.toFloat();
-      //speed[i] = convertSpeed(temp);
-    } else {
-      //speed[i] = 0;  // Error fallback
-    }
-  }*/
+  dxl.setGoalPosition(DXL_ID1, 180, UNIT_DEGREE);
+  dxl.setGoalPosition(DXL_ID2, 180 + 45, UNIT_DEGREE);
+  dxl.setGoalPosition(DXL_ID3, 180, UNIT_DEGREE);
+  dxl.setGoalPosition(DXL_ID4, 180 - 90, UNIT_DEGREE);
+  dxl.setGoalPosition(DXL_ID5, 180, UNIT_DEGREE);
+  dxl.setGoalPosition(DXL_ID6, 180, UNIT_DEGREE);
 }
 
 
 void loop() {
 
-  /* dxl.setGoalPosition(DXL_ID1, 90, UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID2, 180, UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID3, 90, UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID4, 270 - 90, UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID5, 120, UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID6, 90, UNIT_DEGREE);*/
   if (stringComplete) {
     stringComplete = false;
     int idx = 0;
@@ -192,7 +142,6 @@ void loop() {
         start = i + 1;
       }
     }
-
     if (idx == 12) {
       String send_this = "";
       for (int i = 0; i < 12; i++) {
@@ -205,31 +154,34 @@ void loop() {
       Serial.println("ERROR: Expected 12 values, got " + String(idx));
     }
     inputString = "";
-
-
-    // Clear for next message
   }
   if (correct_data[0] != last_correct_data[0]) {
+    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1, convertSpeed(correct_data[0]));
     dxl.setGoalPosition(DXL_ID1, correct_data[0], UNIT_DEGREE);
     last_correct_data[0] = correct_data[0];
   }
   if (correct_data[1] != last_correct_data[1]) {
+    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, convertSpeed(correct_data[1]));
     dxl.setGoalPosition(DXL_ID2, correct_data[1] + 45, UNIT_DEGREE);
     last_correct_data[1] = correct_data[1];
   }
   if (correct_data[2] != last_correct_data[2]) {
+    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID3, convertSpeed(correct_data[2]));
     dxl.setGoalPosition(DXL_ID3, correct_data[3], UNIT_DEGREE);
     last_correct_data[2] = correct_data[2];
   }
   if (correct_data[3] != last_correct_data[3]) {
+    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID4, convertSpeed(correct_data[3]));
     dxl.setGoalPosition(DXL_ID4, correct_data[2] - 90, UNIT_DEGREE);
     last_correct_data[3] = correct_data[3];
   }
   if (correct_data[4] != last_correct_data[4]) {
+    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID5, convertSpeed(correct_data[4]));
     dxl.setGoalPosition(DXL_ID5, correct_data[4], UNIT_DEGREE);
     last_correct_data[4] = correct_data[4];
   }
   if (correct_data[5] != last_correct_data[5]) {
+    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID6, convertSpeed(correct_data[5]));
     dxl.setGoalPosition(DXL_ID6, correct_data[5], UNIT_DEGREE);
     last_correct_data[5] = correct_data[5];
   }
@@ -243,6 +195,7 @@ int32_t convertSpeed(float speed) {
     return (int32_t)convertedspeed;
   } else {
     while (1) {
+      Serial.println("EROROROOR");
     }
   }
 }
@@ -254,23 +207,6 @@ float convertAngle(float angle, int id) {
   }
   return servoAngle;
 }
-
-/*void parseMessage(String msg) {
-  for (int i = 0; i < 6; i++) {
-    String motorTag = "M" + String(i + 1);
-    String endTag = String(i + 1) + "M";
-    int startIndex = msg.indexOf(motorTag);
-    int endIndex = msg.indexOf(endTag);
-
-    if (startIndex != -1 && endIndex != -1 && endIndex > startIndex) {
-      String valueStr = msg.substring(startIndex + motorTag.length(), endIndex);
-      float temp = valueStr.toFloat();
-      theta[i] = convertAngle(temp, i + 1);
-    } else {
-      theta[i] = 0;  // Error fallback
-    }
-  }
-*/
 
 void serialEvent() {
   while (Serial.available()) {
