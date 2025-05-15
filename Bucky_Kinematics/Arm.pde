@@ -12,7 +12,7 @@ class Arm {
   double[] acc = new double[6];
   boolean executingMovement = false;
   boolean executingProgram = false;
-  double[] currentPos = {0, 0, 0, 0, 0, 0}; //Tracks the current start position
+  double[] startPos = {0, 0, 0, 0, 0, 0}; //Tracks the current start position
   int trackMovement = 0; //Tracks what movement the program is currentrly executing.
   double lasMillis = 0;
   boolean someBoolValue = true;
@@ -97,8 +97,8 @@ class Arm {
   int executeMovement(double[][] targetMatrix, double targetTime) {
     int a = 0;
     if (!executingMovement) {
-      for (int i = 0; i < currentPos.length; i++) {
-        startAngle[i] = currentPos[i];
+      for (int i = 0; i < startPos.length; i++) {
+        startAngle[i] = startPos[i];
       }
       startTime = millis();
       currentTime = millis()-startTime;
@@ -117,8 +117,8 @@ class Arm {
     if (millis() > startTime+targetTime) {
       executingMovement = false;
       a = 1;
-      for (int i = 0; i < currentPos.length; i++) {
-        currentPos[i] = pos[i];
+      for (int i = 0; i < startPos.length; i++) {
+        startPos[i] = pos[i];
       }
     }
     return a;
@@ -254,6 +254,8 @@ class Arm {
 
         serial.write(message);
         serial.write(10);
+        serial1.write(message);
+        serial1.write(10);
         messageArrayOut = append(messageArrayOut, message);
 
         for (int i = 0; i < lastSentValue.length; i++) {
@@ -278,6 +280,15 @@ class Arm {
           receivedArea.setText("Arduino: " + data);
           messageArrayIn = append(messageArrayIn, data);
           utils.drawResult(data, 10, 600);
+        }
+      }
+      String data1 = "";
+      while (serial1.available() > 0) {
+        data1 = serial1.readStringUntil(10);
+        if (data1 != null) {
+          receivedArea1.setText("Arduino1: " + data1);
+          messageArrayIn = append(messageArrayIn, data1);
+          utils.drawResult(data1, 10, 700);
         }
       }
 

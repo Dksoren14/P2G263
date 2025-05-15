@@ -3,17 +3,18 @@ import org.apache.commons.math3.linear.*;
 import org.apache.commons.math3.geometry.euclidean.threed.*;
 import processing.serial.*;
 
-Serial serial;  //used to communicate with the arduino. dunno how. sourse: Søren.
-Textarea receivedArea; //sourse: Søren to explain. Think it is a CP5 thing.
-Println arduinoConsole;//Søren
-ScrollableList portlist;
-ScrollableList baudlist;
+Serial serial, serial1;  //used to communicate with the arduino.
+Textarea receivedArea, receivedArea1;
+Println arduinoConsole, arduinoConsole1;
+ScrollableList portlist, portlist1;
+ScrollableList baudlist, baudlist1;
 float[] lastSentValue = new float[12]; //Track what values was last sent to the arduino.
 boolean connectButtonStatus = false; //Status of the connect button
-String selectedport; //Søren
-int selectedbaudrate; //Søren
+boolean connectButtonStatus1 = false;
+String selectedport, selectedport1;
+int selectedbaudrate, selectedbaudrate1;
 
-Button connectionButton, toggleConnectionUIButton, infoButton, saveProgramPointButton, leftArrowButton, rightArrowButton, addPointButton, saveProgramButton, editProgramLocationButton, playProgramButton, toggleSaveLoadUIButton, loadProgramButton;
+Button connectionButton, connectionButton1, toggleConnectionUIButton, infoButton, saveProgramPointButton, leftArrowButton, rightArrowButton, addPointButton, saveProgramButton, editProgramLocationButton, playProgramButton, toggleSaveLoadUIButton, loadProgramButton;
 Textfield programSelectionTextField, timeTextField;
 boolean toggleUIBool = false; //Status of the "toggleUI" button.
 boolean toggleSaveLoadUIBool = true;
@@ -51,7 +52,9 @@ Slider slider1, slider2, slider3, slider4, slider5, slider6;
 float theta1, theta2, theta3, theta4, theta5, theta6; //Theta values
 float[] theta = {0, 0, 0, 0, 0, 0};
 //float[] startTheta;
-double[] time = {millis(), 0};
+double[] time = {0, 0, 0, 0};
+boolean runFastLoop = false;
+Thread fastThread;
 
 double[][] MDH = { //Alpha, a, d, theta offset
   {0, 0, 122.65, 0},
@@ -130,7 +133,7 @@ void draw() {
   fill(200, 200, 255);                                              //Fill kinda sets a global variable that shapes use as color. In this case the next rectangle will be colored (R,G,B) (200, 200, 255).
   rect(0, 0, width, menuHeight);                                    //Make rectangle at position 0x 0y with a width of "width" and height of menuHeight.
   rect(menuWidth, menuHeight, width-menuHeight, height-menuHeight); //Look up https://processing.org/reference/ for more information about these kind of things.
-
+  checkKeyPressed();
 
 
   if (infoButtonVariable) {
@@ -147,7 +150,7 @@ void draw() {
     utils.drawResult(Arm2.acc, 1200, 450);
   }
 
-  checkKeyPressed();
+
 
 
 
@@ -185,11 +188,16 @@ void draw() {
   if (toggleSaveLoadUIBool) {
     drawSaveLoadUI(width-325, 70);
   }
-
+  utils.drawResult(time[3], 10, 750);
   Arm2.sendData();
   //Arm2.armData();
   //utils.drawResult(Arm2.armData(), 50, 500);
 }
+
+
+
+
+
 
 
 
@@ -276,6 +284,10 @@ void toggleConnectionUI() { //Will toggle the UI. Runs when "toggleUI" button is
   portlist.setVisible(toggleUIBool);
   baudlist.setVisible(toggleUIBool);
   receivedArea.setVisible(toggleUIBool);
+  connectionButton1.setVisible(toggleUIBool);
+  portlist1.setVisible(toggleUIBool);
+  baudlist1.setVisible(toggleUIBool);
+  receivedArea1.setVisible(toggleUIBool);
 }
 
 
@@ -327,6 +339,29 @@ void connectButtonFunction() {
     println("Disconnected from", selectedport);
   }
 }
+void baudratelistFunction1(int index) {
+  String baudstring1;
+  baudstring1 = baudlist1.getItem(index).get("name").toString();
+  selectedbaudrate1 = Integer.parseInt(baudstring1);
+  println("Selected", selectedbaudrate1);
+}
+void comportlistFunction1(int index) {
+  selectedport1 = portlist1.getItem(index).get("name").toString();
+  println("Selected", selectedport1);
+}
+void connectButtonFunction1() {
+  if (!connectButtonStatus1) {
+    serial1 = new Serial(this, selectedport1, selectedbaudrate1);
+    connectionButton1.setLabel("Disconnect");
+    connectButtonStatus1 = true;
+    println("Connected", selectedport1, "at", selectedbaudrate1);
+  } else {
+    serial1.stop();
+    connectionButton1.setLabel("Connect");
+    connectButtonStatus1 = false;
+    println("Disconnected from", selectedport1);
+  }
+}
 
 
 void connectionUI(int x, int y) { //Function that creates the connection UI
@@ -363,16 +398,50 @@ void connectionUI(int x, int y) { //Function that creates the connection UI
     .setPosition(x, y+250)
     .setColorBackground(80);
   arduinoConsole = cp5.addConsole(receivedArea);
+  x = x+400;
+  connectionButton1 = cp5.addButton("connectButtonFunction1")
+    .setLabel("Connect")
+    .setSize(70, 30)
+    .setPosition(x, y);
+
+  portlist1 = cp5.addScrollableList("comportlistFunction1")
+    .setLabel("select port")
+    .setBarHeight(30)
+    .setPosition(x+100, y)
+    .setItemHeight(25);
+
+  baudlist1 = cp5.addScrollableList("baudratelistFunction1")
+    .setLabel("select baudrate")
+    .setBarHeight(30)
+    .setPosition(x+220, y)
+    .setItemHeight(24);
+
+  baudlist1.addItem("9600", 9600);
+  baudlist1.addItem("19200", 19200);
+  baudlist1.addItem("38400", 38400);
+  baudlist1.addItem("57600", 57600);
+  baudlist1.addItem("115200", 115200);
+
+  receivedArea1 = cp5.addTextarea("receivedData1")
+    .setSize(360, 140)
+    .setPosition(x, y+250)
+    .setColorBackground(80);
+  arduinoConsole1 = cp5.addConsole(receivedArea1);
 
   String[] availableports = Serial.list(); //   <-------------------- Søren explain plz
   for (int i = 0; i < availableports.length; i++) {
     portlist.addItem(availableports[i], availableports[i]);
+    portlist1.addItem(availableports[i], availableports[i]);
   }
 
   connectionButton.setVisible(false);
   portlist.setVisible(false);
   baudlist.setVisible(false);
   receivedArea.setVisible(false);
+  connectionButton1.setVisible(false);
+  portlist1.setVisible(false);
+  baudlist1.setVisible(false);
+  receivedArea1.setVisible(false);
 }
 
 void infoButton() {
@@ -436,8 +505,8 @@ void keyPressed() {         //keyPressed is a built-in function that is called o
     keyVariableE = !keyVariableE;
   }
   if (keyCode==70) {
-    keyVariableF = true;
-    tempVariableForF += 1;
+    keyVariableF = !keyVariableF;
+    //tempVariableForF += 1;
   }
   if (keyCode==49) {
     keyVariable1 = true;
@@ -481,6 +550,9 @@ void keyPressed() {         //keyPressed is a built-in function that is called o
   }
 }
 
+
+
+
 void checkKeyPressed() { //----------------------------------------------------------------------------------------
   if (keyVariableA) { //Movement program
     //switch(switchProgramVariable) {
@@ -499,6 +571,9 @@ void checkKeyPressed() { //-----------------------------------------------------
     if (Arm2.executeProgram(movementProgram) == 1) {
       keyVariableA = false;
     }
+    time[1] = (double)millis()-time[0];
+    time[0] = millis();
+    utils.drawResult(time[1], 10, 700);
   }
 
   if (keyVariableB) {
@@ -518,7 +593,7 @@ void checkKeyPressed() { //-----------------------------------------------------
   if (keyVariableF) {
     time[1] = (double)millis()-time[0];
     time[0] = millis();
-    utils.drawResult(time, 10, 100);
+    utils.drawResult(time[1], 10, 700);
   }
 
   if (keyVariable1) {
@@ -693,7 +768,24 @@ void addPointButtonFunction() {
   keyVariableC = true;
 }
 void playProgramButtonFunction() {
-  keyVariableA = true;
+  if (fastThread == null || !fastThread.isAlive()) {
+    runFastLoop = true;
+
+    fastThread = new Thread(new Runnable() {
+      public void run() {
+        while (runFastLoop) {
+          if (Arm2.executeProgram(movementProgram) == 1) {
+            runFastLoop = false;
+          }
+          
+          time[3] = (double)millis()-time[2];
+          time[2] = millis();
+        }
+      }
+    }
+    );
+    fastThread.start();
+  }
 }
 void saveProgramButtonFunction() {
   String temp;

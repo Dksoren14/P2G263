@@ -33,7 +33,7 @@ void loop() {
       for (int i = 0; i < 12; i++) {
         correct_data[i] = float(data[i]) / 10.0 - 180.0;
         send_this += String(correct_data[i], 1);
-        if (i < 11) send_this += ",";
+        if (i < 11) send_this += "'";
       }
       Serial.println(send_this);
     } else {
