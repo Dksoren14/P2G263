@@ -33,6 +33,9 @@ float lastMillis = millis();
 float start[5];
 
 
+uint16_t data[12];
+float correct_data[12];
+
 const uint8_t DXL_ID1 = 1;  // Set your Dynamixel servo ID
 const uint8_t DXL_ID2 = 2;  // Set your Dynamixel servo ID
 const uint8_t DXL_ID4 = 4;  // Set your Dynamixel servo ID
@@ -106,34 +109,20 @@ void setup() {
   dxl.torqueOn(DXL_ID3);
 
   dxl.torqueOff(DXL_ID5);
-  dxl.setOperatingMode(DXL_ID3, OP_POSITION);
-  dxl.torqueOn(DXL_ID3);
+  dxl.setOperatingMode(DXL_ID5, OP_POSITION);
+  dxl.torqueOn(DXL_ID5);
 
   dxl.torqueOff(DXL_ID6);
-  dxl.setOperatingMode(DXL_ID3, OP_POSITION);
-  dxl.torqueOn(DXL_ID3);
+  dxl.setOperatingMode(DXL_ID6, OP_POSITION);
+  dxl.torqueOn(DXL_ID6);
 
-
-  //dxl1.torqueOff(DXL_ID1b);
-  //dxl1.setOperatingMode(DXL_ID1b, OP_POSITION);
-  //dxl1.torqueOn(DXL_ID1b);
-  // Limit the maximum velocity in Position Control Mode. Use 0 for Max speed
-
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1, 100);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, 100);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID4, 100);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID3, 100);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID5, 0);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID6, 0);
-
-  dxl1.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1b, 50);
-
-  //readUserInputs();
-  dxl1.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1b, 100);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1, 50);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, 50);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID4, 50);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID3, 50);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID5, 50);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID6, 50);
 }
-
-// Helper function to read a float from the Serial Monitor after printing a prompt.
-// This function waits until the user enters a full line (ends with '\n' or '\r').
 
 void test3DOF() {
   dxl.setGoalPosition(DXL_ID1, value1, UNIT_DEGREE);
@@ -143,7 +132,35 @@ void test3DOF() {
 
 
 void parseMessage(String msg) {
-  for (int i = 0; i < 6; i++) {
+
+  // Split the string by commas
+  int idx = 0;
+  int start = 0;
+
+  for (int i = 0; i <= inputString.length(); i++) {
+    if (inputString[i] == ',' || inputString[i] == '\n' || i == inputString.length()) {
+      String part = inputString.substring(start, i);
+      part.trim();                          // remove spaces
+      if (part.length() > 0 && idx < 12) {  // Only count if it's not empty
+        data[idx] = part.toInt();
+        idx++;
+      }
+      start = i + 1;
+    }
+  }
+
+  if (idx == 12) {
+    String send_this = "";
+    for (int i = 0; i < 12; i++) {
+      correct_data[i] = float(data[i]) / 10.0;
+      send_this += String(correct_data[i], 1);
+      if (i < 11) send_this += ",";
+    }
+    Serial.println(send_this);
+  } else {
+    Serial.println("ERROR: Expected 12 values, got " + String(idx));
+  }
+  /*for (int i = 0; i < 6; i++) {
     String motorTag = "M" + String(i + 1);
     String endTag = String(i + 1) + "M";
     int startIndex = msg.indexOf(motorTag);
@@ -171,8 +188,33 @@ void parseMessage(String msg) {
     } else {
       //speed[i] = 0;  // Error fallback
     }
+  }*/
+}
+
+
+void loop() {
+
+  /* dxl.setGoalPosition(DXL_ID1, 90, UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID2, 180, UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID3, 90, UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID4, 270 - 90, UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID5, 120, UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID6, 90, UNIT_DEGREE);*/
+  if (stringComplete) {
+    stringComplete = false;
+    parseMessage(inputString);
+
+    if(correct_data[i] != )
+    dxl.setGoalPosition(DXL_ID1, correct_data[0], UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID2, correct_data[1] + 45, UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID3, correct_data[3], UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID4, correct_data[2] - 90, UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID5, correct_data[4], UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID6, correct_data[5], UNIT_DEGREE);
+    inputString = "";  // Clear for next message
   }
 }
+
 
 int32_t convertSpeed(float speed) {
   float convertedspeed = speed / (6 * 0.229);
@@ -193,36 +235,6 @@ float convertAngle(float angle, int id) {
   return servoAngle;
 }
 
-/*void loop() {
-  if (stringComplete) {
-    parseMessage(inputString);
-    inputString = "";
-    stringComplete = false;
-
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1, speed[0]+speedA,0);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, speed[1]+speedA,0);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID4, speed[3]+speedA,0);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID3, speed[2]+speedA,0);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID5, speed[4]+speedA,0);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID6, speed[5]+speedA,0);
-
-    dxl.setGoalPosition(DXL_ID1, theta[0], UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID2, theta[1], UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID3, theta[3], UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID4, theta[2] - 90, UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID5, theta[4], UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID6, theta[5], UNIT_DEGREE);
-
-    // Just for testing: print out the extracted theta values
-    Serial.print(speed[0],4);
-    Serial.print(speed[1],4);
-    Serial.print(speed[3],4);
-    Serial.print(speed[2],4);
-    Serial.print(speed[4],4);
-    Serial.print(speed[5],4);
-  }
-}*/
-
 /*void parseMessage(String msg) {
   for (int i = 0; i < 6; i++) {
     String motorTag = "M" + String(i + 1);
@@ -239,57 +251,6 @@ float convertAngle(float angle, int id) {
     }
   }
 }*/
-
-
-void loop() {
-
-  static float currentSpeed = 0;
-  while (!getonce) {
-    start[0] = dxl.getPresentPosition(DXL_ID1);
-    start[1] = dxl.getPresentPosition(DXL_ID2);
-    start[2] = dxl.getPresentPosition(DXL_ID4);
-    start[3] = dxl.getPresentPosition(DXL_ID3);
-    start[4] = dxl.getPresentPosition(DXL_ID5);
-    start[5] = dxl.getPresentPosition(DXL_ID6);
-
-    getonce = true;
-  }
-
-  if (stringComplete) {
-    haverun = false;
-    parseMessage(inputString);
-    delay(10);
-    inputString = "";
-    motionActive = false;
-    stringComplete = false;
-  }
-  if (!motionActive) {
-    while (getonceT) {
-      startTime = millis();
-      getonceT = true;
-    }
-  }
-  for (int i = 0; i < 6; i++) {
-    speed[i] = convertSpeed(calcSpeed(start[i], theta[i], 300, startTime));
-  }
-
-  if (speed[0] > 0) {
-
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1, speed[0] + speedA);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, speed[1] + speedA);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID4, speed[3] + speedA);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID3, speed[2] + speedA);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID5, speed[4] + speedA);
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID6, speed[5] + speedA);
-
-    dxl.setGoalPosition(DXL_ID1, theta[0], UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID2, theta[1], UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID3, theta[3], UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID4, theta[2] - 90, UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID5, theta[4], UNIT_DEGREE);
-    dxl.setGoalPosition(DXL_ID6, theta[5], UNIT_DEGREE);
-  }
-}
 
 
 float calcSpeed(float start, float thetaEnd, float targetTimeT, float startTime) {
