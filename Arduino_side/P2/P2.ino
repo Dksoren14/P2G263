@@ -250,25 +250,7 @@ float convertAngle(float angle, int id) {
       theta[i] = 0;  // Error fallback
     }
   }
-}*/
 
-
-float calcSpeed(float start, float thetaEnd, float targetTimeT, float startTime) {
-
-  float currentTime = (millis() - startTime) / 100;
-
-  float targetTime = targetTimeT / 100;
-
-
-  float a_0 = start;
-  float a_1 = 0;
-  float a_2 = (3 / pow(targetTime, 2)) * (thetaEnd - start);
-  float a_3 = (-2 / pow(targetTime, 3)) * (thetaEnd - start);
-
-  float speed = a_1 + 2 * a_2 * currentTime + 3 * a_3 * pow(currentTime, 2);
-
-  return speed;
-}
 
 
 
