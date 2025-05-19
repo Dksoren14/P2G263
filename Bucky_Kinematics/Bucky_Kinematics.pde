@@ -167,6 +167,7 @@ void draw() {
   pushMatrix();
   translate(-300, 0);
   Arm1.draw(theta);
+  
   popMatrix();
 
 
@@ -182,7 +183,7 @@ void draw() {
   if (toggleSaveLoadUIBool) {
     drawSaveLoadUI(width-325, 70);
   }
-  utils.drawResult(time[3], 10, 750);
+  //utils.drawResult(time[3], 10, 750);
   //Arm2.sendData();
 }
 
@@ -203,24 +204,24 @@ void playSliderValues() {
   theta[5] = theta6;
 }
 
-void saveThetaValues(int a) {
-  saveThetaValues[a][0] = theta1;
-  saveThetaValues[a][1] = theta2;
-  saveThetaValues[a][2] = theta3;
-  saveThetaValues[a][3] = theta4;
-  saveThetaValues[a][4] = theta5;
-  saveThetaValues[a][5] = theta6;
-}
+//void saveThetaValues(int a) {
+//  saveThetaValues[a][0] = theta1;
+//  saveThetaValues[a][1] = theta2;
+//  saveThetaValues[a][2] = theta3;
+//  saveThetaValues[a][3] = theta4;
+//  saveThetaValues[a][4] = theta5;
+//  saveThetaValues[a][5] = theta6;
+//}
 
 
-void playSavedThetaValues(int a) {
-  theta[0] = saveThetaValues[a][0];
-  theta[1] = saveThetaValues[a][1];
-  theta[2] = saveThetaValues[a][2];
-  theta[3] = saveThetaValues[a][3];
-  theta[4] = saveThetaValues[a][4];
-  theta[5] = saveThetaValues[a][5];
-}
+//void playSavedThetaValues(int a) {
+//  theta[0] = saveThetaValues[a][0];
+//  theta[1] = saveThetaValues[a][1];
+//  theta[2] = saveThetaValues[a][2];
+//  theta[3] = saveThetaValues[a][3];
+//  theta[4] = saveThetaValues[a][4];
+//  theta[5] = saveThetaValues[a][5];
+//}
 
 void mousePressed() { //mousePressed is a built-in function that is called once every time a mouse button is pressed.
   lastMouseX = mouseX; //Record the position of the mouse at the time it is pressed.
@@ -558,16 +559,18 @@ void checkKeyPressed() { //-----------------------------------------------------
 
   if (keyVariableB) {
     //movementProgram = Arm1.savePointToProgram(movementProgram, 1000);
-    saveStrings("dataOut", Arm2.messageArrayOut);
-    saveStrings("dataIn", Arm2.messageArrayIn);
+    saveStrings("dataOut1", Arm1.messageArrayOut);
+    saveStrings("dataIn1", Arm1.messageArrayIn);
+    saveStrings("dataOut2", Arm2.messageArrayOut);
+    saveStrings("dataIn2", Arm2.messageArrayIn);
     keyVariableB = false;
   }
   if (keyVariableD) {
-    saveProgramToFile(movementProgram, "movementProgram1");
+    //saveProgramToFile(movementProgram, "movementProgram1");
     keyVariableD = false;
   }
   if (keyVariableE) {
-    movementProgram1232 = loadProgramFromFile("movementProgram1");
+    //movementProgram1232 = loadProgramFromFile("movementProgram1");
     keyVariableE = false;
   }
   if (keyVariableF) {
@@ -577,19 +580,24 @@ void checkKeyPressed() { //-----------------------------------------------------
   }
 
   if (keyVariable1) {
-    saveThetaValues(0);
+    double[][] temp1 = Arm1.resultMatrix.getData();
+    double[][][] temp = {{{1000,0,0,0},temp1[0],temp1[1],temp1[2],temp1[3]}};
+    Arm1.executeProgram(temp);
+    delay(10);
+    Arm1.sendData();
+    //saveThetaValues(0);
     keyVariable1 = false;
   }
   if (keyVariable2) {
-    saveThetaValues(1);
+    //saveThetaValues(1);
     keyVariable2 = false;
   }
   if (keyVariable3) {
-    saveThetaValues(2);
+    //saveThetaValues(2);
     keyVariable3 = false;
   }
   if (keyVariable4) {
-    saveThetaValues(3);
+    //saveThetaValues(3);
     keyVariable4 = false;
   }
 
@@ -602,16 +610,16 @@ void checkKeyPressed() { //-----------------------------------------------------
   } else {
 
     if (keyVariable5) {
-      playSavedThetaValues(0);
+      //playSavedThetaValues(0);
     }
     if (keyVariable6) {
-      playSavedThetaValues(1);
+      //playSavedThetaValues(1);
     }
     if (keyVariable7) {
-      playSavedThetaValues(2);
+      //playSavedThetaValues(2);
     }
     if (keyVariable8) {
-      playSavedThetaValues(3);
+      //playSavedThetaValues(3);
     }
   }
 }
