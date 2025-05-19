@@ -63,7 +63,7 @@ DynamixelShield dxl(DXL_SERIAL, 2);
 using namespace ControlTableItem;
 
 void setup() {
- 
+
   // Use UART port of DYNAMIXEL Shield to debug.
   DEBUG_SERIAL.begin(57600);
   while (!DEBUG_SERIAL)
@@ -80,7 +80,7 @@ void setup() {
   dxl.ping(DXL_ID3);
   dxl.ping(DXL_ID5);
   dxl.ping(DXL_ID6);
-  
+
 
   DEBUG_SERIAL.println("first board initialized and pinged successfully!");
   DEBUG_SERIAL1.println("Second board initialized and pinged successfully!");
@@ -108,13 +108,19 @@ void setup() {
   dxl.torqueOff(DXL_ID6);
   dxl.setOperatingMode(DXL_ID6, OP_POSITION);
   dxl.torqueOn(DXL_ID6);
+  dxl.writeControlTableItem(PROFILE_ACCELERATION, DXL_ID1, 70);
+  dxl.writeControlTableItem(PROFILE_ACCELERATION, DXL_ID2, 70);
+  dxl.writeControlTableItem(PROFILE_ACCELERATION, DXL_ID3, 70);
+  dxl.writeControlTableItem(PROFILE_ACCELERATION, DXL_ID4, 70);
+  dxl.writeControlTableItem(PROFILE_ACCELERATION, DXL_ID5, 70);
+  dxl.writeControlTableItem(PROFILE_ACCELERATION, DXL_ID6, 70);
 
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1, 50);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, 50);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID4, 50);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID3, 50);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID5, 50);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID6, 50);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1, 100);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, 100);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID4, 100);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID3, 100);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID5, 150);
+  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID6, 150);
   dxl.setGoalPosition(DXL_ID1, 180, UNIT_DEGREE);
   dxl.setGoalPosition(DXL_ID2, 180 + 45, UNIT_DEGREE);
   dxl.setGoalPosition(DXL_ID3, 180, UNIT_DEGREE);
@@ -125,7 +131,6 @@ void setup() {
 
 
 void loop() {
-
   if (stringComplete) {
     stringComplete = false;
     int idx = 0;
