@@ -15,7 +15,7 @@ String selectedport, selectedport1;
 int selectedbaudrate, selectedbaudrate1;
 
 Button connectionButton, connectionButton1, toggleConnectionUIButton, infoButton, saveProgramPointButton, leftArrowButton, rightArrowButton, addPointButton, saveProgramButton, editProgramLocationButton, playProgramButton, toggleSaveLoadUIButton, loadProgramButton;
-Button moveMethodToggleButton, conformXYZRPYButton;
+Button moveMethodToggleButton, conformXYZRPYButton, sendToRobotButton;
 Textfield programSelectionTextField, timeTextField, pxTextField, pyTextField, pzTextField, rTextField, pTextField, yTextField;
 double[][][] globalTemp2;
 boolean toggleUIBool = false; //Status of the "toggleUI" button.
@@ -23,12 +23,12 @@ boolean toggleSaveLoadUIBool = true;
 boolean toggleInputMethodBool = true;
 boolean infoButtonVariable = false;
 boolean keyVariableA, keyVariableB, keyVariable1, keyVariable2, keyVariable3, keyVariable4, keyVariable5, keyVariable6, keyVariable7, keyVariable8; //Track key A and B
+boolean loopVariable0, loopVariable1, loopVariable2, loopVariable3;
 boolean keyVariableC = true;
 boolean keyVariableD = false;
 boolean keyVariableE = false;
 boolean keyVariableF = false;
-int tempVariableForF = 0;
-//String globalTextVariable = "";
+
 int movementNumber = 0;
 int addingPoint = 0;
 String currentProgram = "untitled program";
@@ -131,7 +131,7 @@ void draw() {
   rect(0, 0, width, menuHeight);                                    //Make rectangle at position 0x 0y with a width of "width" and height of menuHeight.
   rect(menuWidth, menuHeight, width-menuHeight, height-menuHeight); //Look up https://processing.org/reference/ for more information about these kind of things.
   checkKeyPressed();
-
+  loop2();
 
   if (infoButtonVariable) {
     utils.drawResult("Slider angles", 30, 70);
@@ -512,14 +512,10 @@ void keyPressed() {         //keyPressed is a built-in function that is called o
     //tempVariableForF += 1;
   }
   if (keyCode==49) {
-    keyVariable1 = true;
-  } else {
-    keyVariable1 = false;
+    keyVariable1 = !keyVariable1;
   }
   if (keyCode==50) {
-    keyVariable2 = true;
-  } else {
-    keyVariable2 = false;
+    keyVariable2 = !keyVariable2;
   }
   if (keyCode==51) {
     keyVariable3 = true;
@@ -590,18 +586,10 @@ void checkKeyPressed() { //-----------------------------------------------------
   }
 
   if (keyVariable1) {
-    double[][] temp1 = Arm1.resultMatrix.getData();
-    double[][][] temp = {{{1000, 0, 0, 0}, temp1[0], temp1[1], temp1[2], temp1[3]}};
-    Arm1.executeProgram(temp);
-    delay(10);
-    Arm1.sendData();
-    //saveThetaValues(0);
     keyVariable1 = false;
   }
   if (keyVariable2) {
-     if (Arm1.executeProgram(globalTemp2) == 1) {
-      keyVariable2 = false;
-    }
+    keyVariable2 = false;
   }
   if (keyVariable3) {
     //saveThetaValues(2);
@@ -632,6 +620,20 @@ void checkKeyPressed() { //-----------------------------------------------------
     if (keyVariable8) {
       //playSavedThetaValues(3);
     }
+  }
+}
+
+void loop2() {
+  if (loopVariable0) {
+    if (Arm1.executeProgram(globalTemp2) == 1) {
+      loopVariable0 = false;
+    }
+  }
+  if (loopVariable1) {
+  }
+  if (loopVariable2) {
+  }
+  if (loopVariable3) {
   }
 }
 
@@ -724,10 +726,11 @@ void saveLoadUI(int x, int y) {
     .setLabel("Toggle Input Method")
     .setSize(120, 30)
     .setPosition(x, y + 230);
-  y = y + 50;
+  y = y + 20;
+  int waka1232 = 20;
   pxTextField = cp5.addTextfield("pxTextFieldFunction")
     .setLabel("")
-    .setPosition(x+140, y+270)
+    .setPosition(x+waka1232, y+270)
     .setSize(60, 30)
     .setFocus(true)
     .setColor(color(255))
@@ -735,7 +738,7 @@ void saveLoadUI(int x, int y) {
     .setText("192.43");
   pyTextField = cp5.addTextfield("pyTextFieldFunction")
     .setLabel("")
-    .setPosition(x+140, y+310)
+    .setPosition(x+waka1232, y+310)
     .setSize(60, 30)
     .setFocus(true)
     .setColor(color(255))
@@ -743,7 +746,7 @@ void saveLoadUI(int x, int y) {
     .setText("0");
   pzTextField = cp5.addTextfield("pzTextFieldFunction")
     .setLabel("")
-    .setPosition(x+140, y+350)
+    .setPosition(x+waka1232, y+350)
     .setSize(60, 30)
     .setFocus(true)
     .setColor(color(255))
@@ -752,7 +755,7 @@ void saveLoadUI(int x, int y) {
   y = y + 120;
   rTextField = cp5.addTextfield("rTextFieldFunction")
     .setLabel("")
-    .setPosition(x+140, y+270)
+    .setPosition(x+waka1232, y+270)
     .setSize(60, 30)
     .setFocus(true)
     .setColor(color(255))
@@ -760,7 +763,7 @@ void saveLoadUI(int x, int y) {
     .setText("0");
   pTextField = cp5.addTextfield("pTextFieldFunction")
     .setLabel("")
-    .setPosition(x+140, y+310)
+    .setPosition(x+waka1232, y+310)
     .setSize(60, 30)
     .setFocus(true)
     .setColor(color(255))
@@ -768,7 +771,7 @@ void saveLoadUI(int x, int y) {
     .setText("180");
   yTextField = cp5.addTextfield("yTextFieldFunction")
     .setLabel("")
-    .setPosition(x+140, y+350)
+    .setPosition(x+waka1232, y+350)
     .setSize(60, 30)
     .setFocus(true)
     .setColor(color(255))
@@ -777,7 +780,17 @@ void saveLoadUI(int x, int y) {
   conformXYZRPYButton = cp5.addButton("conformXYZRPYButtonFunction")
     .setLabel("Confirm")
     .setSize(120, 30)
+    .setColorBackground(color(0, 170, 0))
+    .setColorForeground(color(30, 245, 30))
+    .setColorActive(color(255, 255, 255))
     .setPosition(x, y + 400);
+  sendToRobotButton = cp5.addButton("sendToRobotButtonFunction")
+    .setLabel("SEND TO ROBOT!")
+    .setSize(120, 30)
+    .setColorBackground(color(200, 0, 0))
+    .setColorForeground(color(255, 50, 50))
+
+    .setPosition(x, y + 450);
   pxTextField.setVisible(false);
   pyTextField.setVisible(false);
   pzTextField.setVisible(false);
@@ -796,7 +809,7 @@ void leftArrowButtonFunction() {
   //Arm1.executeMovement(temp, 1);
   double[] temp2 = Arm1.anglesFromIK(temp);
   for (int i = 0; i < temp2.length; i++) {
-    theta[i] = (float)temp2[i];
+    Arm1.pos[i] = (float)temp2[i];
   }
 }
 void rightArrowButtonFunction() {
@@ -808,7 +821,7 @@ void rightArrowButtonFunction() {
     double[][] temp = {movementProgram[movementNumber-1][1], movementProgram[movementNumber-1][2], movementProgram[movementNumber-1][3], movementProgram[movementNumber-1][4]};
     double[] temp2 = Arm1.anglesFromIK(temp);
     for (int i = 0; i < temp2.length; i++) {
-      theta[i] = (float)temp2[i];
+      Arm1.pos[i] = (float)temp2[i];
     }
   }
 }
@@ -892,7 +905,7 @@ void moveMethodToggleButtonFunction() {
   conformXYZRPYButton.setVisible(!toggleInputMethodBool);
 }
 
-double[][] rotationMatrixFromAngles12332 = {{0,0,0},{0,0,0},{0,0,0}};
+double[][] rotationMatrixFromAngles12332 = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
 
 
 void conformXYZRPYButtonFunction() {
@@ -904,7 +917,14 @@ void conformXYZRPYButtonFunction() {
   text("rpyxyz", 500, 500);
   keyVariableC = false;
   rotationMatrixFromAngles12332 = temp1;
-  keyVariable2 = true;
+  loopVariable0 = true;
+}
+void sendToRobotButtonFunction() {
+  double[][] temp1 = Arm1.resultMatrix.getData();
+  double[][][] temp = {{{1000, 0, 0, 0}, temp1[0], temp1[1], temp1[2], temp1[3]}};
+  Arm1.executeProgram(temp);
+  delay(10);
+  Arm1.sendData();
 }
 
 void saveProgramToFile(double[][][] movementProgram, String programName) {
