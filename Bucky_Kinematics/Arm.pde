@@ -195,29 +195,53 @@ class Arm {
     //angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]);
     //angle[5] = Math.atan2(-inputMatrix36[1][1], inputMatrix36[1][0]);
 
-    if (targetMatrix[0][0] < 0) {
+    if (angle[4] > 0) {
       angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]);
-    } else if (targetMatrix[0][0] > 0) {
+    } else if (angle[4] < 0) {
       if (targetMatrix[1][0] > 0) {
         if (targetMatrix[1][2] < 0) {
           angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) - Math.toRadians(180);
-          text("+-", 500, 500);
+          text("+-", 500, 600);
         }
         if (targetMatrix[1][2] > 0) {
           angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) + Math.toRadians(180);
-          text("++", 500, 500);
+          text("++", 500, 600);
         }
       } else if (targetMatrix[1][0] < 0) {
         if (targetMatrix[2][1] > 0) {
           angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) - Math.toRadians(180);
-          text("--", 500, 500);
+          text("--", 500, 600);
         }
         if (targetMatrix[2][1] < 0) {
           angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) + Math.toRadians(180);
-          text("-+", 500, 500);
+          text("-+", 500, 600);
         }
       }
-    } 
+    }
+    
+    //if (targetMatrix[0][0] < 0) {
+    //  angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]);
+    //} else if (targetMatrix[0][0] > 0) {
+    //  if (targetMatrix[1][0] > 0) {
+    //    if (targetMatrix[1][2] < 0) {
+    //      angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) - Math.toRadians(180);
+    //      text("+-", 500, 600);
+    //    }
+    //    if (targetMatrix[1][2] > 0) {
+    //      angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) + Math.toRadians(180);
+    //      text("++", 500, 600);
+    //    }
+    //  } else if (targetMatrix[1][0] < 0) {
+    //    if (targetMatrix[2][1] > 0) {
+    //      angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) - Math.toRadians(180);
+    //      text("--", 500, 600);
+    //    }
+    //    if (targetMatrix[2][1] < 0) {
+    //      angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) + Math.toRadians(180);
+    //      text("-+", 500, 600);
+    //    }
+    //  }
+    //}
 
 
     double[] angleDegrees = new double[angle.length];

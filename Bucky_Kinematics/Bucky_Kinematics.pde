@@ -644,6 +644,7 @@ void toggleSaveLoadUI() { //Will toggle the UI. Runs when "toggleUI" button is p
   playProgramButton.setVisible(toggleSaveLoadUIBool);
   addPointButton.setVisible(toggleSaveLoadUIBool);
   saveProgramButton.setVisible(toggleSaveLoadUIBool);
+  loadProgramButton.setVisible(toggleSaveLoadUIBool);
   editProgramLocationButton.setVisible(toggleSaveLoadUIBool);
   timeTextField.setVisible(toggleSaveLoadUIBool);
 }
