@@ -17,6 +17,7 @@ int selectedbaudrate, selectedbaudrate1;
 Button connectionButton, connectionButton1, toggleConnectionUIButton, infoButton, saveProgramPointButton, leftArrowButton, rightArrowButton, addPointButton, saveProgramButton, editProgramLocationButton, playProgramButton, toggleSaveLoadUIButton, loadProgramButton;
 Button moveMethodToggleButton, conformXYZRPYButton;
 Textfield programSelectionTextField, timeTextField, pxTextField, pyTextField, pzTextField, rTextField, pTextField, yTextField;
+double[][][] globalTemp2;
 boolean toggleUIBool = false; //Status of the "toggleUI" button.
 boolean toggleSaveLoadUIBool = true;
 boolean toggleInputMethodBool = true;
@@ -598,8 +599,9 @@ void checkKeyPressed() { //-----------------------------------------------------
     keyVariable1 = false;
   }
   if (keyVariable2) {
-    //saveThetaValues(1);
-    keyVariable2 = false;
+     if (Arm1.executeProgram(globalTemp2) == 1) {
+      keyVariable2 = false;
+    }
   }
   if (keyVariable3) {
     //saveThetaValues(2);
@@ -763,7 +765,7 @@ void saveLoadUI(int x, int y) {
     .setFocus(true)
     .setColor(color(255))
     .setAutoClear(false)
-    .setText("0");
+    .setText("180");
   yTextField = cp5.addTextfield("yTextFieldFunction")
     .setLabel("")
     .setPosition(x+140, y+350)
@@ -889,16 +891,20 @@ void moveMethodToggleButtonFunction() {
   yTextField.setVisible(!toggleInputMethodBool);
   conformXYZRPYButton.setVisible(!toggleInputMethodBool);
 }
+
 double[][] rotationMatrixFromAngles12332 = {{0,0,0},{0,0,0},{0,0,0}};
+
+
 void conformXYZRPYButtonFunction() {
   rotationMatrixFromAngles12332 = rotationMatrixFromAngles(Double.parseDouble(cp5.get(Textfield.class, "rTextFieldFunction").getText()), Double.parseDouble(cp5.get(Textfield.class, "pTextFieldFunction").getText()), Double.parseDouble(cp5.get(Textfield.class, "yTextFieldFunction").getText()));
   double[][] temp = rotationMatrixFromAngles12332;
   double[][] temp1 = {{temp[0][0], temp[0][1], temp[0][2], Double.parseDouble(cp5.get(Textfield.class, "pxTextFieldFunction").getText())}, {temp[1][0], temp[1][1], temp[1][2], Double.parseDouble(cp5.get(Textfield.class, "pyTextFieldFunction").getText())}, {temp[2][0], temp[2][1], temp[2][2], Double.parseDouble(cp5.get(Textfield.class, "pzTextFieldFunction").getText())}, {0, 0, 0, 1}};
-  double[][][] temp2 = {{{1000, 0, 0, 0}, temp1[0], temp1[1], temp1[2], temp1[3]}};
+  double[][][] Temp2 = {{{1000, 0, 0, 0}, temp1[0], temp1[1], temp1[2], temp1[3]}};
+  globalTemp2 = Temp2;
   text("rpyxyz", 500, 500);
   keyVariableC = false;
   rotationMatrixFromAngles12332 = temp1;
-  Arm1.executeProgram(temp2);
+  keyVariable2 = true;
 }
 
 void saveProgramToFile(double[][][] movementProgram, String programName) {

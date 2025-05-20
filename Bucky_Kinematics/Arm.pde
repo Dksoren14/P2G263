@@ -158,6 +158,8 @@ class Arm {
     return program;
   }
 
+  
+
   double[] anglesFromIK(double[][] targetMatrix) {
     double[] angle = new double[6];
 
@@ -183,10 +185,10 @@ class Arm {
 
     double d = Math.sqrt(Math.pow(inputMatrix36[0][2], 2)+Math.pow(inputMatrix36[2][2], 2));
 
-    if (targetMatrix[0][0] < 0) {
+    if (inputMatrix36[0][2] > 0) {
       angle[4] = Math.atan2(d, -inputMatrix36[1][2]);
       //angle[4] = Math.acos(-inputMatrix36[1][2]);
-    } else if (targetMatrix[0][0] > 0) {
+    } else if (inputMatrix36[0][2] < 0) {
       angle[4] = -Math.atan2(d, -inputMatrix36[1][2]);
     } else {
       angle[4] = Math.atan2(d, -inputMatrix36[1][2]);
@@ -198,27 +200,18 @@ class Arm {
     if (angle[4] > 0) {
       angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]);
     } else if (angle[4] < 0) {
-      if (targetMatrix[1][0] > 0) {
-        if (targetMatrix[1][2] < 0) {
-          angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) - Math.toRadians(180);
-          text("+-", 500, 600);
-        }
-        if (targetMatrix[1][2] > 0) {
-          angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) + Math.toRadians(180);
-          text("++", 500, 600);
-        }
-      } else if (targetMatrix[1][0] < 0) {
-        if (targetMatrix[2][1] > 0) {
+      if (inputMatrix36[1][0] < 0) {
+        if (inputMatrix36[0][1] > 0) {
           angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) - Math.toRadians(180);
           text("--", 500, 600);
         }
-        if (targetMatrix[2][1] < 0) {
+        if (inputMatrix36[0][1] < 0) {
           angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) + Math.toRadians(180);
           text("-+", 500, 600);
         }
       }
     }
-    
+
     //if (targetMatrix[0][0] < 0) {
     //  angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]);
     //} else if (targetMatrix[0][0] > 0) {
