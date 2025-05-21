@@ -15,17 +15,24 @@ String selectedport, selectedport1;
 int selectedbaudrate, selectedbaudrate1;
 
 Button connectionButton, connectionButton1, toggleConnectionUIButton, infoButton, saveProgramPointButton, leftArrowButton, rightArrowButton, addPointButton, saveProgramButton, editProgramLocationButton, playProgramButton, toggleSaveLoadUIButton, loadProgramButton;
-Textfield programSelectionTextField, timeTextField;
+Button moveMethodToggleButton, conformXYZRPYButton, sendToRobotButton, gripperButton, vialBoxButton;
+Textfield programSelectionTextField, timeTextField, pxTextField, pyTextField, pzTextField, rTextField, pTextField, yTextField;
+double[][][] globalTemp2;
 boolean toggleUIBool = false; //Status of the "toggleUI" button.
 boolean toggleSaveLoadUIBool = true;
+boolean toggleInputMethodBool = true;
 boolean infoButtonVariable = false;
+boolean gripperBoolean = false;
+boolean vialBoxBoolean = false;
+int gripperVariable = 0;
+int vialBoxVariable = 0;
 boolean keyVariableA, keyVariableB, keyVariable1, keyVariable2, keyVariable3, keyVariable4, keyVariable5, keyVariable6, keyVariable7, keyVariable8; //Track key A and B
+boolean loopVariable0, loopVariable1, loopVariable2, loopVariable3;
 boolean keyVariableC = true;
 boolean keyVariableD = false;
 boolean keyVariableE = false;
 boolean keyVariableF = false;
-int tempVariableForF = 0;
-//String globalTextVariable = "";
+
 int movementNumber = 0;
 int addingPoint = 0;
 String currentProgram = "untitled program";
@@ -128,7 +135,7 @@ void draw() {
   rect(0, 0, width, menuHeight);                                    //Make rectangle at position 0x 0y with a width of "width" and height of menuHeight.
   rect(menuWidth, menuHeight, width-menuHeight, height-menuHeight); //Look up https://processing.org/reference/ for more information about these kind of things.
   checkKeyPressed();
-
+  loop2();
 
   if (infoButtonVariable) {
     utils.drawResult("Slider angles", 30, 70);
@@ -142,6 +149,7 @@ void draw() {
     utils.drawResult(Arm2.pos, 900, 450);
     utils.drawResult(Arm2.speed, 1050, 450);
     utils.drawResult(Arm2.acc, 1200, 450);
+    utils.drawResult(rotationMatrixFromAngles12332, 175, 400);
   }
 
 
@@ -166,8 +174,8 @@ void draw() {
 
   pushMatrix();
   translate(-300, 0);
-  Arm1.draw(theta);
-  
+  //Arm1.draw(theta);
+  Arm1.draw();
   popMatrix();
 
 
@@ -196,12 +204,18 @@ void draw() {
 
 
 void playSliderValues() {
-  theta[0] = theta1;
-  theta[1] = theta2;
-  theta[2] = theta3;
-  theta[3] = theta4;
-  theta[4] = theta5;
-  theta[5] = theta6;
+  //theta[0] = theta1;
+  //theta[1] = theta2;
+  //theta[2] = theta3;
+  //theta[3] = theta4;
+  //theta[4] = theta5;
+  //theta[5] = theta6;
+  Arm1.pos[0] = theta1;
+  Arm1.pos[1] = theta2;
+  Arm1.pos[2] = theta3;
+  Arm1.pos[3] = theta4;
+  Arm1.pos[4] = theta5;
+  Arm1.pos[5] = theta6;
 }
 
 //void saveThetaValues(int a) {
@@ -502,14 +516,10 @@ void keyPressed() {         //keyPressed is a built-in function that is called o
     //tempVariableForF += 1;
   }
   if (keyCode==49) {
-    keyVariable1 = true;
-  } else {
-    keyVariable1 = false;
+    keyVariable1 = !keyVariable1;
   }
   if (keyCode==50) {
-    keyVariable2 = true;
-  } else {
-    keyVariable2 = false;
+    keyVariable2 = !keyVariable2;
   }
   if (keyCode==51) {
     keyVariable3 = true;
@@ -580,16 +590,9 @@ void checkKeyPressed() { //-----------------------------------------------------
   }
 
   if (keyVariable1) {
-    double[][] temp1 = Arm1.resultMatrix.getData();
-    double[][][] temp = {{{1000,0,0,0},temp1[0],temp1[1],temp1[2],temp1[3]}};
-    Arm1.executeProgram(temp);
-    delay(10);
-    Arm1.sendData();
-    //saveThetaValues(0);
     keyVariable1 = false;
   }
   if (keyVariable2) {
-    //saveThetaValues(1);
     keyVariable2 = false;
   }
   if (keyVariable3) {
@@ -624,6 +627,20 @@ void checkKeyPressed() { //-----------------------------------------------------
   }
 }
 
+void loop2() {
+  if (loopVariable0) {
+    if (Arm1.executeProgram(globalTemp2) == 1) {
+      loopVariable0 = false;
+    }
+  }
+  if (loopVariable1) {
+  }
+  if (loopVariable2) {
+  }
+  if (loopVariable3) {
+  }
+}
+
 void toggleSaveLoadUI() { //Will toggle the UI. Runs when "toggleUI" button is pressed.
 
   toggleSaveLoadUIBool = !toggleSaveLoadUIBool;
@@ -635,6 +652,7 @@ void toggleSaveLoadUI() { //Will toggle the UI. Runs when "toggleUI" button is p
   playProgramButton.setVisible(toggleSaveLoadUIBool);
   addPointButton.setVisible(toggleSaveLoadUIBool);
   saveProgramButton.setVisible(toggleSaveLoadUIBool);
+  loadProgramButton.setVisible(toggleSaveLoadUIBool);
   editProgramLocationButton.setVisible(toggleSaveLoadUIBool);
   timeTextField.setVisible(toggleSaveLoadUIBool);
 }
@@ -650,6 +668,14 @@ void drawSaveLoadUI(int x, int y) {
   text("Point " + (movementNumber + addingPoint), x + 5, y + 70);
   textSize(24);
   text("Time: ", x + 5, y+193);
+  if (gripperBoolean) {
+    fill(255, 0, 0);
+    rect(width-110, height-575, 20, 20);
+  }
+  if (vialBoxBoolean) {
+    fill(255, 0, 0);
+    rect(width-110, height-535, 20, 20);
+  }
   popStyle();
 }
 
@@ -708,6 +734,91 @@ void saveLoadUI(int x, int y) {
     .setColor(color(255))
     .setAutoClear(false)
     .setText("1234");
+  gripperButton = cp5.addButton("gripperOnButtonFunction")
+    .setLabel("Gripper On")
+    .setSize(60, 30)
+    .setPosition(x+140, y+170);
+  vialBoxButton = cp5.addButton("vialBoxButtonFunction")
+    .setLabel("Box Out")
+    .setSize(60, 30)
+    .setPosition(x+140, y+210);
+  moveMethodToggleButton = cp5.addButton("moveMethodToggleButtonFunction")
+    .setLabel("Toggle Input Method")
+    .setSize(120, 30)
+    .setPosition(x, y + 230);
+  y = y + 20;
+  int waka1232 = 20;
+  pxTextField = cp5.addTextfield("pxTextFieldFunction")
+    .setLabel("")
+    .setPosition(x+waka1232, y+270)
+    .setSize(60, 30)
+    .setFocus(true)
+    .setColor(color(255))
+    .setAutoClear(false)
+    .setText("192.43");
+  pyTextField = cp5.addTextfield("pyTextFieldFunction")
+    .setLabel("")
+    .setPosition(x+waka1232, y+310)
+    .setSize(60, 30)
+    .setFocus(true)
+    .setColor(color(255))
+    .setAutoClear(false)
+    .setText("0");
+  pzTextField = cp5.addTextfield("pzTextFieldFunction")
+    .setLabel("")
+    .setPosition(x+waka1232, y+350)
+    .setSize(60, 30)
+    .setFocus(true)
+    .setColor(color(255))
+    .setAutoClear(false)
+    .setText("238.14");
+  y = y + 120;
+  rTextField = cp5.addTextfield("rTextFieldFunction")
+    .setLabel("")
+    .setPosition(x+waka1232, y+270)
+    .setSize(60, 30)
+    .setFocus(true)
+    .setColor(color(255))
+    .setAutoClear(false)
+    .setText("0");
+  pTextField = cp5.addTextfield("pTextFieldFunction")
+    .setLabel("")
+    .setPosition(x+waka1232, y+310)
+    .setSize(60, 30)
+    .setFocus(true)
+    .setColor(color(255))
+    .setAutoClear(false)
+    .setText("180");
+  yTextField = cp5.addTextfield("yTextFieldFunction")
+    .setLabel("")
+    .setPosition(x+waka1232, y+350)
+    .setSize(60, 30)
+    .setFocus(true)
+    .setColor(color(255))
+    .setAutoClear(false)
+    .setText("0");
+  conformXYZRPYButton = cp5.addButton("conformXYZRPYButtonFunction")
+    .setLabel("Confirm")
+    .setSize(120, 30)
+    .setColorBackground(color(0, 170, 0))
+    .setColorForeground(color(30, 245, 30))
+    .setColorActive(color(255, 255, 255))
+    .setPosition(x, y + 400);
+  sendToRobotButton = cp5.addButton("sendToRobotButtonFunction")
+    .setLabel("SEND TO ROBOT!")
+    .setSize(120, 30)
+    .setColorBackground(color(200, 0, 0))
+    .setColorForeground(color(255, 50, 50))
+    .setPosition(x, y + 450);
+
+
+  pxTextField.setVisible(false);
+  pyTextField.setVisible(false);
+  pzTextField.setVisible(false);
+  rTextField.setVisible(false);
+  pTextField.setVisible(false);
+  yTextField.setVisible(false);
+  conformXYZRPYButton.setVisible(false);
 }
 
 void leftArrowButtonFunction() {
@@ -719,7 +830,7 @@ void leftArrowButtonFunction() {
   //Arm1.executeMovement(temp, 1);
   double[] temp2 = Arm1.anglesFromIK(temp);
   for (int i = 0; i < temp2.length; i++) {
-    theta[i] = (float)temp2[i];
+    Arm1.pos[i] = (float)temp2[i];
   }
 }
 void rightArrowButtonFunction() {
@@ -731,8 +842,24 @@ void rightArrowButtonFunction() {
     double[][] temp = {movementProgram[movementNumber-1][1], movementProgram[movementNumber-1][2], movementProgram[movementNumber-1][3], movementProgram[movementNumber-1][4]};
     double[] temp2 = Arm1.anglesFromIK(temp);
     for (int i = 0; i < temp2.length; i++) {
-      theta[i] = (float)temp2[i];
+      Arm1.pos[i] = (float)temp2[i];
     }
+  }
+}
+void gripperOnButtonFunction() {
+  gripperBoolean = !gripperBoolean;
+  if (gripperBoolean) {
+    gripperVariable = 1;
+  } else {
+    gripperVariable = 0;
+  }
+}
+void vialBoxButtonFunction() {
+   vialBoxBoolean = !vialBoxBoolean;
+  if (vialBoxBoolean) {
+    vialBoxVariable = 1;
+  } else {
+    vialBoxVariable = 0;
   }
 }
 void saveProgramPointButtonFunction() {
@@ -742,7 +869,7 @@ void saveProgramPointButtonFunction() {
   } else {
     temp = Integer.parseInt(cp5.get(Textfield.class, "timeTextFieldFunction").getText());
   }
-  movementProgram = Arm1.savePointToProgram(movementProgram, temp, movementNumber-1+addingPoint);
+  movementProgram = Arm1.savePointToProgram(movementProgram, temp, gripperVariable, vialBoxVariable, movementNumber-1+addingPoint);
   addingPoint = 0;
   rightArrowButtonFunction();
 }
@@ -798,6 +925,44 @@ void loadProgramButtonFunction() {
   currentProgram = temp;
   movementProgram = loadProgramFromFile(temp);
 }
+void moveMethodToggleButtonFunction() {
+  toggleInputMethodBool = !toggleInputMethodBool;
+  slider1.setVisible(toggleInputMethodBool);
+  slider2.setVisible(toggleInputMethodBool);
+  slider3.setVisible(toggleInputMethodBool);
+  slider4.setVisible(toggleInputMethodBool);
+  slider5.setVisible(toggleInputMethodBool);
+  slider6.setVisible(toggleInputMethodBool);
+  pxTextField.setVisible(!toggleInputMethodBool);
+  pyTextField.setVisible(!toggleInputMethodBool);
+  pzTextField.setVisible(!toggleInputMethodBool);
+  rTextField.setVisible(!toggleInputMethodBool);
+  pTextField.setVisible(!toggleInputMethodBool);
+  yTextField.setVisible(!toggleInputMethodBool);
+  conformXYZRPYButton.setVisible(!toggleInputMethodBool);
+}
+
+double[][] rotationMatrixFromAngles12332 = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+
+
+void conformXYZRPYButtonFunction() {
+  rotationMatrixFromAngles12332 = rotationMatrixFromAngles(Double.parseDouble(cp5.get(Textfield.class, "rTextFieldFunction").getText()), Double.parseDouble(cp5.get(Textfield.class, "pTextFieldFunction").getText()), Double.parseDouble(cp5.get(Textfield.class, "yTextFieldFunction").getText()));
+  double[][] temp = rotationMatrixFromAngles12332;
+  double[][] temp1 = {{temp[0][0], temp[0][1], temp[0][2], Double.parseDouble(cp5.get(Textfield.class, "pxTextFieldFunction").getText())}, {temp[1][0], temp[1][1], temp[1][2], Double.parseDouble(cp5.get(Textfield.class, "pyTextFieldFunction").getText())}, {temp[2][0], temp[2][1], temp[2][2], Double.parseDouble(cp5.get(Textfield.class, "pzTextFieldFunction").getText())}, {0, 0, 0, 1}};
+  double[][][] Temp2 = {{{1000, 0, 0, 0}, temp1[0], temp1[1], temp1[2], temp1[3]}};
+  globalTemp2 = Temp2;
+  text("rpyxyz", 500, 500);
+  keyVariableC = false;
+  rotationMatrixFromAngles12332 = temp1;
+  loopVariable0 = true;
+}
+void sendToRobotButtonFunction() {
+  double[][] temp1 = Arm1.resultMatrix.getData();
+  double[][][] temp = {{{1000, 0, 0, 0}, temp1[0], temp1[1], temp1[2], temp1[3]}};
+  Arm1.executeProgram(temp);
+  delay(10);
+  Arm1.sendData();
+}
 
 void saveProgramToFile(double[][][] movementProgram, String programName) {
 
@@ -839,4 +1004,15 @@ double[][][] loadProgramFromFile(String programToLoad) {
     }
   }
   return movementProgram;
+}
+public double[][] rotationMatrixFromAngles(double gammaT, double betaT, double alphaT) {
+  double alpha = Math.toRadians(alphaT); //alpha is rotation around z, beta around y, and gamma around x.
+  double beta = Math.toRadians(betaT);
+  double gamma = Math.toRadians(gammaT);
+  RealMatrix matrix = new Array2DRowRealMatrix(new double[][]{
+    {Math.cos(alpha)*Math.cos(beta), Math.cos(alpha)*Math.sin(beta)*Math.sin(gamma)-Math.sin(alpha)*Math.cos(gamma), Math.cos(alpha)*Math.sin(beta)*Math.cos(gamma)+Math.sin(alpha)*Math.sin(gamma)},
+    {Math.sin(alpha)*Math.cos(beta), Math.sin(alpha)*Math.sin(beta)*Math.sin(gamma)+Math.cos(alpha)*Math.cos(gamma), Math.sin(alpha)*Math.sin(beta)*Math.cos(gamma)-Math.cos(alpha)*Math.sin(gamma)},
+    {Math.sin(beta)*(-1), Math.cos(beta)*Math.sin(gamma), Math.cos(beta)*Math.cos(gamma)}});
+  double[][] matrix1 = matrix.getData();
+  return matrix1;
 }
