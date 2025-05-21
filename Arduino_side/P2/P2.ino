@@ -167,6 +167,15 @@ void loop() {
     }
     inputString = "";
   }
+
+  if (correct_data[8] == 1) {
+    inversion = 180;
+    last_correct_data[8] = correct_data[8];
+  } else if (correct_data[8] == 0) {
+    inversion = 0;
+    last_correct_data[8] = correct_data[8];
+  }
+
   if (correct_data[0] != last_correct_data[0]) {
     dxl.setGoalPosition(DXL_ID1, correct_data[0], UNIT_DEGREE);
     last_correct_data[0] = correct_data[0];
@@ -204,14 +213,6 @@ void loop() {
     Servo1.write(100);
   } else if (correct_data[7] == 0) {
     Servo1.write(150);
-  }
-
-  if (correct_data[8] == 1) {
-    inversion = 180;
-    last_correct_data[8] = correct_data[8];
-  } else if (correct_data[8] == 0) {
-    inversion = 0;
-    last_correct_data[8] = correct_data[8];
   }
 }
 
