@@ -194,28 +194,15 @@ void loop() {
   }
 
   if (correct_data[6] == 1) {
-<<<<<<< HEAD
     intServo.write(150);
-  } 
-  else if (correct_data[6] == 0) {
-    intServo.write(60);
-=======
-    intServo.write(100);
   } else if (correct_data[6] == 0) {
-    intServo.write(150);
->>>>>>> e62a2c4b9cbfacd38f6538e853c835b4eeac385d
+    intServo.write(60);
   }
   if (correct_data[7] == 1) {
-<<<<<<< HEAD
+
     Servo1.write(100);
-  } 
-  else if (correct_data[7] == 0) {
-    Servo1.write(150);
-=======
-    intServo.write(45);
   } else if (correct_data[7] == 0) {
-    intServo.write(150);
->>>>>>> e62a2c4b9cbfacd38f6538e853c835b4eeac385d
+    Servo1.write(150);
   }
 }
 
