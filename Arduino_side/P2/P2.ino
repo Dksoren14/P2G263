@@ -131,8 +131,8 @@ void setup() {
   dxl.setGoalPosition(DXL_ID2, 180 + 45, UNIT_DEGREE);
   dxl.setGoalPosition(DXL_ID3, 180 - 16, UNIT_DEGREE);
   dxl.setGoalPosition(DXL_ID4, 180 - 90, UNIT_DEGREE);
-  dxl.setGoalPosition(DXL_ID5, 180, UNIT_DEGREE);
-  dxl.setGoalPosition(DXL_ID6, 180, UNIT_DEGREE);
+  dxl.setGoalPosition(DXL_ID5, 180 + 90, UNIT_DEGREE);
+  dxl.setGoalPosition(DXL_ID6, 180 + 90, UNIT_DEGREE);
 }
 
 
@@ -189,7 +189,7 @@ void loop() {
   }
   if (correct_data[5] != last_correct_data[5]) {
     correct_data[5] = abs(correct_data[5] - 360);
-    dxl.setGoalPosition(DXL_ID6, correct_data[5], UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID6, correct_data[5] + 90, UNIT_DEGREE);
     last_correct_data[5] = correct_data[5];
   }
 
