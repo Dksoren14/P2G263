@@ -203,8 +203,14 @@ void loop() {
   if (correct_data[6] == 1) {
     intServo.write(100);
   }
+  else if (correct_data[6] == 0) {
+    intServo.write(150);
+  }
 
-  if (correct_data[6] == 0) {
+  if (correct_data[7] == 1) {
+    intServo.write(45);
+  }
+  else if (correct_data[7] == 0) {
     intServo.write(150);
   }
 }
