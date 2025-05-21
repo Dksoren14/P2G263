@@ -15,7 +15,7 @@ String selectedport, selectedport1;
 int selectedbaudrate, selectedbaudrate1;
 
 Button connectionButton, connectionButton1, toggleConnectionUIButton, infoButton, saveProgramPointButton, leftArrowButton, rightArrowButton, addPointButton, saveProgramButton, editProgramLocationButton, playProgramButton, toggleSaveLoadUIButton, loadProgramButton;
-Button moveMethodToggleButton, conformXYZRPYButton, sendToRobotButton, gripperButton, vialBoxButton;
+Button moveMethodToggleButton, conformXYZRPYButton, sendToRobotButton, gripperButton, vialBoxButton, inversionButton;
 Textfield programSelectionTextField, timeTextField, pxTextField, pyTextField, pzTextField, rTextField, pTextField, yTextField;
 double[][][] globalTemp2;
 boolean toggleUIBool = false; //Status of the "toggleUI" button.
@@ -24,8 +24,10 @@ boolean toggleInputMethodBool = true;
 boolean infoButtonVariable = false;
 boolean gripperBoolean = false;
 boolean vialBoxBoolean = false;
+boolean inversionBoolean = false;
 int gripperVariable = 0;
 int vialBoxVariable = 0;
+int inversionVariable = 0;
 boolean keyVariableA, keyVariableB, keyVariable1, keyVariable2, keyVariable3, keyVariable4, keyVariable5, keyVariable6, keyVariable7, keyVariable8; //Track key A and B
 boolean loopVariable0, loopVariable1, loopVariable2, loopVariable3;
 boolean keyVariableC = true;
@@ -497,7 +499,7 @@ public void makeSlidersFunction(int x, int y, int space) { //Function that creat
 
 void keyPressed() {         //keyPressed is a built-in function that is called once every time a key is pressed.
   if (keyCode==65) {        //To check what key is pressed, simple "if".
-    keyVariableA = true;    //This variable is (at the time of writing this) being used for drawing something. It is therefore made like a flip-flop, to draw it every frame and not just once.
+    //keyVariableA = true;    //This variable is (at the time of writing this) being used for drawing something. It is therefore made like a flip-flop, to draw it every frame and not just once.
   }
   if (keyCode==66) {
     keyVariableB = !keyVariableB;
@@ -676,6 +678,10 @@ void drawSaveLoadUI(int x, int y) {
     fill(255, 0, 0);
     rect(width-110, height-535, 20, 20);
   }
+  if (inversionBoolean) {
+    fill(255, 0, 0);
+    rect(width-110, height-495, 20, 20);
+  }
   popStyle();
 }
 
@@ -742,6 +748,10 @@ void saveLoadUI(int x, int y) {
     .setLabel("Box Out")
     .setSize(60, 30)
     .setPosition(x+140, y+210);
+  inversionButton = cp5.addButton("inversionButtonFunction")
+    .setLabel("Invert 3")
+    .setSize(60, 30)
+    .setPosition(x+140, y+250);
   moveMethodToggleButton = cp5.addButton("moveMethodToggleButtonFunction")
     .setLabel("Toggle Input Method")
     .setSize(120, 30)
@@ -849,18 +859,27 @@ void rightArrowButtonFunction() {
 void gripperOnButtonFunction() {
   gripperBoolean = !gripperBoolean;
   if (gripperBoolean) {
-    gripperVariable = 1;
+    gripperVariable = 10;
   } else {
     gripperVariable = 0;
   }
 }
 void vialBoxButtonFunction() {
-   vialBoxBoolean = !vialBoxBoolean;
+  vialBoxBoolean = !vialBoxBoolean;
   if (vialBoxBoolean) {
-    vialBoxVariable = 1;
+    vialBoxVariable = 10;
   } else {
     vialBoxVariable = 0;
   }
+}
+void inversionButtonFunction(){
+inversionBoolean = !inversionBoolean;
+  if (inversionBoolean) {
+    inversionVariable = 10;
+  } else {
+    inversionVariable = 0;
+  }
+
 }
 void saveProgramPointButtonFunction() {
   int temp;
@@ -869,7 +888,7 @@ void saveProgramPointButtonFunction() {
   } else {
     temp = Integer.parseInt(cp5.get(Textfield.class, "timeTextFieldFunction").getText());
   }
-  movementProgram = Arm1.savePointToProgram(movementProgram, temp, gripperVariable, vialBoxVariable, movementNumber-1+addingPoint);
+  movementProgram = Arm1.savePointToProgram(movementProgram, temp, gripperVariable, vialBoxVariable, inversionVariable, movementNumber-1+addingPoint);
   addingPoint = 0;
   rightArrowButtonFunction();
 }
