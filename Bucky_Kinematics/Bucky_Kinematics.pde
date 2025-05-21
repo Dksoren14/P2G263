@@ -8,7 +8,7 @@ Textarea receivedArea, receivedArea1;
 Println arduinoConsole, arduinoConsole1;
 ScrollableList portlist, portlist1;
 ScrollableList baudlist, baudlist1;
-float[] lastSentValue = new float[12]; //Track what values was last sent to the arduino.
+float[] lastSentValue = new float[15]; //Track what values was last sent to the arduino.
 boolean connectButtonStatus = false; //Status of the connect button
 boolean connectButtonStatus1 = false;
 String selectedport, selectedport1;
@@ -151,7 +151,10 @@ void draw() {
     utils.drawResult(Arm2.pos, 900, 450);
     utils.drawResult(Arm2.speed, 1050, 450);
     utils.drawResult(Arm2.acc, 1200, 450);
-    utils.drawResult(rotationMatrixFromAngles12332, 175, 400);
+    //utils.drawResult(rotationMatrixFromAngles12332, 175, 400);
+    utils.drawResult((double)gripperVariable, 175, 400);
+    utils.drawResult((double)vialBoxVariable, 175, 450);
+    utils.drawResult((double)inversionVariable, 175, 500);
   }
 
 
@@ -839,6 +842,9 @@ void leftArrowButtonFunction() {
   double[][] temp = {movementProgram[movementNumber-1][1], movementProgram[movementNumber-1][2], movementProgram[movementNumber-1][3], movementProgram[movementNumber-1][4]};
   //Arm1.executeMovement(temp, 1);
   double[] temp2 = Arm1.anglesFromIK(temp);
+  gripperVariable = (int)movementProgram[movementNumber-1][0][1];
+  vialBoxVariable = (int)movementProgram[movementNumber-1][0][2];
+  inversionVariable = (int)movementProgram[movementNumber-1][0][3];
   for (int i = 0; i < temp2.length; i++) {
     Arm1.pos[i] = (float)temp2[i];
   }
@@ -851,6 +857,9 @@ void rightArrowButtonFunction() {
   if (movementNumber <= movementProgram.length) {
     double[][] temp = {movementProgram[movementNumber-1][1], movementProgram[movementNumber-1][2], movementProgram[movementNumber-1][3], movementProgram[movementNumber-1][4]};
     double[] temp2 = Arm1.anglesFromIK(temp);
+    gripperVariable = (int)movementProgram[movementNumber-1][0][1];
+    vialBoxVariable = (int)movementProgram[movementNumber-1][0][2];
+    inversionVariable = (int)movementProgram[movementNumber-1][0][3];
     for (int i = 0; i < temp2.length; i++) {
       Arm1.pos[i] = (float)temp2[i];
     }
@@ -975,10 +984,10 @@ void conformXYZRPYButtonFunction() {
   loopVariable0 = true;
 }
 void sendToRobotButtonFunction() {
-  double[][] temp1 = Arm1.resultMatrix.getData();
-  double[][][] temp = {{{1000, gripperVariable, vialBoxVariable, inversionVariable}, temp1[0], temp1[1], temp1[2], temp1[3]}};
-  Arm1.executeProgram(temp);
-  delay(10);
+  //double[][] temp1 = Arm1.resultMatrix.getData();
+  //double[][][] temp = {{{1000, gripperVariable, vialBoxVariable, inversionVariable}, temp1[0], temp1[1], temp1[2], temp1[3]}};
+  //Arm1.executeProgram(temp);
+  //delay(10);
   Arm1.sendData();
 }
 
