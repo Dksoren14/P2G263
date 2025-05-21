@@ -293,7 +293,7 @@ class Arm {
           message = message + ",";
         }
         
-        message = message + "," + gripperVariable + "," + vialBoxVariable + ",";
+        message = message + gripperVariable + "," + vialBoxVariable + ",";
         
         for (int i = 2; i < 6; i++) {
           String speed_value = Integer.toString(round(((float) speed[i])*10));
