@@ -194,9 +194,6 @@ class Arm {
       angle[4] = Math.atan2(d, -inputMatrix36[1][2]);
     }
 
-    //angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]);
-    //angle[5] = Math.atan2(-inputMatrix36[1][1], inputMatrix36[1][0]);
-
     if (angle[4] > 0) {
       angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]);
     } else if (angle[4] < 0) {
@@ -211,6 +208,7 @@ class Arm {
         }
       }
     }
+
 
     //if (targetMatrix[0][0] < 0) {
     //  angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]);
