@@ -872,14 +872,13 @@ void vialBoxButtonFunction() {
     vialBoxVariable = 0;
   }
 }
-void inversionButtonFunction(){
-inversionBoolean = !inversionBoolean;
+void inversionButtonFunction() {
+  inversionBoolean = !inversionBoolean;
   if (inversionBoolean) {
     inversionVariable = 10;
   } else {
     inversionVariable = 0;
   }
-
 }
 void saveProgramPointButtonFunction() {
   int temp;
@@ -977,7 +976,7 @@ void conformXYZRPYButtonFunction() {
 }
 void sendToRobotButtonFunction() {
   double[][] temp1 = Arm1.resultMatrix.getData();
-  double[][][] temp = {{{1000, 0, 0, 0}, temp1[0], temp1[1], temp1[2], temp1[3]}};
+  double[][][] temp = {{{1000, gripperVariable, vialBoxVariable, inversionVariable}, temp1[0], temp1[1], temp1[2], temp1[3]}};
   Arm1.executeProgram(temp);
   delay(10);
   Arm1.sendData();
