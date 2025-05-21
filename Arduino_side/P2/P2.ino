@@ -52,6 +52,7 @@ const uint8_t DXL_ID1b = 1;  // Set your Dynamixel servo ID
 
 int32_t speedA = 1;
 
+float inversion = 0;
 
 const float DXL_PROTOCOL_VERSION = 2.0;  // Use 2.0 for newer servos
 
@@ -178,8 +179,8 @@ void loop() {
     dxl.setGoalPosition(DXL_ID4, correct_data[2] - 90, UNIT_DEGREE);
     last_correct_data[2] = correct_data[2];
   }
-  if (correct_data[3] != last_correct_data[3]) {
-    dxl.setGoalPosition(DXL_ID3, correct_data[3] - 16, UNIT_DEGREE);
+  if (correct_data[3] != last_correct_data[3] || correct_data[8] != last_correct_data[8]) {
+    dxl.setGoalPosition(DXL_ID3, correct_data[3] - 16 + inversion, UNIT_DEGREE);
     last_correct_data[3] = correct_data[3];
   }
   if (correct_data[4] != last_correct_data[4]) {
@@ -205,8 +206,12 @@ void loop() {
     Servo1.write(150);
   }
 
-  if(correct_data[8] == 1){
-    dxl.setGoalPosition(DXL_ID3, correct_data[2]+180);
+  if (correct_data[8] == 1) {
+    inversion = 180;
+    last_correct_data[8] = correct_data[8];
+  } else if (correct_data[8] == 0) {
+    inversion = 0;
+    last_correct_data[8] = correct_data[8];
   }
 }
 
