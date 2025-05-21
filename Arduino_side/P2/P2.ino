@@ -60,6 +60,8 @@ DynamixelShield dxl(DXL_SERIAL, 2);
 //DynamixelShield dxl1(DXL_SERIAL1, DXL_DIR_PIN1);
 
 Servo intServo;
+Servo Servo1;
+
 
 // Use namespace for control table items
 using namespace ControlTableItem;
@@ -76,6 +78,7 @@ void setup() {
 
   dxl.setPortProtocolVersion(DXL_PROTOCOL_VERSION);
   intServo.attach(9);
+  Servo1.attach(10);
 
   dxl.ping(DXL_ID1);
   dxl.ping(DXL_ID2);
@@ -201,17 +204,16 @@ void loop() {
   }
 
   if (correct_data[6] == 1) {
-    intServo.write(100);
-  }
+    intServo.write(150);
+  } 
   else if (correct_data[6] == 0) {
-    intServo.write(150);
+    intServo.write(60);
   }
-
   if (correct_data[7] == 1) {
-    intServo.write(45);
-  }
+    Servo1.write(100);
+  } 
   else if (correct_data[7] == 0) {
-    intServo.write(150);
+    Servo1.write(150);
   }
 }
 
