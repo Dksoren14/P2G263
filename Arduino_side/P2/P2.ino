@@ -204,6 +204,10 @@ void loop() {
   } else if (correct_data[7] == 0) {
     Servo1.write(150);
   }
+
+  if(correct_data[8] == 1){
+    dxl.setGoalPosition(DXL_ID3, correct_data[2]+180);
+  }
 }
 
 
