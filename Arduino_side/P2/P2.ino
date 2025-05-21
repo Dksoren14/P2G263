@@ -170,10 +170,8 @@ void loop() {
 
   if (correct_data[8] == 1) {
     inversion = 180;
-    last_correct_data[8] = correct_data[8];
   } else if (correct_data[8] == 0) {
     inversion = 0;
-    last_correct_data[8] = correct_data[8];
   }
 
   if (correct_data[0] != last_correct_data[0]) {
@@ -191,6 +189,7 @@ void loop() {
   if (correct_data[3] != last_correct_data[3] || correct_data[8] != last_correct_data[8]) {
     dxl.setGoalPosition(DXL_ID3, correct_data[3] - 16 + inversion, UNIT_DEGREE);
     last_correct_data[3] = correct_data[3];
+    last_correct_data[8] = correct_data[8];
   }
   if (correct_data[4] != last_correct_data[4]) {
     correct_data[4] = abs(correct_data[4] - 360);
@@ -202,7 +201,6 @@ void loop() {
     dxl.setGoalPosition(DXL_ID6, correct_data[5] + 90, UNIT_DEGREE);
     last_correct_data[5] = correct_data[5];
   }
-
   if (correct_data[6] == 1) {
     intServo.write(150);
   } else if (correct_data[6] == 0) {
@@ -215,7 +213,6 @@ void loop() {
     Servo1.write(150);
   }
 }
-
 
 int32_t convertSpeed(float speed) {
   float convertedspeed = speed / (6 * 0.229);
