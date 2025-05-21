@@ -143,9 +143,9 @@ class Arm {
     return temp;
   }
 
-  double[][][] savePointToProgram(double[][][] program, int time, int pointNumber) {
+  double[][][] savePointToProgram(double[][][] program, int time, int gripper, int box, int pointNumber) {
     double[][] temp = resultMatrix.getData();
-    double[][] targetMatrix = {{time, 0, 0, 0}, temp[0], temp[1], temp[2], temp[3]};
+    double[][] targetMatrix = {{time, gripper, box, 0}, temp[0], temp[1], temp[2], temp[3]};
     if (time == 0) {
       time = 1000;
     }
@@ -292,7 +292,10 @@ class Arm {
           message = message+angle_value;
           message = message + ",";
         }
-        for (int i = 0; i < 6; i++) {
+        
+        message = message + "," + gripperVariable + "," + vialBoxVariable + ",";
+        
+        for (int i = 2; i < 6; i++) {
           String speed_value = Integer.toString(round(((float) speed[i])*10));
           message = message + speed_value;
           if (i<5) message = message + ",";

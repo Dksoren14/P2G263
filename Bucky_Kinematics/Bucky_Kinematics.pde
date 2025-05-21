@@ -15,13 +15,17 @@ String selectedport, selectedport1;
 int selectedbaudrate, selectedbaudrate1;
 
 Button connectionButton, connectionButton1, toggleConnectionUIButton, infoButton, saveProgramPointButton, leftArrowButton, rightArrowButton, addPointButton, saveProgramButton, editProgramLocationButton, playProgramButton, toggleSaveLoadUIButton, loadProgramButton;
-Button moveMethodToggleButton, conformXYZRPYButton, sendToRobotButton;
+Button moveMethodToggleButton, conformXYZRPYButton, sendToRobotButton, gripperButton, vialBoxButton;
 Textfield programSelectionTextField, timeTextField, pxTextField, pyTextField, pzTextField, rTextField, pTextField, yTextField;
 double[][][] globalTemp2;
 boolean toggleUIBool = false; //Status of the "toggleUI" button.
 boolean toggleSaveLoadUIBool = true;
 boolean toggleInputMethodBool = true;
 boolean infoButtonVariable = false;
+boolean gripperBoolean = false;
+boolean vialBoxBoolean = false;
+int gripperVariable = 0;
+int vialBoxVariable = 0;
 boolean keyVariableA, keyVariableB, keyVariable1, keyVariable2, keyVariable3, keyVariable4, keyVariable5, keyVariable6, keyVariable7, keyVariable8; //Track key A and B
 boolean loopVariable0, loopVariable1, loopVariable2, loopVariable3;
 boolean keyVariableC = true;
@@ -664,6 +668,14 @@ void drawSaveLoadUI(int x, int y) {
   text("Point " + (movementNumber + addingPoint), x + 5, y + 70);
   textSize(24);
   text("Time: ", x + 5, y+193);
+  if (gripperBoolean) {
+    fill(255, 0, 0);
+    rect(width-110, height-575, 20, 20);
+  }
+  if (vialBoxBoolean) {
+    fill(255, 0, 0);
+    rect(width-110, height-535, 20, 20);
+  }
   popStyle();
 }
 
@@ -722,6 +734,14 @@ void saveLoadUI(int x, int y) {
     .setColor(color(255))
     .setAutoClear(false)
     .setText("1234");
+  gripperButton = cp5.addButton("gripperOnButtonFunction")
+    .setLabel("Gripper On")
+    .setSize(60, 30)
+    .setPosition(x+140, y+170);
+  vialBoxButton = cp5.addButton("vialBoxButtonFunction")
+    .setLabel("Box Out")
+    .setSize(60, 30)
+    .setPosition(x+140, y+210);
   moveMethodToggleButton = cp5.addButton("moveMethodToggleButtonFunction")
     .setLabel("Toggle Input Method")
     .setSize(120, 30)
@@ -789,8 +809,9 @@ void saveLoadUI(int x, int y) {
     .setSize(120, 30)
     .setColorBackground(color(200, 0, 0))
     .setColorForeground(color(255, 50, 50))
-
     .setPosition(x, y + 450);
+
+
   pxTextField.setVisible(false);
   pyTextField.setVisible(false);
   pzTextField.setVisible(false);
@@ -825,6 +846,22 @@ void rightArrowButtonFunction() {
     }
   }
 }
+void gripperOnButtonFunction() {
+  gripperBoolean = !gripperBoolean;
+  if (gripperBoolean) {
+    gripperVariable = 1;
+  } else {
+    gripperVariable = 0;
+  }
+}
+void vialBoxButtonFunction() {
+   vialBoxBoolean = !vialBoxBoolean;
+  if (vialBoxBoolean) {
+    vialBoxVariable = 1;
+  } else {
+    vialBoxVariable = 0;
+  }
+}
 void saveProgramPointButtonFunction() {
   int temp;
   if (cp5.get(Textfield.class, "timeTextFieldFunction").getText().isEmpty()) {
@@ -832,7 +869,7 @@ void saveProgramPointButtonFunction() {
   } else {
     temp = Integer.parseInt(cp5.get(Textfield.class, "timeTextFieldFunction").getText());
   }
-  movementProgram = Arm1.savePointToProgram(movementProgram, temp, movementNumber-1+addingPoint);
+  movementProgram = Arm1.savePointToProgram(movementProgram, temp, gripperVariable, vialBoxVariable, movementNumber-1+addingPoint);
   addingPoint = 0;
   rightArrowButtonFunction();
 }
