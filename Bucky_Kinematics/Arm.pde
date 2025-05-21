@@ -143,9 +143,9 @@ class Arm {
     return temp;
   }
 
-  double[][][] savePointToProgram(double[][][] program, int time, int pointNumber) {
+  double[][][] savePointToProgram(double[][][] program, int time, int gripper, int box, int pointNumber) {
     double[][] temp = resultMatrix.getData();
-    double[][] targetMatrix = {{time, 0, 0, 0}, temp[0], temp[1], temp[2], temp[3]};
+    double[][] targetMatrix = {{time, gripper, box, 0}, temp[0], temp[1], temp[2], temp[3]};
     if (time == 0) {
       time = 1000;
     }
@@ -157,6 +157,8 @@ class Arm {
     }
     return program;
   }
+
+  
 
   double[] anglesFromIK(double[][] targetMatrix) {
     double[] angle = new double[6];
@@ -183,18 +185,52 @@ class Arm {
 
     double d = Math.sqrt(Math.pow(inputMatrix36[0][2], 2)+Math.pow(inputMatrix36[2][2], 2));
 
-    if (targetMatrix[0][0] < 0) {
+    if (inputMatrix36[0][2] > 0) {
       angle[4] = Math.atan2(d, -inputMatrix36[1][2]);
       //angle[4] = Math.acos(-inputMatrix36[1][2]);
-    } else if (targetMatrix[0][0] > 0) {
+    } else if (inputMatrix36[0][2] < 0) {
       angle[4] = -Math.atan2(d, -inputMatrix36[1][2]);
     } else {
       angle[4] = Math.atan2(d, -inputMatrix36[1][2]);
     }
 
-    angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]);
-    angle[5] = Math.atan2(-inputMatrix36[1][1], inputMatrix36[1][0]);
+    if (angle[4] > 0) {
+      angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]);
+    } else if (angle[4] < 0) {
+      if (inputMatrix36[1][0] < 0) {
+        if (inputMatrix36[0][1] > 0) {
+          angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) - Math.toRadians(180);
+        }
+        if (inputMatrix36[0][1] < 0) {
+          angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) + Math.toRadians(180);
+        }
+      }
+    }
 
+
+    //if (targetMatrix[0][0] < 0) {
+    //  angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]);
+    //} else if (targetMatrix[0][0] > 0) {
+    //  if (targetMatrix[1][0] > 0) {
+    //    if (targetMatrix[1][2] < 0) {
+    //      angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) - Math.toRadians(180);
+    //      text("+-", 500, 600);
+    //    }
+    //    if (targetMatrix[1][2] > 0) {
+    //      angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) + Math.toRadians(180);
+    //      text("++", 500, 600);
+    //    }
+    //  } else if (targetMatrix[1][0] < 0) {
+    //    if (targetMatrix[2][1] > 0) {
+    //      angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) - Math.toRadians(180);
+    //      text("--", 500, 600);
+    //    }
+    //    if (targetMatrix[2][1] < 0) {
+    //      angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) + Math.toRadians(180);
+    //      text("-+", 500, 600);
+    //    }
+    //  }
+    //}
 
 
     double[] angleDegrees = new double[angle.length];
@@ -252,7 +288,10 @@ class Arm {
           message = message+angle_value;
           message = message + ",";
         }
-        for (int i = 0; i < 6; i++) {
+        
+        message = message + gripperVariable + "," + vialBoxVariable + ",";
+        
+        for (int i = 2; i < 6; i++) {
           String speed_value = Integer.toString(round(((float) speed[i])*10));
           message = message + speed_value;
           if (i<5) message = message + ",";
