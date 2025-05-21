@@ -132,6 +132,9 @@ class Arm {
 
     if (executingProgram) {
       int i = trackMovement;
+      gripperVariable = (int)movementProgram[i][0][1];
+      vialBoxVariable = (int)movementProgram[i][0][2];
+      inversionVariable = (int)movementProgram[i][0][3];
       double[][] targetMatrix = {movementProgram[i][1], movementProgram[i][2], movementProgram[i][3], movementProgram[i][4]};
       trackMovement += executeMovement(targetMatrix, movementProgram[i][0][0]);
     }
@@ -143,9 +146,9 @@ class Arm {
     return temp;
   }
 
-  double[][][] savePointToProgram(double[][][] program, int time, int gripper, int box, int pointNumber) {
+  double[][][] savePointToProgram(double[][][] program, int time, int gripper, int box,int invert, int pointNumber) {
     double[][] temp = resultMatrix.getData();
-    double[][] targetMatrix = {{time, gripper, box, 0}, temp[0], temp[1], temp[2], temp[3]};
+    double[][] targetMatrix = {{time, gripper, box, invert}, temp[0], temp[1], temp[2], temp[3]};
     if (time == 0) {
       time = 1000;
     }
@@ -289,9 +292,9 @@ class Arm {
           message = message + ",";
         }
         
-        message = message + gripperVariable + "," + vialBoxVariable + ",";
+        message = message + gripperVariable + "," + vialBoxVariable + "," + inversionVariable + ",";
         
-        for (int i = 2; i < 6; i++) {
+        for (int i = 3; i < 6; i++) {
           String speed_value = Integer.toString(round(((float) speed[i])*10));
           message = message + speed_value;
           if (i<5) message = message + ",";
