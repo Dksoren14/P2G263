@@ -200,11 +200,9 @@ class Arm {
       if (inputMatrix36[1][0] < 0) {
         if (inputMatrix36[0][1] > 0) {
           angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) - Math.toRadians(180);
-          text("--", 500, 600);
         }
         if (inputMatrix36[0][1] < 0) {
           angle[3] = Math.atan2(inputMatrix36[2][2], inputMatrix36[0][2]) + Math.toRadians(180);
-          text("-+", 500, 600);
         }
       }
     }

@@ -126,7 +126,7 @@ void setup() {
   dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID6, 100);
   dxl.setGoalPosition(DXL_ID1, 180, UNIT_DEGREE);
   dxl.setGoalPosition(DXL_ID2, 180 + 45, UNIT_DEGREE);
-  dxl.setGoalPosition(DXL_ID3, 180, UNIT_DEGREE);
+  dxl.setGoalPosition(DXL_ID3, 180 - 16, UNIT_DEGREE);
   dxl.setGoalPosition(DXL_ID4, 180 - 90, UNIT_DEGREE);
   dxl.setGoalPosition(DXL_ID5, 180, UNIT_DEGREE);
   dxl.setGoalPosition(DXL_ID6, 180, UNIT_DEGREE);
@@ -164,53 +164,41 @@ void loop() {
     inputString = "";
   }
   if (correct_data[0] != last_correct_data[0]) {
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID1, convertSpeed(correct_data[0]));
-    delay(20);
     dxl.setGoalPosition(DXL_ID1, correct_data[0], UNIT_DEGREE);
     last_correct_data[0] = correct_data[0];
   }
   if (correct_data[1] != last_correct_data[1]) {
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, convertSpeed(correct_data[1]));
-    delay(20);
     dxl.setGoalPosition(DXL_ID2, correct_data[1] + 45, UNIT_DEGREE);
     last_correct_data[1] = correct_data[1];
   }
   if (correct_data[2] != last_correct_data[2]) {
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID4, convertSpeed(correct_data[2]));
-    delay(20);
-    dxl.setGoalPosition(DXL_ID3, correct_data[2] - 90, UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID4, correct_data[2] - 90, UNIT_DEGREE);
     last_correct_data[2] = correct_data[2];
   }
   if (correct_data[3] != last_correct_data[3]) {
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID3, convertSpeed(correct_data[3]));
-    delay(20);
-    dxl.setGoalPosition(DXL_ID4, correct_data[3], UNIT_DEGREE);
+    dxl.setGoalPosition(DXL_ID3, correct_data[3] - 16, UNIT_DEGREE);
     last_correct_data[3] = correct_data[3];
   }
   if (correct_data[4] != last_correct_data[4]) {
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID5, convertSpeed(correct_data[4]));
-    delay(20);
+    correct_data[4] = abs(correct_data[4] - 360);
     dxl.setGoalPosition(DXL_ID5, correct_data[4], UNIT_DEGREE);
     last_correct_data[4] = correct_data[4];
   }
   if (correct_data[5] != last_correct_data[5]) {
-    dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID6, convertSpeed(correct_data[5]));
-    delay(20);
+    correct_data[5] = abs(correct_data[5] - 360);
     dxl.setGoalPosition(DXL_ID6, correct_data[5], UNIT_DEGREE);
     last_correct_data[5] = correct_data[5];
   }
 
   if (correct_data[6] == 1) {
     intServo.write(100);
-  }
-  else if (correct_data[6] == 0) {
+  } else if (correct_data[6] == 0) {
     intServo.write(150);
   }
 
   if (correct_data[7] == 1) {
     intServo.write(45);
-  }
-  else if (correct_data[7] == 0) {
+  } else if (correct_data[7] == 0) {
     intServo.write(150);
   }
 }
