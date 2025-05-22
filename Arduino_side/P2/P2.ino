@@ -133,6 +133,19 @@ void loop() {
     inputString = "";
   }
 
+  if (correct_data[9] == 1) {
+    dxl.setGoalPosition(DXL_ID1, dxl.getCurPosition(DXL_ID1));
+    dxl.setGoalPosition(DXL_ID2, dxl.getCurPosition(DXL_ID2));
+    dxl.setGoalPosition(DXL_ID3, dxl.getCurPosition(DXL_ID3));
+    dxl.setGoalPosition(DXL_ID4, dxl.getCurPosition(DXL_ID4));
+    dxl.setGoalPosition(DXL_ID5, dxl.getCurPosition(DXL_ID5));
+    dxl.setGoalPosition(DXL_ID6, dxl.getCurPosition(DXL_ID6));
+
+    while(true){
+      
+    }
+  }
+
   if (correct_data[8] == 1) {
     inversion = 180;
   } else if (correct_data[8] == 0) {
