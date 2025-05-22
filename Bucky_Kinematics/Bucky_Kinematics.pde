@@ -15,7 +15,7 @@ String selectedport, selectedport1;
 int selectedbaudrate, selectedbaudrate1;
 
 Button connectionButton, connectionButton1, toggleConnectionUIButton, infoButton, saveProgramPointButton, leftArrowButton, rightArrowButton, addPointButton, saveProgramButton, editProgramLocationButton, playProgramButton, toggleSaveLoadUIButton, loadProgramButton;
-Button moveMethodToggleButton, conformXYZRPYButton, sendToRobotButton, gripperButton, vialBoxButton, inversionButton;
+Button moveMethodToggleButton, conformXYZRPYButton, sendToRobotButton, gripperButton, vialBoxButton, inversionButton, playHardModeProgramButton;
 Textfield programSelectionTextField, timeTextField, pxTextField, pyTextField, pzTextField, rTextField, pTextField, yTextField;
 double[][][] globalTemp2;
 boolean toggleUIBool = false; //Status of the "toggleUI" button.
@@ -28,7 +28,8 @@ boolean inversionBoolean = false;
 int gripperVariable = 0;
 int vialBoxVariable = 0;
 int inversionVariable = 0;
-boolean keyVariableA, keyVariableB, keyVariable1, keyVariable2, keyVariable3, keyVariable4, keyVariable5, keyVariable6, keyVariable7, keyVariable8; //Track key A and B
+int keyVariable1 = 0;
+boolean keyVariableA, keyVariableB, keyVariable2, keyVariable3, keyVariable4, keyVariable5, keyVariable6, keyVariable7, keyVariable8; //Track key A and B
 boolean loopVariable0, loopVariable1, loopVariable2, loopVariable3;
 boolean keyVariableC = true;
 boolean keyVariableD = false;
@@ -155,6 +156,7 @@ void draw() {
     utils.drawResult((double)gripperVariable, 175, 400);
     utils.drawResult((double)vialBoxVariable, 175, 450);
     utils.drawResult((double)inversionVariable, 175, 500);
+    utils.drawResult((double)keyVariable1, 175, 550);
   }
 
 
@@ -520,42 +522,42 @@ void keyPressed() {         //keyPressed is a built-in function that is called o
     keyVariableF = !keyVariableF;
     //tempVariableForF += 1;
   }
-  if (keyCode==49) {
-    keyVariable1 = !keyVariable1;
-  }
-  if (keyCode==50) {
-    keyVariable2 = !keyVariable2;
-  }
-  if (keyCode==51) {
-    keyVariable3 = true;
-  } else {
-    keyVariable3 = false;
-  }
-  if (keyCode==52) {
-    keyVariable4 = true;
-  } else {
-    keyVariable4 = false;
-  }
-  if (keyCode==53) {
-    keyVariable5 = true;
-  } else {
-    keyVariable5 = false;
-  }
-  if (keyCode==54) {
-    keyVariable6 = true;
-  } else {
-    keyVariable6 = false;
-  }
-  if (keyCode==55) {
-    keyVariable7 = true;
-  } else {
-    keyVariable7 = false;
-  }
-  if (keyCode==56) {
-    keyVariable8 = true;
-  } else {
-    keyVariable8 = false;
-  }
+  //if (keyCode==49) {
+  //  keyVariable1 = !keyVariable1;
+  //}
+  //if (keyCode==50) {
+  //  keyVariable2 = !keyVariable2;
+  //}
+  //if (keyCode==51) {
+  //  keyVariable3 = true;
+  //} else {
+  //  keyVariable3 = false;
+  //}
+  //if (keyCode==52) {
+  //  keyVariable4 = true;
+  //} else {
+  //  keyVariable4 = false;
+  //}
+  //if (keyCode==53) {
+  //  keyVariable5 = true;
+  //} else {
+  //  keyVariable5 = false;
+  //}
+  //if (keyCode==54) {
+  //  keyVariable6 = true;
+  //} else {
+  //  keyVariable6 = false;
+  //}
+  //if (keyCode==55) {
+  //  keyVariable7 = true;
+  //} else {
+  //  keyVariable7 = false;
+  //}
+  //if (keyCode==56) {
+  //  keyVariable8 = true;
+  //} else {
+  //  keyVariable8 = false;
+  //}
 }
 
 
@@ -594,11 +596,76 @@ void checkKeyPressed() { //-----------------------------------------------------
     utils.drawResult(time[1], 10, 700);
   }
 
-  if (keyVariable1) {
-    keyVariable1 = false;
+  if (keyVariable2) {
+    switch(keyVariable1) {
+    case 0:
+      keyVariable1 = 1;
+      movementProgram = loadProgramFromFile("firstGreenMoveProgram");
+      break;
+    case 1:
+      if (Arm2.executeProgram(movementProgram) == 1) {
+        keyVariable1 += 1;
+        movementProgram = loadProgramFromFile("firstRedMoveProgram");
+      }
+      break;
+    case 2:
+      if (Arm2.executeProgram(movementProgram) == 1) {
+        keyVariable1 += 1;
+        movementProgram = loadProgramFromFile("firstOpenBoxProgram");
+      }
+      break;
+    case 3:
+      if (Arm2.executeProgram(movementProgram) == 1) {
+        keyVariable1 += 1;
+        movementProgram = loadProgramFromFile("firstGreenFromNurseProgram");
+      }
+      break;
+    case 4:
+      if (Arm2.executeProgram(movementProgram) == 1) {
+        keyVariable1 += 1;
+        movementProgram = loadProgramFromFile("firstInversion8Program");
+      }
+      break;
+    case 5:
+      if (Arm2.executeProgram(movementProgram) == 1) {
+        keyVariable1 += 1;
+        movementProgram = loadProgramFromFile("firstGreenToStorageProgram");
+      }
+      break;
+    case 6:
+      if (Arm2.executeProgram(movementProgram) == 1) {
+        keyVariable1 += 1;
+        movementProgram = loadProgramFromFile("firstRedFromNurseProgram");
+      }
+      break;
+    case 7:
+      if (Arm2.executeProgram(movementProgram) == 1) {
+        keyVariable1 += 1;
+        movementProgram = loadProgramFromFile("firstInversion5Program");
+      }
+      break;
+    case 8:
+      if (Arm2.executeProgram(movementProgram) == 1) {
+        keyVariable1 += 1;
+        movementProgram = loadProgramFromFile("firstRedToStorageProgram");
+      }
+      break;
+    case 9:
+      if (Arm2.executeProgram(movementProgram) == 1) {
+        keyVariable1 += 1;
+        //movementProgram = loadProgramFromFile("firstRedToStorageProgram");
+      }
+      break;
+    case 10:
+      keyVariable2 = false;
+      keyVariable1 = 0;
+      break;
+    }
+    Arm2.sendData();
+    //keyVariable1 = 1;
   }
   if (keyVariable2) {
-    keyVariable2 = false;
+    //keyVariable2 = false;
   }
   if (keyVariable3) {
     //saveThetaValues(2);
@@ -719,6 +786,10 @@ void saveLoadUI(int x, int y) {
     .setLabel("Play")
     .setSize(60, 30)
     .setPosition(x + 70, y + 90);
+  playHardModeProgramButton = cp5.addButton("playHardModeProgramButtonFunction")
+    .setLabel("Crazy Play")
+    .setSize(60, 30)
+    .setPosition(x + 210, y + 90);
   rightArrowButton = cp5.addButton("rightArrowButtonFunction")
     .setLabel("--->")
     .setSize(60, 30)
@@ -930,6 +1001,9 @@ void playProgramButtonFunction() {
   //  fastThread.start();
   //}
   keyVariableA = true;
+}
+void playHardModeProgramButtonFunction() {
+  keyVariable2 = true;
 }
 void saveProgramButtonFunction() {
   String temp;
