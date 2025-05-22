@@ -1,38 +1,16 @@
 #include <Dynamixel2Arduino.h>
-#include <SoftwareSerial.h>
 #include <DynamixelShield.h>
 #include <Servo.h>
 
-
-SoftwareSerial soft_serial(7, 8);     // DYNAMIXELShield UART RX/TX
-SoftwareSerial soft_serial1(23, 24);  // DYNAMIXELShield UART RX/TX
-
 #define DXL_SERIAL Serial1
 #define DXL_SERIAL1 Serial2
-#define DEBUG_SERIAL soft_serial
-#define DEBUG_SERIAL1 soft_serial1
 
-float value1, value2, value3;  // Global variables for storing inputs
 bool stringComplete = false;
 float theta[6];
 int32_t speed[6];
 String inputString = "";
 //const int DXL_DIR_PIN = 2;    // Direction control pin for RS-485
 const int DXL_DIR_PIN1 = 22;  // Direction control pin for RS-485
-
-
-bool measureStart = false;
-bool haverun = true;
-bool getonce = false;
-bool getonceT = false;
-int targetTime = 3000;
-float executingMovement = false;
-double startTime = 0;
-bool motionActive = true;
-float lastMillis = millis();
-
-float start[5];
-
 
 uint16_t data[12];
 float correct_data[12];
@@ -46,11 +24,6 @@ const uint8_t DXL_ID5 = 5;  // Set your Dynamixel servo ID
 const uint8_t DXL_ID6 = 6;  // Set your Dynamixel servo ID
 
 uint8_t DXL_IDs[6] = { 1, 2, 4, 3, 5, 6 };
-
-
-const uint8_t DXL_ID1b = 1;  // Set your Dynamixel servo ID
-
-int32_t speedA = 1;
 
 float inversion = 0;
 
@@ -70,10 +43,6 @@ using namespace ControlTableItem;
 void setup() {
 
   // Use UART port of DYNAMIXEL Shield to debug.
-  DEBUG_SERIAL.begin(57600);
-  while (!DEBUG_SERIAL)
-    ;
-
   Serial.begin(115200);
   dxl.begin(57600);
 
@@ -87,10 +56,6 @@ void setup() {
   dxl.ping(DXL_ID3);
   dxl.ping(DXL_ID5);
   dxl.ping(DXL_ID6);
-
-
-  DEBUG_SERIAL.println("first board initialized and pinged successfully!");
-  DEBUG_SERIAL1.println("Second board initialized and pinged successfully!");
   // Turn off torque when configuring items in EEPROM area
   dxl.torqueOff(DXL_ID1);
   dxl.setOperatingMode(DXL_ID1, OP_POSITION);
