@@ -20,6 +20,7 @@ class Arm {
   String[] messageArrayIn = {"a", "b", "c", "d"};
   int dataNumber = 0;
   double[] lastSendTime;
+  int eStop;
 
   Arm(double[][] MDHT) {
     MDH = MDHT;
@@ -283,7 +284,7 @@ class Arm {
 
   public void sendData() {
     try {
-      if ((float)targetAngle[0] != lastSentValue[0] || (float)targetAngle[1] != lastSentValue[1] || (float)targetAngle[2] != lastSentValue[2] || (float)targetAngle[3] != lastSentValue[3] || (float)targetAngle[4] != lastSentValue[4] || (float)targetAngle[5] != lastSentValue[5] || (float)speed[0] != lastSentValue[6] || (float)speed[1] != lastSentValue[7] || (float)speed[2] != lastSentValue[8] || (float)speed[3] != lastSentValue[9] || (float)speed[4] != lastSentValue[10] || (float)speed[5] != lastSentValue[11] || gripperVariable != lastSentValue[12] || vialBoxVariable != lastSentValue[13] || inversionVariable != lastSentValue[14] && someBoolValue) {
+      if (eStop > 0 || (float)targetAngle[0] != lastSentValue[0] || (float)targetAngle[1] != lastSentValue[1] || (float)targetAngle[2] != lastSentValue[2] || (float)targetAngle[3] != lastSentValue[3] || (float)targetAngle[4] != lastSentValue[4] || (float)targetAngle[5] != lastSentValue[5] || (float)speed[0] != lastSentValue[6] || (float)speed[1] != lastSentValue[7] || (float)speed[2] != lastSentValue[8] || (float)speed[3] != lastSentValue[9] || (float)speed[4] != lastSentValue[10] || (float)speed[5] != lastSentValue[11] || gripperVariable != lastSentValue[12] || vialBoxVariable != lastSentValue[13] || inversionVariable != lastSentValue[14] && someBoolValue) {
         String message = "" ; // "M1" + Float.toString((float)targetAngle[0]) + "1MM2" + Float.toString((float)targetAngle[1]) + "2MM3" + Float.toString((float)targetAngle[2]) + "3MM4" + Float.toString((float)targetAngle[3]) + "4MM5" + Float.toString((float)targetAngle[4]) + "5MM6" + Float.toString((float)targetAngle[5]) + "6MS1" + Float.toString((float)speed[0]) + "1SS2" + Float.toString((float)speed[1]) + "2SS3" + Float.toString((float)speed[2]) + "3SS4" + Float.toString((float)speed[3]) + "4SS5" + Float.toString((float)speed[4]) + "5SS6" + Float.toString((float)speed[5]) + "6S\n";
 
         for (int i = 0; i < 6; i++) {
@@ -292,9 +293,9 @@ class Arm {
           message = message + ",";
         }
         
-        message = message + gripperVariable + "," + vialBoxVariable + "," + inversionVariable + ",";
+        message = message + gripperVariable + "," + vialBoxVariable + "," + inversionVariable + "," + eStop + ",";
         
-        for (int i = 3; i < 6; i++) {
+        for (int i = 4; i < 6; i++) {
           String speed_value = Integer.toString(round(((float) speed[i])*10));
           message = message + speed_value;
           if (i<5) message = message + ",";

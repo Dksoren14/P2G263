@@ -15,7 +15,7 @@ String selectedport, selectedport1;
 int selectedbaudrate, selectedbaudrate1;
 
 Button connectionButton, connectionButton1, toggleConnectionUIButton, infoButton, saveProgramPointButton, leftArrowButton, rightArrowButton, addPointButton, saveProgramButton, editProgramLocationButton, playProgramButton, toggleSaveLoadUIButton, loadProgramButton;
-Button moveMethodToggleButton, conformXYZRPYButton, sendToRobotButton, gripperButton, vialBoxButton, inversionButton, playHardModeProgramButton;
+Button moveMethodToggleButton, conformXYZRPYButton, sendToRobotButton, gripperButton, vialBoxButton, inversionButton, playHardModeProgramButton, eStopButton, eStopReleaseButton;
 Textfield programSelectionTextField, timeTextField, pxTextField, pyTextField, pzTextField, rTextField, pTextField, yTextField;
 double[][][] globalTemp2;
 boolean toggleUIBool = false; //Status of the "toggleUI" button.
@@ -97,7 +97,7 @@ RealMatrix Matrix1233 = new Array2DRowRealMatrix(new double[][] {{1, 2, 3, 4}, {
 
 
 PShape[] textures = new PShape[7];  //The .obj files of the component models will be loaded in to this "PShape" data type.
-
+//PFont eStopFont = createFont("Arial", 40);
 
 void setup() {
   size(1625, 900, P3D);           //Make the canvas/window. Size 1625x by 900y. P3D means it is a 3D "canvas"
@@ -125,6 +125,19 @@ void setup() {
     .setLabel("Info")
     .setSize(100, 30)
     .setPosition(130, 10);
+  eStopButton = cp5.addButton("eStopButtonFunction")
+    .setLabel("EMERGENCY STOP")
+    .setSize(150, 130)
+    .setPosition(800, 60)
+    .setColorBackground(color(200, 0, 0))
+    .setColorForeground(color(255, 50, 50));
+  //eStopButton.getCaptionLabel().setFont(eStopFont);
+  eStopReleaseButton = cp5.addButton("eStopReleaseButtonFunction")
+    .setLabel("Safe")
+    .setSize(40, 40)
+    .setPosition(960, 60)
+    .setColorBackground(color(0, 170, 0))
+    .setColorForeground(color(30, 245, 30));
   frameRate(60);
 }
 
@@ -597,6 +610,9 @@ void checkKeyPressed() { //-----------------------------------------------------
   }
 
   if (keyVariable2) {
+    if (Arm1.eStop == 10 || Arm2.eStop == 10) {
+      keyVariable1 = 10;
+    }
     switch(keyVariable1) {
     case 0:
       keyVariable1 = 1;
@@ -1041,6 +1057,17 @@ void moveMethodToggleButtonFunction() {
   pTextField.setVisible(!toggleInputMethodBool);
   yTextField.setVisible(!toggleInputMethodBool);
   conformXYZRPYButton.setVisible(!toggleInputMethodBool);
+}
+
+void eStopButtonFunction(){
+  Arm1.eStop = 10;
+  Arm2.eStop = 10;
+  Arm1.sendData();
+  Arm2.sendData();
+}
+void eStopReleaseButtonFunction(){
+  Arm1.eStop = 0;
+  Arm2.eStop = 0;
 }
 
 double[][] rotationMatrixFromAngles12332 = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
