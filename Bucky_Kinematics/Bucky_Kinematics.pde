@@ -111,6 +111,7 @@ void setup() {
   textures[3] = loadShape("obj_files/Link3.obj");
   textures[4] = loadShape("obj_files/Link4.obj");
   textures[5] = loadShape("obj_files/Link5.obj");
+  textures[6] = loadShape("obj_files/Gripper.obj");
 
 
   cp5 = new ControlP5(this);
@@ -187,7 +188,7 @@ void draw() {
   rectMode(CENTER);
   noStroke();
   fill(255);
-  rect(0, 0, 1000, 1000);
+  //rect(0, 0, 1000, 1000);
   rectMode(CORNER);
   scale(1, -1, 1);
 

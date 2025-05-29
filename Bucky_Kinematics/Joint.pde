@@ -35,15 +35,15 @@ class Joint {
 
   void draw() {
     //utils.applyRealMatrix(realTransformationMatrix);
-    pushStyle();
-    stroke(255, 0, 0);
-    line(0, 0, 0, 100, 0, 0);
-    stroke(0, 255, 0);
-    line(0, 0, 0, 0, 100, 0);
-    stroke(0, 0, 255);
-    line(0, 0, 0, 0, 0, 100);
-    noStroke();
-    popStyle();
+    //pushStyle();
+    //stroke(255, 0, 0);
+    //line(0, 0, 0, 100, 0, 0);
+    //stroke(0, 255, 0);
+    //line(0, 0, 0, 0, 100, 0);
+    //stroke(0, 0, 255);
+    //line(0, 0, 0, 0, 0, 100);
+    //noStroke();
+    //popStyle();
     pushMatrix();
     rotateX(radians(90));
     if (texture != null) {
