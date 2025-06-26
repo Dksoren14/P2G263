@@ -17,3 +17,5 @@ Libaries needed:
 - DynamixelShield by ROBOTIS (Can be installed in the libary manager)
 - Adafruit-PWM-Servo-Driver-Library by Adafruit (Can be installed in the libary manager)
 
+### eeee
+The button called "crazy play": https://www.youtube.com/watch?v=egVdPnrMaf0 
