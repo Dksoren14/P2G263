@@ -188,7 +188,7 @@ void draw() {
   rectMode(CENTER);
   noStroke();
   fill(255);
-  //rect(0, 0, 1000, 1000);
+  rect(0, 0, 1000, 1000);
   rectMode(CORNER);
   scale(1, -1, 1);
 
