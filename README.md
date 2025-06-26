@@ -1,6 +1,9 @@
 # Bucky_Kinematics
  ##### Forward kinematics, inverse kinematics and simulation tool.
 
+### General Info
+The program runs very unstable. Many operations require a specific sequence to function properly or to prevent crashes. Fixes and more documentation might come in the future.  
+
 
 ### Bucky_Kinematics is the sketch folder for Processing java.
 
