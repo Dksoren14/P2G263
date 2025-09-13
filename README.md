@@ -20,5 +20,6 @@ Libaries needed:
 - DynamixelShield by ROBOTIS (Can be installed in the libary manager)
 - Adafruit-PWM-Servo-Driver-Library by Adafruit (Can be installed in the libary manager)
 
-### eeee
-The button called "crazy play": https://www.youtube.com/watch?v=egVdPnrMaf0 
+### Demonstration
+To demonstrate the robot, try to follow this video: https://youtu.be/zNhQ4TULXOo
+The button called "crazy play" will then do this: https://youtu.be/egVdPnrMaf0?si=J5qCYgQxz3Zy2wZZ
