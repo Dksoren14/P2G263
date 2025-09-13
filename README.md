@@ -21,5 +21,5 @@ Libaries needed:
 - Adafruit-PWM-Servo-Driver-Library by Adafruit (Can be installed in the libary manager)
 
 ### Demonstration
-To demonstrate the robot, try to follow this video: https://youtu.be/zNhQ4TULXOo \newline
+Demonstration of the software: https://youtu.be/zNhQ4TULXOo  
 The button called "crazy play" will then do this: https://youtu.be/egVdPnrMaf0?si=J5qCYgQxz3Zy2wZZ
